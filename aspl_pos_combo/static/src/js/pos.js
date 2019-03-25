@@ -21,7 +21,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         	var self = this;
         	_super_Order.add_product.call(this, product, options);
         	if(product.is_combo && product.product_combo_ids.length > 0 && self.pos.config.enable_combo){
-        	console.log("===================");
+        	//console.log("===================");
         	console.log(product);
         		self.pos.gui.show_popup('combo_product_popup',{
         			'product':product
