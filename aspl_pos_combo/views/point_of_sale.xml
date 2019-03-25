@@ -34,8 +34,7 @@
 	                    <label for="is_combo"/>
 	                </div>
 	            </field>
-	            <xpath expr='//page[4]' position="after" >
-	               <page string="Combo" attrs="{'invisible': [('is_combo', '=', False)]}">
+	               <page string="Supplements">
 	                   <field name="product_combo_ids">
 	                       <tree editable="bottom">
 	                           <field name="require"/>
@@ -45,7 +44,6 @@
 	                       </tree>
 	                   </field>
 	               </page>
-	            </xpath>
 	        </field>
     </record>
 
