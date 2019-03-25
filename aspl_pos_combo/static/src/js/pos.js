@@ -162,7 +162,10 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         	}else{
             	self.new_combo_products_details.map(function(combo_line){
             		if(!combo_line.require){
-            			if(combo_line.pos_category_id[0] == category_id && (_.contains(combo_line.product_ids, product_id))){
+            		//console.log(combo_line.pos_category_id);
+            		//console.log(combo_line.product_ids);
+            		if((_.contains(combo_line.product_ids, product_id))){
+            			//if(combo_line.pos_category_id[0] == category_id && (_.contains(combo_line.product_ids, product_id))){
             				var added_item = 0;
             				combo_line.product_details.map(function(product_detail){
             					added_item += product_detail.used_time;
