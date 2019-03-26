@@ -34,7 +34,7 @@
 	                    <label for="is_combo"/>
 	                </div>
 	            </field>
-	               <page string="Supplements">
+	               <page string="Combo items">
 	                   <field name="product_combo_ids">
 	                       <tree editable="bottom">
 	                           <field name="require"/>
