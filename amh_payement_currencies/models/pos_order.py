@@ -93,10 +93,10 @@ class PosOrder(models.Model):
         """Create a new payment for the order"""
         args = super(PosOrder, self)._prepare_bank_statement_line_payment_values(data) or {}
         args.update({
-            'amount_change': data['amount_change'] or 0,
-            'amount_due': data['amount_due'] or 0,
-            'change_currency': data['change_currency'] or False,
-            'due_currency': data['due_currency'] or False,
+            'amount_change': data.get('amount_change', 0),
+            'amount_due': data.get('amount_due', 0),
+            'change_currency': data.get('change_currency', False),
+            'due_currency': data.get('due_currency', False),
         })
         return args
 
