@@ -63,8 +63,23 @@ class ProductCombo(models.Model):
             self.pos_category_id = False
 
 
+
+    @api.onchange('pos_category_id')
+    def onchage_pos_category_id(self):
+        domain=[('available_in_pos', '=', True)]
+        if self.pos_category_id:
+            domain.append(('pos_categ_id','child_of',self.pos_category_id.id))
+        return {
+            'domain': {
+                'product_ids': domain,
+            },
+        }
+
+
 class PosOrderLine(models.Model):
     _inherit = 'pos.order.line'
+
+    is_splmnt = fields.Boolean("Is supplement", default=False)
 
     @api.model
     def get_compute_amount_line_all(self, values):
@@ -91,7 +106,12 @@ class PosOrderLine(models.Model):
 
     @api.model
     def create(self, values):
+        if values.get('price', 0):
+            values['price_unit'] = values.get('price', 0)
+            del values['price']
+
         if values.get('combo_ext_line_info', []):
+            #values['price_unit'] = self.env['product.product'].browse([values.get('product_id')]).list_price
             # MANY2MANY combo line, each one is like that:
             {'name': 'Shop/0061',
              'price': 13,
@@ -99,16 +119,20 @@ class PosOrderLine(models.Model):
              'qty': 1,
              'tax_ids': [(6, 0, [1])]}
             pass
-        if values.get('price', 0):
-            values['price_unit'] = values.get('price', 0)
-            del values['price']
+
+
 
         if not values.get('price_subtotal', False):
             nw_vls = self.env['pos.order.line'].get_compute_amount_line_all(values)
             values.update(nw_vls)
 
+        if values.get('price_unit', 0) == 0:
+            values['is_splmnt'] = True
+
         from pprint import pprint
+        print("=======================VALUES POL=======================")
         pprint(values)
+        print("==============================================")
         res = super(PosOrderLine, self).create(values)
         return res
 

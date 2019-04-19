@@ -6,7 +6,8 @@ odoo.define('aspl_pos_combo.pos', function (require) {
 	var screens = require('point_of_sale.screens');
 	var PopupWidget = require('point_of_sale.popups');
 
-	models.load_fields("product.product", ['is_combo','product_combo_ids']);
+	models.load_fields("product.product", ['is_combo','product_combo_ids', 'pos_price_tot', 'price_supplement']);
+	models.load_fields("pos.order.line", ['is_splmnt']);
 
 	models.PosModel.prototype.models.push({
         model:  'product.combo',
@@ -15,14 +16,22 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         },
     });
 
+//    var _super_product = models.Product.prototype;
+//    models.Product = models.Product.extend({
+//    get_price: function(pricelist, quantity){
+//        var self = this;
+//        var price = _super_product.get_price.call(this, pricelist, quantity);
+//        return price ;// AMH_ADD supplement price
+//    },
+//
+//    });
+
 	var _super_Order = models.Order.prototype;
 	models.Order = models.Order.extend({
 		add_product: function(product, options){
         	var self = this;
         	_super_Order.add_product.call(this, product, options);
         	if(product.is_combo && product.product_combo_ids.length > 0 && self.pos.config.enable_combo){
-        	//console.log("===================");
-        	console.log(product);
         		self.pos.gui.show_popup('combo_product_popup',{
         			'product':product
         		});
@@ -34,12 +43,26 @@ odoo.define('aspl_pos_combo.pos', function (require) {
     models.Orderline = models.Orderline.extend({
     	initialize: function(attr,options){
             this.combo_prod_info = false;
+            this.is_splmnt = (options.is_splmnt)?options.is_splmnt:false;
+            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaoptoio,ss",options);
             _super_orderline.initialize.call(this, attr, options);
+//            // ADD_AMH SUPPLEMENT PRICE
+//            var supp_price = this.get_unit_price() + options.product.price_supplement;
+//            console.log("INITIALISE ====+OLD:"+this.get_unit_price()+ " SUPP:");
+//            this.set_unit_price(combo_price);
         },
         set_combo_prod_info: function(combo_prod_info){
         	this.combo_prod_info = combo_prod_info;
+        	var supp_price = this.price
+        	for(var i=0; i< this.combo_prod_info.length; i++){
+        	    supp_price += this.combo_prod_info[i].product_detail.price_supplement;
+        	}
+        	this.set_unit_price(supp_price);
         },
         get_combo_prod_info: function(){
+//        console.log("++++ GET +++");
+//        console.log(this.combo_prod_info);
+//        console.log("++++ END GET +++");
         	return this.combo_prod_info;
         },
         export_as_JSON: function(){
@@ -48,10 +71,13 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             var combo_ext_line_info = [];
             if(this.product.is_combo && this.combo_prod_info.length > 0){
                 _.each(this.combo_prod_info, function(item){
-                	combo_ext_line_info.push([0, 0, {'product_id':item.product.id, 'qty':item.qty, 'price':item.price}]);
+                	combo_ext_line_info.push([0, 0, {'product_id':item.product.id, 'qty':item.qty, 'price':item.price, 'is_splmnt':true}]);
                 });
             }
             json.combo_ext_line_info = this.product.is_combo ? combo_ext_line_info : [];
+            //console.log("=============================================");
+            //console.info(json);
+           // console.log("=============================================");
             return json;
         },
         can_be_merged_with: function(orderline){
@@ -69,6 +95,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             $.extend(lines, new_attr);
             return lines;
         },
+
     });
 
 	var POSComboProductPopup = PopupWidget.extend({
@@ -95,26 +122,34 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         			combo_line.product_ids.map(function(product_id){
         			// AMH_ADDED
         			var obj_product_id = self.pos.db.get_product_by_id(product_id);
-        			console.log("++++");
+//        			console.log("++++");
+//        			console.log(obj_product_id);
+//        			console.log("-------");
         			// END AMH_ADDED
         				if(combo_line.require){
         					var data = {
+        					    'is_supplement': obj_product_id.price_supplement != 0,
                         		'no_of_items': combo_line.no_of_items,
                         		'product_id': product_id,
                         		'category_id': combo_line.pos_category_id[0] || false,
                         		'used_time': combo_line.no_of_items,
-                        		'sale_price': obj_product_id.list_price,// AMH_ADDED
-                        		'sale_price_str': self.format_currency(obj_product_id.list_price,'Product Price'),
+                        		'price_supplement': obj_product_id.price_supplement,// AMH_ADDED
+                        		'price_supplement_str': self.format_currency(obj_product_id.price_supplement,'Supp Price'),// AMH_ADDED
+                        		'sale_price': obj_product_id.pos_price_tot,// AMH_ADDED
+                        		'sale_price_str': self.format_currency(obj_product_id.pos_price_tot,'Product Price'),
                         	}
             				details.push(data);
         				}else{
         					var data = {
+        					    'is_supplement': obj_product_id.price_supplement != 0,
                         		'no_of_items': combo_line.no_of_items,
                         		'product_id': product_id,
                         		'category_id': combo_line.pos_category_id[0] || false,
                         		'used_time': 0,
-                        		'sale_price': obj_product_id.list_price,// AMH_ADDED
-                        		'sale_price_str': self.format_currency(obj_product_id.list_price,'Product Price'),
+                        		'price_supplement': obj_product_id.price_supplement,// AMH_ADDED
+                        		'price_supplement_str': self.format_currency(obj_product_id.price_supplement,'Supp Price'),// AMH_ADDED
+                        		'sale_price': obj_product_id.pos_price_tot,// AMH_ADDED
+                        		'sale_price_str': self.format_currency(obj_product_id.pos_price_tot,'Product Price'),
                         	}
             				details.push(data);
         				}
@@ -129,6 +164,8 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         			});
         		}
             });
+
+
             this.renderElement();
         },
         collaps_div: function(event){
@@ -181,6 +218,8 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             		}
             	});
         	}
+
+
         	self.renderElement();
         },
         click_confirm: function(){
@@ -196,8 +235,15 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             				var product = self.pos.db.get_product_by_id(prod_detail.product_id);
                 			if(product){
 //                				total_amount = self.product.get_price(pricelist, 1);
-                				products_info.push({"product":product, 'qty':prod_detail.used_time,'price':product.get_price(pricelist, 1)});
+                				products_info.push({
+                				"product":product,
+                				'qty':prod_detail.used_time,
+                				//BE 'price':product.get_price(pricelist, 1),
+                				//'price':product.price_supplement,
+                				'price':0,
+                				'product_detail': prod_detail});
                 			}
+
             			}
             		});
             	}

@@ -23,17 +23,16 @@
     'depends': [
         'base',
         'point_of_sale',
-        'aspl_pos_combo',
     ],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
+        #'security/ir.model.access.csv',
         'views/supplements_views.xml',
     ],
     # only loaded in demonstration mode
     'qweb': [
         # 'demo/demo.xml',
-        'views/test.xml'
+        #'views/test.xml'
     ],
 }

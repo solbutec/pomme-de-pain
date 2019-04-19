@@ -40,7 +40,8 @@
 	                       <tree editable="bottom">
 	                           <field name="require"/>
 	                           <field name="pos_category_id" attrs="{'readonly': [('require', '=', True)]}"/>
-	                           <field name="product_ids" widget="many2many_tags" domain="[('pos_categ_id', 'child_of', pos_category_id),('available_in_pos', '=', True)]"/>
+	                           <field name="product_ids" widget="many2many_tags"
+									  domain="[('available_in_pos', '=', True)]"/>
 	                           <field name="no_of_items"/>
 	                       </tree>
 	                   </field>

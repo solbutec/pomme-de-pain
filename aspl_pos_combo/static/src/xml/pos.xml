@@ -40,11 +40,17 @@
                                                      <span class="sale_price">
                                                          <t t-esc="product_detail.sale_price_str"/>
                                                      </span>
+                                                    <span class="sale_price" t-if="product_detail.is_supplement == false">
+                                                        <t t-esc="product_detail.price_supplement_str"/>
+                                                    </span>
+                                                    <span class="is_supplement" t-if="product_detail.is_supplement == true">
+                                                        + <t t-esc="product_detail.price_supplement_str"/>
+                                                    </span>
 	                                                <div class="selected_product">
 	                                                    Selected
 	                                                </div>
 	                                            </div>
-	                                            <div class="product-name">
+	                                            <div class="product-name"  style="text-center">
 	                                                <t t-esc="product.display_name" />
 	                                            </div>
 	                                        </span>
@@ -94,11 +100,17 @@
                                                                  <span class="sale_price">
                                                                      <t t-esc="product_detail.sale_price_str"/>
                                                                  </span>
+                                                                <span class="sale_price" t-if="product_detail.is_supplement == false">
+                                                                     <t t-esc="product_detail.price_supplement_str"/>
+                                                                 </span>
+                                                                <span class="is_supplement" t-if="product_detail.is_supplement == true">
+                                                                     + <t t-esc="product_detail.price_supplement_str"/>
+                                                                 </span>
 	                                                            <div class="selected_product">
 	                                                                Selected
 	                                                            </div>
 	                                                        </div>
-	                                                        <div class="product-name">
+	                                                        <div class="product-name" style="text-center">
 	                                                            <t t-esc="product.display_name" />
 	                                                        </div>
 	                                                    </span>
@@ -134,6 +146,9 @@
                             <t t-if="prod_info.product.uom_id[0]">
                                  <t t-esc="prod_info.product.uom_id[1]"/>
                             </t>
+                            <t t-if="prod_info.product_detail.is_supplement != 0">
+                               <span class="ol-supp"> :  <t t-esc="prod_info.product_detail.price_supplement_str"/> </span>
+                            </t>
                             <!-- at <t t-esc="widget.format_currency(prod_info.price)"/> -->
                         </div>
                     </t>
@@ -142,6 +157,110 @@
         </t>
     </t>
 
-  
+
+    <t t-extend="PosTicket">
+        <t t-jquery="tr[t-foreach*='orderlines'][t-as='orderline']" t-operation="replace">
+            <tr t-foreach="orderlines" t-as="orderline">
+                    <td>
+
+                        <t t-if="!orderline.is_splmnt">
+                            <t t-esc="orderline.get_product().display_name"/>
+                            <t t-if="orderline.get_discount() > 0">
+                                <div class="pos-disc-font">
+                                    With a <t t-esc="orderline.get_discount()"/>% discount
+                                </div>
+                            </t>
+                            <t t-foreach="orderline.get_combo_prod_info()" t-as="prod_info">
+                             <t t-if="prod_info.product_detail.is_supplement != 0">
+                                  <br/>
+                                 <span style="margin-left: 12px;color:blue;">
+                                    &#8594;<t t-esc="prod_info.product.display_name"/>
+                                </span>
+                             </t>
+                        </t>
+                        </t>
+                       <t t-if="orderline.is_splmnt" style="margin-left: 12px;color:blue;">
+                            &#8594;<t t-esc="orderline.get_product().display_name"/>
+                        </t>
+
+
+
+
+                    </td>
+                    <td class="pos-right-align" t-if="orderline.is_splmnt== false">
+                        <t t-esc="orderline.get_quantity()"/>
+                        <t t-foreach="orderline.get_combo_prod_info()" t-as="prod_info">
+                             <t t-if="prod_info.product_detail.is_supplement != 0">
+                                <br/>
+                                 <span style="margin-left: 10px;color:blue;">
+
+                                   <t t-esc="prod_info.qty"/>
+                                     <!--<t t-if="prod_info.product.uom_id[0]">-->
+                                         <!--<t t-esc="prod_info.product.uom_id[1]"/>-->
+                                    <!--</t>-->
+
+                                </span>
+                             </t>
+                        </t>
+
+                    </td>
+                    <td class="pos-right-align"  t-if="orderline.is_splmnt== true" style="color:blue;">
+                        <t t-esc="orderline.get_quantity()"/>
+                    </td>
+
+                    <td class="pos-right-align" t-if="orderline.is_splmnt== false" >
+                        <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+                        <t t-foreach="orderline.get_combo_prod_info()" t-as="prod_info">
+                     <t t-if="prod_info.product_detail.is_supplement != 0">
+                        <br/>
+                         <span style="margin-left: 10px;color:blue;">
+
+                           + <t t-esc="prod_info.product_detail.price_supplement_str"/>
+                        </span>
+                     </t>
+                    </t>
+                    </td>
+
+                <td class="pos-right-align" t-if="orderline.is_splmnt== true" style="color:blue;">
+                        + <t t-esc="widget.format_currency(orderline.get_product().price_supplement)"/>
+                    </td>
+                </tr>
+        </t>
+    </t>
+<!--<t t-extend="PosTicket">
+    <t t-jquery="tr[t-foreach*='orderlines'][t-as='orderline']" t-operation="replace">
+    <tr t-foreach="orderlines" t-as="orderline">
+        <td><t t-esc="orderline.get_product().display_name"/>
+            <t t-if="orderline.get_discount() > 0">
+                <div class="pos-disc-font">
+                    With a <t t-esc="orderline.get_discount()"/>% discount
+                </div>
+            </t>
+            <t t-foreach="orderline.get_combo_prod_info()" t-as="prod_info">
+                <t t-if="prod_info.product_detail.is_supplement != 0"><br/>
+                    <span style="margin-left: 12px;color:blue;">
+                            →<t t-esc="prod_info.product.display_name"/>
+                    </span></t></t>
+        </td>
+        <td class="pos-right-align">
+    <t t-esc="orderline.get_quantity_str_with_unit()"/>
+        <t t-foreach="orderline.get_combo_prod_info()" t-as="prod_info">
+            <t t-if="prod_info.product_detail.is_supplement != 0"><br/>
+                <span style="margin-left: 10px;color:blue;"><t t-esc="prod_info.qty"/>
+                </span></t></t>
+        </td>
+        <td class="pos-right-align">
+        <t t-esc="widget.format_currency(orderline.get_display_price())"/>
+        <t t-foreach="orderline.get_combo_prod_info()" t-as="prod_info">
+            <t t-if="prod_info.product_detail.is_supplement != 0"><br/>
+                <span style="margin-left: 10px;color:blue;">
+                + <t t-esc="prod_info.product_detail.price_supplement_str"/>
+                </span>
+            </t>
+        </t>
+        </td>
+    </tr>
+    </t>
+</t> -->
 
 </templates>

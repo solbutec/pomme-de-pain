@@ -9,31 +9,32 @@
 #
 #################################################################################
 {
-    'name': 'POS Combo',
-    'category': 'Point of Sale',
-    'summary': 'This module allows user to use combo feature in restaurant.',
-    'description': """
-This module allows user to use combo feature in restaurant
-""",
+    'name': 'POS Order Sync',
+    'version': '1.0',
     'author': 'Acespritech Solutions Pvt. Ltd.',
+    'summary': 'POS Order sync between Salesman and Cashier',
+    'description': "Allow salesperson to only create draft order and send draft order to Cashier for payment",
+    'category': 'Point Of Sale',
     'website': 'http://www.acespritech.com',
-    'price': 25,
-    'currency': 'EUR',
-    'version': '1.0.1',
     'depends': [
         'base',
-        'pos_restaurant',
-        'kzm_pos_supplements',
-        'mrp',
-        'aspl_pos_order_sync',
+        'point_of_sale',
+        'amh_payement_currencies',
     ],
-    'images': ['static/description/main_screenshot.png'],
-    "data": [
-        'security/ir.model.access.csv',
-        'views/point_of_sale.xml',
-        'views/aspl_pos_combo.xml',
+    'price': 20.00, 
+    'currency': 'EUR',
+    'images': [
+         'static/description/main_screenshot.png',
+     ],
+    'data': [
+        'views/aspl_pos_order_sync_reg.xml',
+        'views/pos_view.xml',
+        'views/floor_views.xml',
+        'views/res_users_view.xml'
     ],
-    'qweb': ['static/src/xml/pos.xml'],
+     'qweb': [
+        'static/src/xml/pos.xml'
+    ],
     'installable': True,
     'auto_install': False,
 }
