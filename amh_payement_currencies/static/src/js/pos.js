@@ -104,7 +104,7 @@ odoo.define('amh_payement_currencies.pos', function (require) {
 
          payment_input: function(input) {
           var self = this;
-            console.log("PAYMENT INPUT :"+input);
+            //console.log("PAYMENT INPUT :"+input);
             //this._super(input);
             //alert("NUMPAD! CLICK");
             var newbuf = this.gui.numpad_input(this.inputbuffer, input, {'firstinput': this.firstinput});
@@ -117,7 +117,7 @@ odoo.define('amh_payement_currencies.pos', function (require) {
             }
 
             if (newbuf !== this.inputbuffer) {
-                this.inputbuffer = newbuf;
+                this.inputbuffer = newbuf ;
                 var order = this.pos.get_order();
                 if (order.selected_paymentline) {
                     var amount = this.inputbuffer;
@@ -128,16 +128,17 @@ odoo.define('amh_payement_currencies.pos', function (require) {
 
                         if(this.pos.get_enable_conversion()){
                             $('#amount_in_currency').val(amount);
-
+                             var pl_curr_id = order.selected_paymentline.cashregister.currency_id[0];
+                             var pl_curr_rate = self.get_currency_rate_by_id(pl_curr_id) || this.pos.currency.rate;
                              var curr_id = parseInt($('#curency_choosed').val());
                              var curr_rate =self.get_currency_rate_by_id(curr_id);
                              order.selected_paymentline.change_currency = curr_id;
                            // console.log("cuuuuuurr ratedd",curr_rate);
-                            var main_curr_rate = parseFloat(this.pos.currency.rate);
+                            var main_curr_rate = parseFloat(pl_curr_rate);
                             //console.log("maiiiiiiiiin",main_curr_rate);
-                            amount = amount * curr_rate / main_curr_rate;
+                            amount = amount * main_curr_rate / curr_rate ;
                              //console.log("amoooount",amount);
-                            order.selected_paymentline.amount_change=amount*main_curr_rate/curr_rate;
+                            order.selected_paymentline.amount_change=amount*curr_rate/main_curr_rate;
 
                             }
                         //--END AMH-ADDED
@@ -151,6 +152,10 @@ odoo.define('amh_payement_currencies.pos', function (require) {
                     //-- AMH-ADDED
                         if(this.pos.get_enable_conversion()){
                             var curr_id = parseInt($('#curency_choosed').val());
+                            var pl_curr_id = order.selected_paymentline.cashregister.currency_id[0];
+
+                            var pl_curr_rate = self.get_currency_rate_by_id(pl_curr_id) || this.pos.currency.rate;
+                            console.log("CONSOLE",order.selected_paymentline.cashregister, pl_curr_rate)
                             var return_curency_choosed_id = parseInt($('#return_curency_choosed').val());
                             order.selected_paymentline.due_currency = return_curency_choosed_id;
                             var curr_rate = self.get_currency_rate_by_id(curr_id);
@@ -164,13 +169,14 @@ odoo.define('amh_payement_currencies.pos', function (require) {
                                return_curency_choosed_rate = cr.rate;
                              }*/
                              console.log("return currency_choosed_rate",return_curency_choosed_rate);
-                            var main_curr_rate = parseFloat(this.pos.currency.rate);
+                             //TODO : var main_curr_rate = parseFloat(this.pos.currency.rate);
+                            var main_curr_rate = parseFloat(pl_curr_rate);
                             console.log("main_curr_rate",main_curr_rate);
-                            var due_curr = (order.get_due()) * main_curr_rate / curr_rate;
+                            var due_curr = (order.get_due()) * curr_rate / main_curr_rate;
                             console.log("due_curr",due_curr);
-                            var revenu_curr_check_due = (order.get_due()) * main_curr_rate / return_curency_choosed_rate;
+                            var revenu_curr_check_due = (order.get_due()) * return_curency_choosed_rate / main_curr_rate;
                             console.log("revenu_curr_check_due",revenu_curr_check_due);
-                            var extra_due_curr = (order.get_due()) * main_curr_rate / curr_rate;
+                            var extra_due_curr = (order.get_due()) * curr_rate / main_curr_rate;
                             $('#revenu_curr').val(due_curr.toFixed(3));
                             $('#revenu_curr_check').val(revenu_curr_check_due.toFixed(3));
                             if(due_curr <= 0){

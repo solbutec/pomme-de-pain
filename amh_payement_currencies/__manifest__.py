@@ -10,6 +10,7 @@
     'depends': [
         'base',
         'point_of_sale',
+        'account',
     ],
     'price': 20.00,
     'currency': 'EUR',

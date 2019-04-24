@@ -179,8 +179,10 @@
                              </t>
                         </t>
                         </t>
-                       <t t-if="orderline.is_splmnt" style="margin-left: 12px;color:blue;">
-                            &#8594;<t t-esc="orderline.get_product().display_name"/>
+                       <t t-if="orderline.is_splmnt==true and orderline.real_supplement_price!=0">
+                           <span style="margin-left: 12px;color:blue;">
+                                    &#8594;<t t-esc="orderline.get_product().display_name"/>
+                                </span>
                         </t>
 
 
@@ -204,7 +206,7 @@
                         </t>
 
                     </td>
-                    <td class="pos-right-align"  t-if="orderline.is_splmnt== true" style="color:blue;">
+                    <td class="pos-right-align"  t-if="orderline.is_splmnt== true and orderline.real_supplement_price!=0" style="color:blue;">
                         <t t-esc="orderline.get_quantity()"/>
                     </td>
 
@@ -213,17 +215,12 @@
                         <t t-foreach="orderline.get_combo_prod_info()" t-as="prod_info">
                      <t t-if="prod_info.product_detail.is_supplement != 0">
                         <br/>
-                         <span style="margin-left: 10px;color:blue;">
-
-                           + <t t-esc="prod_info.product_detail.price_supplement_str"/>
-                        </span>
+                         <span style="color:blue;">+<t t-esc="prod_info.product_detail.price_supplement_str"/></span>
                      </t>
                     </t>
                     </td>
 
-                <td class="pos-right-align" t-if="orderline.is_splmnt== true" style="color:blue;">
-                        + <t t-esc="widget.format_currency(orderline.get_product().price_supplement)"/>
-                    </td>
+                <td class="pos-right-align" t-if="orderline.is_splmnt== true and orderline.real_supplement_price!=0" style="color:blue;">+<t t-esc="widget.format_currency(orderline.real_supplement_price)"/></td>
                 </tr>
         </t>
     </t>

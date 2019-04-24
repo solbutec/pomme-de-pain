@@ -17,6 +17,7 @@ class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     enable_combo = fields.Boolean('Enable Combo')
+    enable_supplement = fields.Boolean(string="Supplement", default=False)
 
 
 class PosOrder(models.Model):
@@ -27,14 +28,18 @@ class PosOrder(models.Model):
         new_order_line = []
         process_line = partial(self.env['pos.order.line']._order_line_fields)
         order_lines = [process_line(l) for l in ui_order['lines']] if ui_order['lines'] else False
+
         for order_line in order_lines:
             new_order_line.append(order_line)
+            if 'note' in order_line[2]:
+                res["note"] = (res['note']+order_line[2].get('note','')) if 'note' in res else order_line[2].get('note','')
             if 'combo_ext_line_info' in order_line[2]:
                 own_pro_list = [process_line(l) for l in order_line[2]['combo_ext_line_info']] if order_line[2][
                     'combo_ext_line_info'] else False
                 if own_pro_list:
                     for own in own_pro_list:
                         new_order_line.append(own)
+
         res.update({
             'lines': new_order_line,
         })
@@ -46,6 +51,13 @@ class ProductTemplate(models.Model):
 
     is_combo = fields.Boolean("Is Combo")
     product_combo_ids = fields.One2many('product.combo', 'product_tmpl_id')
+    pos_price_tot = fields.Float("prix total", compute='_compute_total')
+    price_supplement = fields.Float("prix supplement", help="price in case it is a supplement")
+
+    @api.depends('price_supplement', 'list_price')
+    def _compute_total(self):
+        for record in self:
+            record.pos_price_tot = record.price_supplement + record.list_price
 
 
 class ProductCombo(models.Model):
@@ -54,7 +66,8 @@ class ProductCombo(models.Model):
     product_tmpl_id = fields.Many2one('product.template')
     require = fields.Boolean("Required", Help="Don't select it if you want to make it optional")
     pos_category_id = fields.Many2one('pos.category', "Categories")
-    product_ids = fields.Many2many('product.product', string="Products")
+    #product_ids = fields.Many2many('product.product', string="Products")
+    product_ids = fields.One2many('kzm.pos.supplement', 'product_combo_id', string="Products")
     no_of_items = fields.Integer("No. of Items", default=1)
 
     @api.onchange('require')
@@ -64,22 +77,26 @@ class ProductCombo(models.Model):
 
 
 
-    @api.onchange('pos_category_id')
-    def onchage_pos_category_id(self):
-        domain=[('available_in_pos', '=', True)]
-        if self.pos_category_id:
-            domain.append(('pos_categ_id','child_of',self.pos_category_id.id))
-        return {
-            'domain': {
-                'product_ids': domain,
-            },
-        }
+    # @api.onchange('pos_category_id')
+    # def onchage_pos_category_id(self):
+    #     domain=[('available_in_pos', '=', True)]
+    #     if self.pos_category_id:
+    #         domain.append(('pos_categ_id','child_of',self.pos_category_id.id))
+    #     return {
+    #         'domain': {
+    #             'product_ids': {
+    #                 'product_id': domain,
+    #             }
+    #         },
+    #     }
 
 
 class PosOrderLine(models.Model):
     _inherit = 'pos.order.line'
 
     is_splmnt = fields.Boolean("Is supplement", default=False)
+    real_supplement_price = fields.Float("Real supplement price")
+
 
     @api.model
     def get_compute_amount_line_all(self, values):
@@ -105,20 +122,15 @@ class PosOrderLine(models.Model):
         return {}
 
     @api.model
-    def create(self, values):
-        if values.get('price', 0):
+    def create(self, vals):
+        values = vals.copy()
+        if values.get('price', 'NOO') != 'NOO':
             values['price_unit'] = values.get('price', 0)
             del values['price']
-
-        if values.get('combo_ext_line_info', []):
-            #values['price_unit'] = self.env['product.product'].browse([values.get('product_id')]).list_price
-            # MANY2MANY combo line, each one is like that:
-            {'name': 'Shop/0061',
-             'price': 13,
-             'product_id': 6,
-             'qty': 1,
-             'tax_ids': [(6, 0, [1])]}
-            pass
+        if values.get('combo_ext_line_info', 'NOO') != 'NOO':
+            del values['combo_ext_line_info']
+        if values.get('note', 'MJ-@-78') != 'MJ-@-78':
+            del values['note']
 
 
 
@@ -130,10 +142,23 @@ class PosOrderLine(models.Model):
             values['is_splmnt'] = True
 
         from pprint import pprint
-        print("=======================VALUES POL=======================")
-        pprint(values)
-        print("==============================================")
         res = super(PosOrderLine, self).create(values)
         return res
 
         # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
+
+
+class PosSupplement(models.Model):
+    _name = 'kzm.pos.supplement'
+
+    @api.depends('product_id')
+    def compute_name_prod(self):
+        for o in self:
+           o.name = o.product_id.name
+
+    product_id = fields.Many2one("product.product", "Produit", required=True)
+    price_supplement = fields.Float("Price supplement", default=0)
+    name = fields.Char("Name", compute= compute_name_prod, store=True)
+    product_combo_id = fields.Many2one("product.combo", "Combo")
+
+    _sql_constraints = [('uniq_prod_combo', 'unique(product_combo_id, product_id)', "The product has already chosen !")]

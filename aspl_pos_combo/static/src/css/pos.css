@@ -39,12 +39,12 @@
 	overflow: auto;
 }
 .product.product_content{
-	width: 100px !important;
+	width: 110px !important;
     height: 80px !important;
 }
 .product.product_content .product-img{    
 line-height:0 px;
-	width: 98px !important;
+	width: 108px !important;
     height: 75px !important;
 }
 .product.product_content.selected {
@@ -90,36 +90,41 @@ line-height:0 px;
 	line-height: 13px;
 	background: #7f82ac;
 	padding: 2px 5px;
+	height:14px;
 }
 
 .product.product_content .sale_price{
 	position: absolute;
 	top: 0px;
 	left: 18px;
-	width: 45px;
+	width: 56px;
 	vertical-align: top;
 	color: white;
 	line-height: 13px;
 	background: orange;
 	padding: 2px 5px;
+	height:14px;
 }
 
 .product.product_content .is_supplement{
 	position: absolute;
 	top: 0px;
 	left: 18px;
-	width: 45px;
+	width: 56px;
+	height:14px;
 	vertical-align: top;
 	color: black;
 	line-height: 13px;
 	background: lightgreen;
 	padding: 2px 5px;
+	z-index: 10000;
 }
 
 .product.product_content .product-remove{
 	position: absolute;
 	top: 0px;
 	right: 0px;
+	height:18px;
 	vertical-align: top;
 	line-height: 13px;
 	padding: 0px 5px;

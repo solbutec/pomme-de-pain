@@ -33,9 +33,9 @@ class PosOrder(models.Model):
     delivring_order = fields.Boolean("Deliver order", compute=compute_delivr, store=True)
 
     def create(self, values):
-        print("Try To CREATE ,,,")
-        from pprint import pprint
-        pprint(values)
+        # print("Try To CREATE ,,,")
+        # from pprint import pprint
+        # pprint(values)
         order_id = super(PosOrder, self).create(values)
         if not order_id.user_id.pos_user_type == 'cashier':
             notifications = []
@@ -44,7 +44,7 @@ class PosOrder(models.Model):
                 if user.sales_persons:
                     for salesperson in user.sales_persons:
                         if salesperson.id == order_id.user_id.id:
-                            session = self.env['pos.session'].search([('user_id','=',user.id)], limit=1)
+                            session = self.env['pos.session'].search([('user_id', '=', user.id)], limit=1)
                             if session:
                                 notifications.append(
                                     [(self._cr.dbname, 'sale.note', user.id), {'new_pos_order': order_id.read()}])

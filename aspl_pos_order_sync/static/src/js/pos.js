@@ -22,6 +22,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
 	models.load_fields("res.users", ['based_on','can_give_discount','can_change_price', 'price_limit', 'discount_limit','pos_user_type','sales_persons']);
 	models.load_fields("product.product", ['is_combo','product_combo_ids', 'pos_price_tot', 'price_supplement']);
 	models.load_fields("pos.order", ['customer_name','customer_phone', 'customer_addr']);
+	models.load_fields("pos.order.line", ['is_splmnt','real_supplement_price']);
     models.load_fields("restaurant.table", "is_for_delivery");
 
 	var ShowSaleNoteList = screens.ActionButtonWidget.extend({
@@ -164,6 +165,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
 		    						discount: line.discount,
 		    						price: line.price_unit,
 		    						is_splmnt : (line.price_unit==0) ? true : false,
+		    						real_supplement_price: line.real_supplement_price,
 		    					})
 		    				}
 		    			})
@@ -237,6 +239,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
 		    					discount: line.discount,
 		    					price: line.price_unit,
 		    					is_splmnt : (line.price_unit==0) ? true : false,
+		    					real_supplement_price: line.real_supplement_price,
 		    				});
 		    				var selected_orderline = selectedOrder.get_selected_orderline();
 			    		})
@@ -459,6 +462,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
             options = options || {};
             if(options.is_splmnt !== undefined){
                 this.selected_orderline.is_splmnt = options.is_splmnt;
+                this.selected_orderline.real_supplement_price = options.real_supplement_price;
             }
         },
         set_delivery_infos: function(options){
@@ -895,6 +899,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
 	    						order.add_product(product, {
 			    					quantity: qty,
 			    					is_splmnt : (line.price_unit==0) ? true : false,
+			    					real_supplement_price : line.real_supplement_price,
 			    				});
 	    					}
 	    				}
@@ -1170,6 +1175,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
 		    					discount: line.discount,
 		    					price: line.price_unit,
 		    					is_splmnt : (line.price_unit==0) ? true : false,
+		    					real_supplement_price: line.real_supplement_price,
 		    				});
 		    				var selected_orderline = selectedOrder.get_selected_orderline();
 			    		})

@@ -23,7 +23,7 @@ This module allows user to use combo feature in restaurant
     'depends': [
         'base',
         'pos_restaurant',
-        'kzm_pos_supplements',
+        #'kzm_pos_supplements',
         'mrp',
         'aspl_pos_order_sync',
     ],
@@ -32,6 +32,7 @@ This module allows user to use combo feature in restaurant
         'security/ir.model.access.csv',
         'views/point_of_sale.xml',
         'views/aspl_pos_combo.xml',
+        'views/supplements_views.xml',
     ],
     'qweb': ['static/src/xml/pos.xml'],
     'installable': True,

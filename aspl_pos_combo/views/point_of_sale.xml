@@ -37,11 +37,32 @@
 	            <xpath expr='//page[4]' position="after" >
 	               <page string="Combo items" attrs="{'invisible': [('is_combo', '=', False)]}">
 	                   <field name="product_combo_ids">
-	                       <tree editable="bottom">
+						   <form string="Combo items">
+							   <group>
+								   <group>
+										<field name="require"/>
+									   <field name="no_of_items"/>
+								   </group>
+								   <group>
+									<field name="pos_category_id" attrs="{'readonly': [('require', '=', True)]}"/>
+								   </group>
+							   </group>
+							   <notebook>
+								   <page string="Products">
+									   <field name="product_ids">
+										   <tree  editable="bottom">
+											   <field name="product_id"
+													  domain="[('available_in_pos', '=', True),('pos_categ_id','=?',parent.pos_category_id)]"/>
+											   <field name="price_supplement"/>
+										   </tree>
+									   </field>
+								   </page>
+							   </notebook>
+						   </form>
+	                       <tree>
 	                           <field name="require"/>
 	                           <field name="pos_category_id" attrs="{'readonly': [('require', '=', True)]}"/>
-	                           <field name="product_ids" widget="many2many_tags"
-									  domain="[('available_in_pos', '=', True)]"/>
+	                           <field name="product_ids" widget="many2many_tags" />
 	                           <field name="no_of_items"/>
 	                       </tree>
 	                   </field>
@@ -49,6 +70,17 @@
 	            </xpath>
 	        </field>
     </record>
+
+		<record id="view_pos_pos_form_inhert" model="ir.ui.view">
+	        <field name="name">pos.order.form.inherited</field>
+	        <field name="model">pos.order</field>
+	        <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+	        <field name="arch" type="xml">
+				<xpath expr="//field[@name='price_unit']" position="after">
+					<field name="real_supplement_price"/>
+				</xpath>
+			</field>
+		</record>
 
     </data>
 </odoo>
