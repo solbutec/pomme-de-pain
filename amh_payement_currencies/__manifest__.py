@@ -18,6 +18,7 @@
          'static/description/main_screenshot.png',
      ],
     'data': [
+        'security/ir.model.access.csv',
         'views/pos_assets.xml',
         'views/pos_view.xml'
     ],

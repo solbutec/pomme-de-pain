@@ -705,7 +705,6 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
             if (self.pos.config.enable_reorder){
                 this.$('.pay').unbind('click').click(function(){
                     var order = self.pos.get_order();
-                    console.log("=========== TABLE", order.table, "::",order.table.is_for_delivery)
                     if(order.table && order.table.is_for_delivery){
                             var current_order = self.pos.get_order();
                             var current_customer = self.pos.get_order().changed.client;

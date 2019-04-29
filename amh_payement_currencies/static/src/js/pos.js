@@ -124,6 +124,7 @@ odoo.define('amh_payement_currencies.pos', function (require) {
 
                     if (this.inputbuffer !== "-") {
                         amount = field_utils.parse.float(this.inputbuffer);
+
                         //-- AMH-ADDED
 
                         if(this.pos.get_enable_conversion()){
@@ -144,6 +145,7 @@ odoo.define('amh_payement_currencies.pos', function (require) {
                         //--END AMH-ADDED
 
                     }
+
 
                     order.selected_paymentline.set_amount(amount);
                     this.order_changes();

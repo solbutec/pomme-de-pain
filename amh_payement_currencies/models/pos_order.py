@@ -1,4 +1,4 @@
-from odoo import fields, models, api, _
+from odoo import fields, models, api, tools, _
 from functools import partial
 from odoo.tools import float_is_zero
 from odoo.exceptions import UserError
@@ -15,10 +15,13 @@ class PosAccount(models.Model):
 
     amount_change = fields.Float("Amount change")
     amount_due = fields.Float("Amount due")
-    change_currency = fields.Many2one('res.currency',"change currency")
-    due_currency = fields.Many2one('res.currency',"due currency")
-    amount_change_curr = fields.Monetary("Amount change", currency_field='change_currency', compute=compute_amounts_currencies)
-    amount_due_curr = fields.Monetary("Amount due",  currency_field='due_currency', compute=compute_amounts_currencies)
+    change_currency = fields.Many2one('res.currency', "change currency")
+    due_currency = fields.Many2one('res.currency', "due currency")
+    amount_change_curr = fields.Monetary("Amount change", currency_field='change_currency',
+                                         compute=compute_amounts_currencies)
+    amount_due_curr = fields.Monetary("Amount due", currency_field='due_currency', compute=compute_amounts_currencies)
+    session_id = fields.Many2one('pos.session', string="Session", related='pos_statement_id.session_id', store=True)
+    config_id = fields.Many2one('pos.config', string="Config", related='pos_statement_id.config_id', store=True)
 
 
 class PosOrder(models.Model):
@@ -37,14 +40,17 @@ class PosOrder(models.Model):
             'amount_due': ui_paymentline['amount_due'],
             'change_currency': ui_paymentline['change_currency'],
             'due_currency': ui_paymentline['due_currency'],
-            })
+        })
 
         return res
 
     @api.model
     def _process_order(self, pos_order):
-        #res = super(PosOrder, self)._process_order(pos_order)
+        # res = super(PosOrder, self)._process_order(pos_order)
         pos_session = self.env['pos.session'].browse(pos_order['pos_session_id'])
+        print("=================hbhb=================")
+        from pprint import pprint
+        pprint(pos_order)
         if pos_session.state == 'closing_control' or pos_session.state == 'closed':
             pos_order['pos_session_id'] = self._get_valid_session(pos_order).id
         order = self.create(self._order_fields(pos_order))
@@ -52,7 +58,7 @@ class PosOrder(models.Model):
         journal_ids = set()
         for payments in pos_order['statement_ids']:
             if not float_is_zero(payments[2]['amount'], precision_digits=prec_acc):
-                print("ORDER ADD PAY?NT ::",self._payment_fields(payments[2]))
+                print("ORDER ADD PAY?NT ::", self._payment_fields(payments[2]))
                 order.add_payment(self._payment_fields(payments[2]))
             journal_ids.add(payments[2]['journal_id'])
 
@@ -73,7 +79,8 @@ class PosOrder(models.Model):
                     # If none, select for change one of the cash journals of the POS
                     # This is used for example when a customer pays by credit card
                     # an amount higher than total amount of the order and gets cash back
-                    cash_journal = [statement.journal_id for statement in pos_session.statement_ids if statement.journal_id.type == 'cash']
+                    cash_journal = [statement.journal_id for statement in pos_session.statement_ids if
+                                    statement.journal_id.type == 'cash']
                     if not cash_journal:
                         raise UserError(_("No cash statement found for this session. Unable to record returned cash."))
                 cash_journal_id = cash_journal[0].id
@@ -99,4 +106,7 @@ class PosOrder(models.Model):
             'due_currency': data.get('due_currency', False),
         })
         return args
+
+
+
 

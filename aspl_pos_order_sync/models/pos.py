@@ -68,7 +68,7 @@ class PosOrder(models.Model):
         for ord in self:
             notifications = []
             notify_users = []
-            order_user = self.env['res.users'].browse(self.user_id.id)
+            order_user = self.env['res.users'].browse(ord.user_id.id)
             if ord.salesman_id:
                 if self._uid == ord.salesman_id.id:
                     users = self.env['res.users'].search([])
@@ -80,10 +80,10 @@ class PosOrder(models.Model):
                                     if session:
                                         notify_users.append(session.user_id.id)
                 else:
-                    notify_users.append(self.salesman_id.id)
+                    notify_users.append(ord.salesman_id.id)
                 for user in notify_users:
                     notifications.append([(self._cr.dbname, 'sale.note', user),
-                                              {'cancelled_sale_note': self.read()}])
+                                              {'cancelled_sale_note': ord.read()}])
                 self.env['bus.bus'].sendmany(notifications)
         return super(PosOrder, self).unlink()
 
