@@ -785,6 +785,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
                     },
                 });
             }else{
+            console.log("+++++++++++++++++++++++++++++++++ HAS NO LOT +++++++++");
                 var order = self.pos.get_order();
                     if(order.is_empty()){
                         $('div.order-empty').animate({
@@ -794,7 +795,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
                         });
                         return
                     }
-
+console.log("+++++++++++++++++++++++++++++++++ SHOW POPUP +++++++++");
                     self.gui.show_popup('confirm',{
                         'title': _t('Draft 	Order'),
                         'body': _t('Do you want to create Draft Order?'),
@@ -832,6 +833,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
                 customer_phone : customer_phone_v,
                 customer_addr : customer_addr_v,
 	    	});
+	    	console.log("CALL pay_after_delivery_infos");
 	    	self.pad_widget.pay_after_delivery_infos();
 
 	    },
