@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-25 09:34+0000\n"
-"PO-Revision-Date: 2019-04-25 09:34+0000\n"
+"POT-Creation-Date: 2019-04-30 11:22+0000\n"
+"PO-Revision-Date: 2019-04-30 11:22+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,28 +17,28 @@ msgstr ""
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1063
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1062
 #, python-format
 msgid " does not have right to give discount."
 msgstr "Vous n'avez pas le droit pour donner une remise"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1120
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1119
 #, python-format
 msgid " order has been created."
 msgstr "Une commande a été créée"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1106
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1105
 #, python-format
 msgid " order has been deleted"
 msgstr "Une commande a été supprimée"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1118
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1117
 #, python-format
 msgid " order has been paid."
 msgstr "Une commande a été payée"
@@ -196,16 +196,16 @@ msgstr "Limite de remise"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:757
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:803
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:756
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:802
 #, python-format
 msgid "Do you want to create Draft Order?"
 msgstr "Voulez-vous créer un brouillon de commande?"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:756
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:802
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:755
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:801
 #, python-format
 msgid "Draft 	Order"
 msgstr "Commande en brouillon"
@@ -220,8 +220,8 @@ msgstr "Modifier"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:735
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:781
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:734
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:780
 #, python-format
 msgid "Empty Serial/Lot Number"
 msgstr "Numéro de série / lot vide"
@@ -233,7 +233,7 @@ msgstr "Activer la restriction des opérations comme Modifier le prix, Remise"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:970
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:969
 #, python-format
 msgid "Incorrect Password"
 msgstr "Mot de passe incorrect"
@@ -259,7 +259,7 @@ msgstr "Code barre du gestionnaire"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1074
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1073
 #, python-format
 msgid "Manager not found for this user."
 msgstr "Gestionnaire non trouvé pour cet utilisateur."
@@ -278,14 +278,14 @@ msgstr "Aucun décompte en espèces trouvé pour cette session. Impossible d'enr
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1069
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1068
 #, python-format
 msgid "No result found"
 msgstr "Aucun résultat trouvé"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1066
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1065
 #, python-format
 msgid "Not a Manager."
 msgstr "Pas un manager"
@@ -302,12 +302,12 @@ msgstr "N° de téléphone"
 #: code:addons/aspl_pos_order_sync/static/src/xml/pos.xml:391
 #, python-format
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:736
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:782
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:735
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:781
 #, python-format
 msgid "One or more product(s) required serial/lot number."
 msgstr "Un ou plusieurs produits requis numéro de série / numéro de lot."
@@ -355,11 +355,11 @@ msgstr "La commande n'est pas payée"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1218
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1217
 #: code:addons/aspl_pos_order_sync/static/src/xml/pos.xml:6
 #, python-format
 msgid "Orders"
-msgstr "Cmmandes"
+msgstr "Commandes"
 
 #. module: aspl_pos_order_sync
 #: model:ir.model.fields,field_description:aspl_pos_order_sync.field_res_users__pos_user_type
@@ -368,7 +368,7 @@ msgstr "Type d'utilisateur POS"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:960
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:959
 #, python-format
 msgid "Password ?"
 msgstr "Mot de passe ?"
@@ -390,11 +390,11 @@ msgstr "Téléphone"
 #. module: aspl_pos_order_sync
 #: selection:res.users,based_on:0
 msgid "Pin"
-msgstr ""
+msgstr "PIN"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1077
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1076
 #, python-format
 msgid "Please enter barcode."
 msgstr "S'il vous plaît entrer le code barre"
@@ -559,14 +559,14 @@ msgstr "Utilisateurs"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1019
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1018
 #, python-format
 msgid "You don't have access to change Price."
 msgstr "Vous n'avez pas accès pour changer le prix."
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1013
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1012
 #, python-format
 msgid "You don't have access to give discount."
 msgstr "Vous n'avez pas accès pour donner une remise"
@@ -579,7 +579,7 @@ msgstr "erreur"
 
 #. module: aspl_pos_order_sync
 #. openerp-web
-#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1060
+#: code:addons/aspl_pos_order_sync/static/src/js/pos.js:1059
 #, python-format
 msgid "out of your discount limit."
 msgstr "hors de votre limite de remise"

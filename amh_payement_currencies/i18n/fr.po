@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-11 13:43+0000\n"
-"PO-Revision-Date: 2019-04-11 13:43+0000\n"
+"POT-Creation-Date: 2019-04-30 11:04+0000\n"
+"PO-Revision-Date: 2019-04-30 11:04+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,12 +16,86 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: amh_payement_currencies
+#: model_terms:ir.actions.act_window,help:amh_payement_currencies.kzm_action_bank_statement_line
+msgid "A bank statement line is a financial transaction on a bank account"
+msgstr "Une ligne de l'état bancaire correspond à une transaction du compte en banque."
+
+#. module: amh_payement_currencies
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_account_bank_statement_line__amount_change
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_account_bank_statement_line__amount_change_curr
+msgid "Amount change"
+msgstr "Change"
+
+#. module: amh_payement_currencies
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_account_bank_statement_line__amount_due
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_account_bank_statement_line__amount_due_curr
+msgid "Amount due"
+msgstr "Montant du"
+
+#. module: amh_payement_currencies
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_kzm_account_bank_statement_line_reporting__amount_change
+msgid "Amount in"
+msgstr "Montant entrant"
+
+#. module: amh_payement_currencies
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_kzm_account_bank_statement_line_reporting__amount_due
+msgid "Amount out"
+msgstr "Montant sortant"
+
+#. module: amh_payement_currencies
+#: model:ir.model,name:amh_payement_currencies.model_account_bank_statement_line
+msgid "Bank Statement Line"
+msgstr "Ligne de relevé bancaire"
+
+#. module: amh_payement_currencies
+#: model:ir.actions.act_window,name:amh_payement_currencies.kzm_action_bank_statement_line
+msgid "Bank Statement Lines"
+msgstr "Lignes de relevé bancaire"
+
+#. module: amh_payement_currencies
+#: model:ir.ui.menu,name:amh_payement_currencies.curr_bank_stat_line_menu_parent
+msgid "Bank statments POS"
+msgstr "Relevés bancaires Pdv"
+
+#. module: amh_payement_currencies
+#: model:ir.ui.menu,name:amh_payement_currencies.curr_bank_stat_line_menu
+msgid "Bank statments lines"
+msgstr "Lignes de relevés bancaires"
+
+#. module: amh_payement_currencies
+#: model_terms:ir.ui.view,arch_db:amh_payement_currencies.view_bank_statement_line_search_inherited
+msgid "By date"
+msgstr "Par date"
+
+#. module: amh_payement_currencies
+#: model_terms:ir.ui.view,arch_db:amh_payement_currencies.view_bank_statement_line_search_inherited
+msgid "Change currency"
+msgstr "Change de devise"
+
+#. module: amh_payement_currencies
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_account_bank_statement_line__config_id
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_kzm_account_bank_statement_line_reporting__r_config_id
+msgid "Config"
+msgstr "Config"
+
+#. module: amh_payement_currencies
 #. openerp-web
 #: code:addons/amh_payement_currencies/static/src/xml/pos.xml:27
 #: code:addons/amh_payement_currencies/static/src/xml/pos.xml:56
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_kzm_account_bank_statement_line_reporting__currency_id
 #, python-format
 msgid "Currency"
 msgstr "Devise"
+
+#. module: amh_payement_currencies
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_kzm_account_bank_statement_line_reporting__r_date
+msgid "Date"
+msgstr "Date "
+
+#. module: amh_payement_currencies
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_kzm_account_bank_statement_line_reporting__display_name
+msgid "Display Name"
+msgstr "Nom affiché"
 
 #. module: amh_payement_currencies
 #. openerp-web
@@ -29,7 +103,12 @@ msgstr "Devise"
 #: code:addons/amh_payement_currencies/static/src/xml/pos.xml:66
 #, python-format
 msgid "Due"
-msgstr "Dûe"
+msgstr "Du"
+
+#. module: amh_payement_currencies
+#: model_terms:ir.ui.view,arch_db:amh_payement_currencies.view_bank_statement_line_search_inherited
+msgid "Due currecy"
+msgstr "Devise due"
 
 #. module: amh_payement_currencies
 #. openerp-web
@@ -39,6 +118,63 @@ msgid "Enable conversion"
 msgstr "Activer la conversion"
 
 #. module: amh_payement_currencies
+#: model_terms:ir.ui.view,arch_db:amh_payement_currencies.view_bank_statement_line_search_inherited
+msgid "Filter Date"
+msgstr "filtre date"
+
+#. module: amh_payement_currencies
+#: model_terms:ir.ui.view,arch_db:amh_payement_currencies.view_bank_statement_line_search_inherited
+msgid "Group By"
+msgstr "Regrouper par"
+
+#. module: amh_payement_currencies
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_kzm_account_bank_statement_line_reporting__id
+msgid "ID"
+msgstr "ID"
+
+#. module: amh_payement_currencies
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_kzm_account_bank_statement_line_reporting____last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: amh_payement_currencies
+#: code:addons/amh_payement_currencies/models/pos_order.py:85
+#, python-format
+msgid "No cash statement found for this session. Unable to record returned cash."
+msgstr "Aucun décompte en espèces trouvé pour cette session. Impossible d'enregistrer l'argent retourné."
+
+#. module: amh_payement_currencies
+#: model_terms:ir.actions.act_window,help:amh_payement_currencies.kzm_action_bank_statement_line
+msgid "Odoo allows you to reconcile a statement line directly with\n"
+"                the related sale or puchase invoice(s)."
+msgstr "Odoo vous permet de lettre une ligne de relevé directement avec la(es) facture(s) de ventes ou d'achats associée(s)."
+
+#. module: amh_payement_currencies
+#: model:ir.model,name:amh_payement_currencies.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr "Paramétrage du point de vente"
+
+#. module: amh_payement_currencies
+#: model:ir.model,name:amh_payement_currencies.model_pos_order
+msgid "Point of Sale Orders"
+msgstr "Commandes du point de vente"
+
+#. module: amh_payement_currencies
+#: model:ir.model,name:amh_payement_currencies.model_pos_session
+msgid "Point of Sale Session"
+msgstr "Session du point de vente"
+
+#. module: amh_payement_currencies
+#: model:ir.ui.menu,name:amh_payement_currencies.account_bank_statement_line_reporting_menu
+msgid "Pos payment Analysis"
+msgstr "Analyse des payments pdv"
+
+#. module: amh_payement_currencies
+#: model:ir.actions.act_window,name:amh_payement_currencies.kzm_account_bank_statement_line_reporting_action
+msgid "Pos payments anlaysis"
+msgstr "Analyse des paiements en pdv"
+
+#. module: amh_payement_currencies
 #. openerp-web
 #: code:addons/amh_payement_currencies/static/src/xml/pos.xml:52
 #, python-format
@@ -46,9 +182,51 @@ msgid "Return"
 msgstr "Rendu"
 
 #. module: amh_payement_currencies
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_account_bank_statement_line__session_id
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_kzm_account_bank_statement_line_reporting__r_session_id
+msgid "Session"
+msgstr "Session"
+
+#. module: amh_payement_currencies
 #. openerp-web
 #: code:addons/amh_payement_currencies/static/src/xml/pos.xml:21
 #, python-format
 msgid "Tendered"
-msgstr "Offert"
+msgstr "Soumis"
+
+#. module: amh_payement_currencies
+#: model:ir.model.fields,help:amh_payement_currencies.field_account_bank_statement_line__config_id
+msgid "The physical point of sale you will use."
+msgstr "Le point de vente physique que vous allez utiliser."
+
+#. module: amh_payement_currencies
+#: model_terms:ir.ui.view,arch_db:amh_payement_currencies.view_bank_statement_line_search_inherited
+msgid "Today"
+msgstr "Aujourd'hui"
+
+#. module: amh_payement_currencies
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_account_bank_statement_line__change_currency
+msgid "change currency"
+msgstr "change de devise"
+
+#. module: amh_payement_currencies
+#: model:ir.model.fields,field_description:amh_payement_currencies.field_account_bank_statement_line__due_currency
+msgid "due currency"
+msgstr "Devise due"
+
+#. module: amh_payement_currencies
+#: model:ir.model,name:amh_payement_currencies.model_kzm_account_bank_statement_line_reporting
+msgid "kzm.account.bank.statement.line.reporting"
+msgstr ""
+
+#. module: amh_payement_currencies
+#: code:addons/amh_payement_currencies/models/pos_order.py:90
+#, python-format
+msgid "return"
+msgstr "retour"
+
+#. module: amh_payement_currencies
+#: model_terms:ir.ui.view,arch_db:amh_payement_currencies.kzm_account_bank_statement_line_reporting_pivot
+msgid "sales statistics"
+msgstr "Statistiques des ventes"
 

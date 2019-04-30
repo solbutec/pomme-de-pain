@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-25 08:32+0000\n"
-"PO-Revision-Date: 2019-04-25 08:32+0000\n"
+"POT-Creation-Date: 2019-04-30 11:14+0000\n"
+"PO-Revision-Date: 2019-04-30 11:14+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -21,7 +21,7 @@ msgstr ""
 #: code:addons/aspl_pos_combo/static/src/xml/pos.xml:170
 #, python-format
 msgid "% discount"
-msgstr ""
+msgstr "% remise"
 
 #. module: aspl_pos_combo
 #. openerp-web
@@ -63,7 +63,7 @@ msgstr "Menu"
 #: code:addons/aspl_pos_combo/static/src/xml/pos.xml:17
 #, python-format
 msgid "Combo Product"
-msgstr "Produit menu"
+msgstr "Pack de produits"
 
 #. module: aspl_pos_combo
 #: model_terms:ir.ui.view,arch_db:aspl_pos_combo.package_product_template_only_form_view
@@ -144,7 +144,7 @@ msgstr "Nombre d'articles"
 #: code:addons/aspl_pos_combo/static/src/xml/pos.xml:128
 #, python-format
 msgid "OK"
-msgstr "OK"
+msgstr ""
 
 #. module: aspl_pos_combo
 #. openerp-web
@@ -152,7 +152,7 @@ msgstr "OK"
 #: code:addons/aspl_pos_combo/static/src/xml/pos.xml:63
 #, python-format
 msgid "Optional Products"
-msgstr "produits optionnels"
+msgstr "Produits optionnels"
 
 #. module: aspl_pos_combo
 #: model:ir.model,name:aspl_pos_combo.model_pos_config
@@ -217,7 +217,7 @@ msgstr "Requis"
 #: code:addons/aspl_pos_combo/static/src/xml/pos.xml:21
 #, python-format
 msgid "Required Products"
-msgstr "Produits Requis"
+msgstr "Produits requis"
 
 #. module: aspl_pos_combo
 #. openerp-web
@@ -227,7 +227,7 @@ msgstr "Produits Requis"
 #: code:addons/aspl_pos_combo/static/src/xml/pos.xml:109
 #, python-format
 msgid "Selected"
-msgstr "Choisi"
+msgstr "Selectionné"
 
 #. module: aspl_pos_combo
 #: model:ir.model.fields,field_description:aspl_pos_combo.field_pos_config__enable_supplement
@@ -250,7 +250,7 @@ msgstr "Utiliser la fonction menu au restaurant"
 #: code:addons/aspl_pos_combo/static/src/xml/pos.xml:169
 #, python-format
 msgid "With a"
-msgstr "Avec un"
+msgstr "Avec un(e)"
 
 #. module: aspl_pos_combo
 #: model:ir.model,name:aspl_pos_combo.model_kzm_pos_supplement
@@ -267,7 +267,7 @@ msgstr "prix au cas où c'est un supplément"
 #: model:ir.model.fields,field_description:aspl_pos_combo.field_product_product__price_supplement
 #: model:ir.model.fields,field_description:aspl_pos_combo.field_product_template__price_supplement
 msgid "prix supplement"
-msgstr ""
+msgstr "prix supplementaire"
 
 #. module: aspl_pos_combo
 #: model:ir.model.fields,field_description:aspl_pos_combo.field_product_product__pos_price_tot
@@ -278,5 +278,5 @@ msgstr "Prix total"
 #. module: aspl_pos_combo
 #: model:ir.model,name:aspl_pos_combo.model_product_combo
 msgid "product.combo"
-msgstr ""
+msgstr "product.combo"
 
