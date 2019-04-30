@@ -24,7 +24,7 @@ msgstr "Une ligne de l'état bancaire correspond à une transaction du compte en
 #: model:ir.model.fields,field_description:amh_payement_currencies.field_account_bank_statement_line__amount_change
 #: model:ir.model.fields,field_description:amh_payement_currencies.field_account_bank_statement_line__amount_change_curr
 msgid "Amount change"
-msgstr "Change"
+msgstr "Montant échange"
 
 #. module: amh_payement_currencies
 #: model:ir.model.fields,field_description:amh_payement_currencies.field_account_bank_statement_line__amount_due
@@ -70,7 +70,7 @@ msgstr "Par date"
 #. module: amh_payement_currencies
 #: model_terms:ir.ui.view,arch_db:amh_payement_currencies.view_bank_statement_line_search_inherited
 msgid "Change currency"
-msgstr "Change de devise"
+msgstr "Devise échange"
 
 #. module: amh_payement_currencies
 #: model:ir.model.fields,field_description:amh_payement_currencies.field_account_bank_statement_line__config_id
@@ -120,7 +120,7 @@ msgstr "Activer la conversion"
 #. module: amh_payement_currencies
 #: model_terms:ir.ui.view,arch_db:amh_payement_currencies.view_bank_statement_line_search_inherited
 msgid "Filter Date"
-msgstr "filtre date"
+msgstr "Filtre date"
 
 #. module: amh_payement_currencies
 #: model_terms:ir.ui.view,arch_db:amh_payement_currencies.view_bank_statement_line_search_inherited
