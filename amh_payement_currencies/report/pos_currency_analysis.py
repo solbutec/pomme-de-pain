@@ -35,7 +35,7 @@ class AccountBankStatementLineReporting(models.Model):
                 FROM res_currency ac
                     LEFT JOIN account_bank_statement_line  absl1 ON absl1.change_currency = ac.id or absl1.due_currency = ac.id
                 where 
-                     ac.active = true
+                     ac.active = true and (absl1.change_currency != false or absl1.due_currency != false)
                 GROUP BY
                     ac.id, r_session_id, r_config_id, r_date
                 ORDER BY
