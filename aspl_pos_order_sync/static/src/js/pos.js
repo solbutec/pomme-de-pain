@@ -776,6 +776,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
             });
 
             if(!has_valid_product_lot){
+            console.log("+++++++++++++++++++++++++++++++++ HAS LOT +++++++++");
                 self.gui.show_popup('confirm',{
                     'title': _t('Empty Serial/Lot Number'),
                     'body':  _t('One or more product(s) required serial/lot number.'),
@@ -784,10 +785,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
                     },
                 });
             }else{
-                if(self.pos.get_cashier().pos_user_type=="cashier"){
-                    self.gui.show_screen('payment');
-                } else{
-                    var order = self.pos.get_order();
+                var order = self.pos.get_order();
                     if(order.is_empty()){
                         $('div.order-empty').animate({
                             color: '#FFCCCC',
@@ -805,7 +803,6 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
                             self.gui.show_screen('receipt');
                         },
                     });
-                }
             }
         },
 	});
