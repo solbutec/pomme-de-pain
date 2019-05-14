@@ -51,7 +51,7 @@ class ProductTemplate(models.Model):
 
     is_combo = fields.Boolean("Is Combo")
     product_combo_ids = fields.One2many('product.combo', 'product_tmpl_id')
-    pos_price_tot = fields.Float("prix total", compute='_compute_total')
+    pos_price_tot = fields.Float("prix total", compute='_compute_total', store=True)
     price_supplement = fields.Float("prix supplement", help="price in case it is a supplement")
 
     @api.depends('price_supplement', 'list_price')
