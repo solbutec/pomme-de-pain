@@ -72,8 +72,9 @@ class ProductCombo(models.Model):
 
     @api.onchange('require')
     def onchage_require(self):
-        if self.require:
-            self.pos_category_id = False
+        for o in self:
+            if o.require:
+                o.pos_category_id = False
 
 
 
