@@ -74,7 +74,12 @@ class ProductCombo(models.Model):
     def onchage_require(self):
         for o in self:
             if o.require:
-                o.pos_category_id = False
+                #o.pos_category_id = False
+                return {
+                    'value': {
+                        'pos_category_id': False,
+                    },
+                }
                 
     
 
