@@ -70,11 +70,11 @@ class ProductCombo(models.Model):
     product_ids = fields.One2many('kzm.pos.supplement', 'product_combo_id', string="Products")
     no_of_items = fields.Integer("No. of Items", default=1)
 
-    # @api.onchange('require')
-    # def onchage_require(self):
-    #     for o in self:
-    #         if o.require:
-    #             o.pos_category_id = False
+    @api.onchange('require')
+    def onchage_require(self):
+        for o in self:
+            if o.require:
+                o.pos_category_id = False
                 
     
 
