@@ -9,7 +9,7 @@
 #
 #################################################################################
 
-from openerp import models, fields, api, _
+from odoo import models, fields, api, _
 from functools import partial
 
 
@@ -153,7 +153,6 @@ class PosOrderLine(models.Model):
         res = super(PosOrderLine, self).create(values)
         return res
 
-        # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
 
 
 class PosSupplement(models.Model):

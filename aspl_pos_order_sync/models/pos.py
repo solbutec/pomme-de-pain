@@ -12,7 +12,7 @@
 from odoo import fields, models, api, _
 from datetime import datetime, timedelta
 from odoo.exceptions import Warning
-from openerp.tools import DEFAULT_SERVER_DATETIME_FORMAT
+from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 import time
 from pytz import timezone
 from odoo.exceptions import UserError,ValidationError
