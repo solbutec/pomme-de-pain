@@ -3,8 +3,8 @@ from functools import partial
 from odoo.tools import float_is_zero
 from odoo.exceptions import UserError
 
-class AccountBankStatementLineReporting(models.Model):
-    _name = "kzm.account.bank.statement.line.reporting"
+class AccountBankStatementLinesReporting(models.Model):
+    _name = "kzm.account.bank.statement.lines.reporting"
     _auto = False
 
     r_session_id = fields.Many2one('pos.session', string="Session", readonly=True)

@@ -216,7 +216,7 @@ msgstr "Devise due"
 
 #. module: amh_payement_currencies
 #: model:ir.model,name:amh_payement_currencies.model_kzm_account_bank_statement_line_reporting
-msgid "kzm.account.bank.statement.line.reporting"
+msgid "kzm.account.bank.statement.lines.reporting"
 msgstr ""
 
 #. module: amh_payement_currencies
