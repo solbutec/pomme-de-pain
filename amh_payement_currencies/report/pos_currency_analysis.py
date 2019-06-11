@@ -17,7 +17,10 @@ class AccountBankStatementLinesReporting(models.Model):
     @api.model_cr
     def init(self):
         """ Event Question main report """
-        tools.drop_view_if_exists(self._cr, '%s' % self._table)
+        try:
+            tools.drop_view_if_exists(self._cr, '%s' % self._table)
+        except Exception as e:
+            print("Cannot delete view:",e)
         self._cr.execute(""" 
         CREATE VIEW %s AS (
                 SELECT
