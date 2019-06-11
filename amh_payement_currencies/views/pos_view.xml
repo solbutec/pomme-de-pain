@@ -99,8 +99,8 @@
 <!-- Requete-->
 
         <record id="kzm_account_bank_statement_line_reporting_pivot" model="ir.ui.view">
-            <field name="name">kzm.account.bank.statement.lines.reporting.pivot</field>
-            <field name="model">kzm.account.bank.statement.lines.reporting</field>
+            <field name="name">kzm.account.bank.statement.line.reporting.pivot</field>
+            <field name="model">kzm.account.bank.statement.line.reporting</field>
            <!-- <field name="inherit_id" ref="account.view_bank_statement_line_tree"></field> -->
             <field name="arch" type="xml">
                 <pivot string="sales statistics" disable_linking="True">
@@ -115,7 +115,7 @@
 
         <record id="kzm_account_bank_statement_line_reporting_action" model="ir.actions.act_window">
             <field name="name">Pos payments anlaysis</field>
-            <field name="res_model">kzm.account.bank.statement.lines.reporting</field>
+            <field name="res_model">kzm.account.bank.statement.line.reporting</field>
             <field name="view_type">form</field>
             <field name="view_mode">pivot</field>
         </record>
