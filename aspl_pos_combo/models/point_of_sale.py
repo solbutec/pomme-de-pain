@@ -169,7 +169,7 @@ class PosSupplement(models.Model):
 
     _sql_constraints = [('uniq_prod_combo', 'unique(product_combo_id, product_id)', "The product has already chosen !")]
 
-# class TempAccountBankStatementLineReporting(models.Model):
-#     _name = "kzm.account.bank.statement.line.reporting"
-#
-#     name = fields.Char("")
+class TempAccountBankStatementLineReporting(models.Model):
+    _name = "kzm.account.bank.statement.line.reporting"
+
+    name = fields.Char("")
