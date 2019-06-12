@@ -795,7 +795,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
                         });
                         return
                     }
-                    //console.log("+++++++++++++++++++++++++++++++++ SHOW POPUP +++++++++");
+console.log("+++++++++++++++++++++++++++++++++ SHOW POPUP +++++++++");
                     self.gui.show_popup('confirm',{
                         'title': _t('Draft 	Order'),
                         'body': _t('Do you want to create Draft Order?'),
