@@ -14,7 +14,7 @@
     <t t-name="POSComboProductPopup">
         <div class="modal-dialog">
             <div class="popup popup-textinput pos_combo_product_popup">
-                <p class="title">Combo Product</p>
+                <p class="title" style="display:none;">Combo Product</p>
                 <div class="combo_product_container">
                     <div class="sub_product_container">
                         <div class="combo_product_header">
