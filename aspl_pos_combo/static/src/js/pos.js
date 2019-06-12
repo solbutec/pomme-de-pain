@@ -5,8 +5,22 @@ odoo.define('aspl_pos_combo.pos', function (require) {
 	var gui = require('point_of_sale.gui');
 	var screens = require('point_of_sale.screens');
 	var PopupWidget = require('point_of_sale.popups');
+	var PosBaseWidget = require('point_of_sale.BaseWidget');
 
-	models.load_fields("product.product", ['is_combo','product_combo_ids', 'pos_price_tot', 'price_supplement']);
+    var core = require('web.core');
+    var rpc = require('web.rpc');
+    var utils = require('web.utils');
+    var field_utils = require('web.field_utils');
+    var BarcodeEvents = require('barcodes.BarcodeEvents').BarcodeEvents;
+
+    var QWeb = core.qweb;
+    var _t = core._t;
+
+    var round_pr = utils.round_precision;
+
+    // LET'S START CODING
+
+	models.load_fields("product.product", ['is_combo','product_combo_ids', 'pos_price_tot', 'price_supplement', 'can_sale_pos_solo']);
 	models.load_fields("pos.order.line", ['is_splmnt','real_supplement_price']);
 
     models.PosModel.prototype.models.push({
@@ -18,6 +32,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
 
     });
 
+
 	models.PosModel.prototype.models.push({
         model:  'product.combo',
         loaded: function(self,product_combo){
@@ -25,7 +40,34 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         },
     });
 
+    screens.ProductListWidget.include({
 
+
+        renderElement: function() {
+        //this._super(parent,options)
+        var el_str  = QWeb.render(this.template, {widget: this});
+        var el_node = document.createElement('div');
+            el_node.innerHTML = el_str;
+            el_node = el_node.childNodes[1];
+
+        if(this.el && this.el.parentNode){
+            this.el.parentNode.replaceChild(el_node,this.el);
+        }
+        this.el = el_node;
+
+        var list_container = el_node.querySelector('.product-list');
+        for(var i = 0, len = this.product_list.length; i < len; i++){
+            var product_node = this.render_product(this.product_list[i]);
+            product_node.addEventListener('click', this.click_product_handler);
+            product_node.addEventListener('keypress', this.keypress_product_handler);
+            console.log("=== PRODUCT:", this.product_list[i].display_name, ", AFFICHER SUR LES MENU SEUL:",this.product_list[i].can_sale_pos_solo);
+            if(!this.product_list[i].can_sale_pos_solo){
+                list_container.appendChild(product_node);
+            }
+        }
+    },
+
+    });
 
 //    var _super_product = models.Product.prototype;
 //    models.Product = models.Product.extend({

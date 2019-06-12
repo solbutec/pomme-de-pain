@@ -52,7 +52,8 @@ class ProductTemplate(models.Model):
     is_combo = fields.Boolean("Is Combo")
     product_combo_ids = fields.One2many('product.combo', 'product_tmpl_id')
     pos_price_tot = fields.Float("prix total", compute='_compute_total', store=True)
-    price_supplement = fields.Float("prix supplement", help="price in case it is a supplement")
+    price_supplement = fields.Float("Prix supplement", help="price in case it is a supplement")
+    can_sale_pos_solo = fields.Boolean("POS menu seul", help="Ne peut être vendre séparément", default=False)
 
     @api.depends('price_supplement', 'list_price')
     def _compute_total(self):
