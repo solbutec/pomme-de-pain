@@ -204,6 +204,8 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                         	}
             				details.push(data);
         				}else{
+        				    console.log("==++= PRODUCT ID:",product_id);
+        				    console.log("== COMBO LINE:", combo_line);
         					var data = {
         					    'is_supplement': combo_line_obj.price_supplement != 0,
                         		'no_of_items': combo_line.no_of_items,
