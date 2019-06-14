@@ -93,7 +93,6 @@ odoo.define('amh_payement_currencies.pos', function (require) {
 
       screens.PaymentScreenWidget.include({
          get_currency_rate_by_id: function(curr_id){
-         console.log("vuuuuurenciiiies",this.pos.all_currencies);
             var cur =  this.pos.all_currencies.filter(function(obj){
                             return obj.id == curr_id;
                            });

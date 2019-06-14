@@ -19,7 +19,7 @@
                     <div class="sub_product_container">
                         <div class="combo_product_header">
                             <span>
-                                Required Products
+                                Base de menu
                             </span>
                             <div class="collaps_div fix_products">
                                 <i class="fa fa-angle-up"></i>
@@ -61,7 +61,7 @@
                         </div>
                         <div class="combo_product_header2">
                             <span>
-                                Optional Products
+                                Vos choix
                             </span>
                             <div class="collaps_div selective_products">
                                 <i class="fa fa-angle-up"></i>
@@ -125,7 +125,7 @@
                     </div>
                 </div>
                 <div class="footer">
-                    <div class="button confirm">
+                    <div class="button confirm_amh">
                         OK
                     </div>
                     <div class="button cancel">

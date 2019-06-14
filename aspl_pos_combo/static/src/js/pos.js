@@ -158,6 +158,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         events: _.extend({}, PopupWidget.prototype.events, {
     		'click .collaps_div': 'collaps_div',
     		'click .product.selective_product': 'select_product',
+    		'click .confirm_amh': 'click_confirm_amh',
     	}),
         show: function(options){
         	var self = this;
@@ -204,8 +205,8 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                         	}
             				details.push(data);
         				}else{
-        				    console.log("==++= PRODUCT ID:",product_id);
-        				    console.log("== COMBO LINE:", combo_line);
+        				    //console.log("==++= PRODUCT ID:",product_id);
+        				    //console.log("== COMBO LINE:", combo_line);
         					var data = {
         					    'is_supplement': combo_line_obj.price_supplement != 0,
                         		'no_of_items': combo_line.no_of_items,
@@ -265,7 +266,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             	}
         	}else{
             	self.new_combo_products_details.map(function(combo_line){
-            		if(!combo_line.require){
+            		if(!combo_line.require){//if not require
             		//console.log(combo_line.pos_category_id);
             		//console.log(combo_line.product_ids);
             		if((_.contains(combo_line.product_ids, product_id))){
@@ -289,12 +290,36 @@ odoo.define('aspl_pos_combo.pos', function (require) {
 
         	self.renderElement();
         },
-        click_confirm: function(){
+        click_confirm_amh: function(){
             var self = this;
             var order = self.pos.get_order();
 //            var total_amount = 0;
             var products_info = [];
             var pricelist = self.pos.gui.screen_instances.products.product_list_widget._get_active_pricelist();
+
+            //Begin AMH ADDED: used times Verification
+            var nb_used =  0, nb_no_of_items = 0, nb_used_level = 0, nb_level_no = 0;
+                self.new_combo_products_details.map(function(combo_line){
+                    nb_no_of_items += combo_line.no_of_items;
+                    nb_used_level = 0;
+                    if(!combo_line.require){//if not require
+                            combo_line.product_details.map(function(product_detail){
+                                    nb_used_level += product_detail.used_time;
+
+                             });
+                    }else{
+                        nb_used_level = combo_line.no_of_items;
+                    }
+                    nb_used += nb_used_level;
+                    if(nb_used_level != combo_line.no_of_items){
+                            nb_level_no += 1;
+                    }
+            	});
+            //End AMH ADDES: Verification used times done
+            if(nb_level_no > 0){
+                alert("Vérifier vos choix de tous les niveaux du menu !\n "+ nb_level_no +" niveaux incomplets\n "+nb_used+"/"+nb_no_of_items +" Articles choisis");
+            	return false;
+            }else{
             self.new_combo_products_details.map(function(combo_line){
             	if(combo_line.product_details.length > 0){
             		combo_line.product_details.map(function(prod_detail){
@@ -331,6 +356,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             	}
             }
             self.gui.close_popup();
+            }
         },
         click_cancel: function(){
         	var order = this.pos.get_order();
