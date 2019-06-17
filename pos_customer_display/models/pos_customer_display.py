@@ -50,7 +50,7 @@ class PosConfig(models.Model):
                 _('POS Closed (bottom line)'):
                 self.customer_display_msg_closed_l2,
             }
-            for field, msg in to_check.iteritems():
+            for field, msg in to_check.items():
                 if msg and len(msg) > maxsize:
                     raise ValidationError(_(
                         "The message for customer display '%s' is too "

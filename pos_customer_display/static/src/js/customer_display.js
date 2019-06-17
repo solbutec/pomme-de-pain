@@ -1,12 +1,4 @@
-/*
-    © 2014-2016 Aurélien DUMAINE
-    © 2014-2016 Barroux Abbey (www.barroux.org)
-    © 2014-2016 Akretion (www.akretion.com)
-    @author: Aurélien DUMAINE
-    @author: Alexis de Lattre <alexis.delattre@akretion.com>
-    @author: Father Odilon (Barroux Abbey)
-    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-*/
+
 
 odoo.define('pos_customer_display.customer_display', function(require) {
     "use strict";
@@ -18,9 +10,10 @@ odoo.define('pos_customer_display.customer_display', function(require) {
     var screens = require('point_of_sale.screens');
     var _t = core._t;
     var PosModelSuper = models.PosModel;
-
+    //console.log("CUSTOMER DISPLAY JS: BEGIN");
     models.PosModel = models.PosModel.extend({
         prepare_text_customer_display: function(type, data){
+        console.log("== prepare_text_customer_display (type, data):",type, data);
             if (this.config.iface_customer_display != true)
                 return;
             var line_length = this.config.customer_display_line_length || 20;
@@ -119,6 +112,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
 
     devices.ProxyDevice = devices.ProxyDevice.extend({
         send_text_customer_display: function(data, line_length){
+        console.log("== send_text_customer_display: (data, line_length):",data, line_length);
             //FIXME : this function is call twice. The first time, it is not called by prepare_text_customer_display : WHY ?
             if (_.isEmpty(data) || data.length != 2 || data[0].length != line_length || data[1].length != line_length){
                 console.warn("KZM: send_text_customer_display: Bad Data argument. Data=" + data + ' line_length=' + line_length);
@@ -129,6 +123,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         },
 
         align_left: function(string, length){
+        console.log("== align_left: (string, length): ",string, length);
             if (string) {
                 if (string.length > length)
                 {
@@ -149,6 +144,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         },
 
         align_right: function(string, length){
+        console.log("== align_right: (string, length): ",string, length);
             if (string) {
                 if (string.length > length)
                 {
@@ -169,6 +165,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         },
 
         align_center: function(string, length){
+        console.log("== align_center: (string, length): ",string, length);
             if (string) {
                 if (string.length > length)
                 {
@@ -200,6 +197,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         So, when you add a product, we call prepare_text_customer_display() twice...
         but I haven't found any good solution to avoid this -- Alexis */
         set_quantity: function(quantity){
+        console.log("== set_quantity: (string, length): ",string, length);
             var res = OrderlineSuper.prototype.set_quantity.call(this, quantity);
             if (quantity != 'remove') {
                 var line = this;
@@ -305,5 +303,5 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             this.pos.prepare_text_customer_display('add_paymentline', {});
         },
     });
-
+ //console.log("CUSTOMER DISPLAY JS: END");
 });

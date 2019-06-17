@@ -66,8 +66,8 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
         },
         show: function(){
         	var self = this;
-        	console.log("=====HEllo====")
-        	console.log(this.pos.get_order());
+        	//console.log("=====HEllo====")
+        	//console.log(this.pos.get_order());
         	this.pos.get_order().show_orders = true;
         	 //this.pos.bind('change:selectedOrder';);
         	 this.pos.get_order().trigger('change');
@@ -776,7 +776,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
             });
 
             if(!has_valid_product_lot){
-            console.log("+++++++++++++++++++++++++++++++++ HAS LOT +++++++++");
+            //console.log("+++++++++++++++++++++++++++++++++ HAS LOT +++++++++");
                 self.gui.show_popup('confirm',{
                     'title': _t('Empty Serial/Lot Number'),
                     'body':  _t('One or more product(s) required serial/lot number.'),
@@ -785,7 +785,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
                     },
                 });
             }else{
-            console.log("+++++++++++++++++++++++++++++++++ HAS NO LOT +++++++++");
+            //console.log("+++++++++++++++++++++++++++++++++ HAS NO LOT +++++++++");
                 var order = self.pos.get_order();
                     if(order.is_empty()){
                         $('div.order-empty').animate({
@@ -795,7 +795,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
                         });
                         return
                     }
-console.log("+++++++++++++++++++++++++++++++++ SHOW POPUP +++++++++");
+//console.log("+++++++++++++++++++++++++++++++++ SHOW POPUP +++++++++");
                     self.gui.show_popup('confirm',{
                         'title': _t('Draft 	Order'),
                         'body': _t('Do you want to create Draft Order?'),
@@ -833,7 +833,7 @@ console.log("+++++++++++++++++++++++++++++++++ SHOW POPUP +++++++++");
                 customer_phone : customer_phone_v,
                 customer_addr : customer_addr_v,
 	    	});
-	    	console.log("CALL pay_after_delivery_infos");
+	    	//console.log("CALL pay_after_delivery_infos");
 	    	self.pad_widget.pay_after_delivery_infos();
 
 	    },

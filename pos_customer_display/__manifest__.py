@@ -10,11 +10,15 @@
     'summary': 'Manage Customer Display device from POS front end',
     'author': "Abdelmajid ELhamdaoui, KARIZMA CONSEIL",
     'license': 'AGPL-3',
-    'depends': ['point_of_sale'],
+    'depends': [
+        'point_of_sale',
+    ],
     'data': [
         'views/pos_customer_display.xml',
         'views/customer_display_view.xml',
         ],
-    'demo': ['demo/pos_customer_display_demo.xml'],
+    'demo': [
+        #'demo/pos_customer_display_demo.xml',
+    ],
     'installable': True,
 }

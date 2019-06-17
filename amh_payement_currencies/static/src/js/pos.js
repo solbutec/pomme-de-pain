@@ -156,7 +156,7 @@ odoo.define('amh_payement_currencies.pos', function (require) {
                             var pl_curr_id = order.selected_paymentline.cashregister.currency_id[0];
 
                             var pl_curr_rate = self.get_currency_rate_by_id(pl_curr_id) || this.pos.currency.rate;
-                            console.log("CONSOLE",order.selected_paymentline.cashregister, pl_curr_rate)
+                            //console.log("CONSOLE",order.selected_paymentline.cashregister, pl_curr_rate)
                             var return_curency_choosed_id = parseInt($('#return_curency_choosed').val());
                             order.selected_paymentline.due_currency = return_curency_choosed_id;
                             var curr_rate = self.get_currency_rate_by_id(curr_id);
@@ -169,14 +169,14 @@ odoo.define('amh_payement_currencies.pos', function (require) {
                              if(cr.id == return_curency_choosed_rate_id){
                                return_curency_choosed_rate = cr.rate;
                              }*/
-                             console.log("return currency_choosed_rate",return_curency_choosed_rate);
+                             //console.log("return currency_choosed_rate",return_curency_choosed_rate);
                              //TODO : var main_curr_rate = parseFloat(this.pos.currency.rate);
                             var main_curr_rate = parseFloat(pl_curr_rate);
-                            console.log("main_curr_rate",main_curr_rate);
+                            //console.log("main_curr_rate",main_curr_rate);
                             var due_curr = (order.get_due()) * curr_rate / main_curr_rate;
-                            console.log("due_curr",due_curr);
+                            //console.log("due_curr",due_curr);
                             var revenu_curr_check_due = (order.get_due()) * return_curency_choosed_rate / main_curr_rate;
-                            console.log("revenu_curr_check_due",revenu_curr_check_due);
+                            //console.log("revenu_curr_check_due",revenu_curr_check_due);
                             var extra_due_curr = (order.get_due()) * curr_rate / main_curr_rate;
                             $('#revenu_curr').val(due_curr.toFixed(3));
                             $('#revenu_curr_check').val(revenu_curr_check_due.toFixed(3));

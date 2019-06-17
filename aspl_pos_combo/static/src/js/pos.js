@@ -60,7 +60,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             var product_node = this.render_product(this.product_list[i]);
             product_node.addEventListener('click', this.click_product_handler);
             product_node.addEventListener('keypress', this.keypress_product_handler);
-            console.log("=== PRODUCT:", this.product_list[i].display_name, ", AFFICHER SUR LES MENU SEUL:",this.product_list[i].can_sale_pos_solo);
+            //console.log("=== PRODUCT:", this.product_list[i].display_name, ", AFFICHER SUR LES MENU SEUL:",this.product_list[i].can_sale_pos_solo);
             if(!this.product_list[i].can_sale_pos_solo){
                 list_container.appendChild(product_node);
             }
