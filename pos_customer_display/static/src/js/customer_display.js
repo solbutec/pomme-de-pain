@@ -221,7 +221,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         },
 
         set_unit_price: function(price){
-        console.log("== set_unit_price: (set_unit_price): ",set_unit_price);
+        console.log("== set_unit_price: (price): ",price);
             var res = OrderlineSuper.prototype.set_unit_price.call(this, price);
             var line = this;
             if(this.selected){
