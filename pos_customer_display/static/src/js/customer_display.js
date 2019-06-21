@@ -237,7 +237,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
 
     models.Order = models.Order.extend({
         add_product: function(product, options){
-        //console.log("== set_unit_price: (product, options): ",product, options);
+            console.log("== add_product: (product, options): ",product, options);
             var res = OrderSuper.prototype.add_product.call(this, product, options);
             if (product) {
                 var line = this.get_last_orderline();
