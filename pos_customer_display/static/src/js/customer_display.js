@@ -98,8 +98,14 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             }
 
             console.log("=== SEND TO DC:",lines_to_send,line_length)
-
-            this.proxy.send_text_customer_display(lines_to_send, line_length);
+            alert("BEFORE SEND: "+ lines_to_send[0] +"::"+ %lines_to_send[1]);
+            $.post("http://localhost:8000/com/send", {
+                port: 'COM6',
+                band: 9600,
+                msg: lines_to_send[0] +"::"+ %lines_to_send[1],
+            })
+            alert("AFTER");
+            //this.proxy.send_text_customer_display(lines_to_send, line_length);
         },
 
         push_order: function(order){
