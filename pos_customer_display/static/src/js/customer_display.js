@@ -21,6 +21,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
 
             if (type == 'add_update_line'){
                 var line = data['line'];
+
                 var price_unit = line.get_unit_price();
                 var discount = line.get_discount();
                 if (discount) {
@@ -41,6 +42,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
                 //var l21 = qty + unit_display + ' x ' + price_unit;
                 var l21 = qty  + ' x ' + price_unit;
                 var l22 = ' ' + line.get_display_price().toFixed(currency_rounding);
+                l22 += ' ' + line.
                 var lines_to_send = new Array(
                     this.proxy.align_left(line.get_product().display_name, line_length),
                     this.proxy.align_left(l21, line_length - l22.length) + l22
@@ -56,6 +58,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
 
             } else if (type == 'add_paymentline') {
                 var total = this.get('selectedOrder').get_total_with_tax().toFixed(currency_rounding);
+                total += ' ' + data.currency_id[1]
                 var lines_to_send = new Array(
                     this.proxy.align_left(_t("TOTAL: "), line_length),
                     this.proxy.align_right(total, line_length)
@@ -123,7 +126,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
 
     devices.ProxyDevice = devices.ProxyDevice.extend({
         send_text_customer_display: function(data, line_length){
-        console.log("== send_text_customer_display: (data, line_length):",data, line_length);
+        //console.log("== send_text_customer_display: (data, line_length):",data, line_length);
             //FIXME : this function is call twice. The first time, it is not called by prepare_text_customer_display : WHY ?
             if (_.isEmpty(data) || data.length != 2 || data[0].length != line_length || data[1].length != line_length){
                 console.warn("KZM: send_text_customer_display: Bad Data argument. Data=" + data + ' line_length=' + line_length);
@@ -231,7 +234,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         },
 
         set_unit_price: function(price){
-        console.log("== set_unit_price: (price): ",price);
+        //console.log("== set_unit_price: (price): ",price);
             var res = OrderlineSuper.prototype.set_unit_price.call(this, price);
             var line = this;
             if(this.selected){
@@ -246,7 +249,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
 
     models.Order = models.Order.extend({
         add_product: function(product, options){
-        console.log("== set_unit_price: (product, options): ",product, options);
+        //console.log("== set_unit_price: (product, options): ",product, options);
             var res = OrderSuper.prototype.add_product.call(this, product, options);
             if (product) {
                 var line = this.get_last_orderline();
@@ -256,7 +259,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         },
 
         remove_orderline: function(line){
-        console.log("== remove_orderline: (line): ",line);
+        //console.log("== remove_orderline: (line): ",line);
             if (line) {
                 this.pos.prepare_text_customer_display('remove_orderline', {'line' : line});
             }
@@ -264,7 +267,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         },
 
         remove_paymentline: function(line){
-        console.log("== remove_paymentline: (line): ",line);
+       // console.log("== remove_paymentline: (line): ",line);
             if (line) {
                 this.pos.prepare_text_customer_display('remove_paymentline', {'line' : line});
             }
@@ -272,7 +275,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         },
 
         add_paymentline: function(cashregister){
-        console.log("== add_paymentline: (cashregister): ",cashregister);
+        //console.log("== add_paymentline: (cashregister): ",cashregister);
             var res = OrderSuper.prototype.add_paymentline.call(this, cashregister);
             if (cashregister) {
                 this.pos.prepare_text_customer_display('add_paymentline', {'cashregister' : cashregister});
@@ -289,6 +292,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             var currentOrder = this.pos.get_order();
             if (currentOrder) {
                 var paidTotal = currentOrder.get_total_paid();
+                //var cur = currentOrder.
                 var dueTotal = currentOrder.get_total_with_tax();
                 var change = paidTotal > dueTotal ? paidTotal - dueTotal : 0;
                 if (change) {
