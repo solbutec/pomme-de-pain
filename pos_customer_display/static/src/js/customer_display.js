@@ -38,7 +38,8 @@ odoo.define('pos_customer_display.customer_display', function(require) {
                 if (unit && !unit.is_unit) {
                     unit_display = unit.name;
                 }
-                var l21 = qty + unit_display + ' x ' + price_unit;
+                //var l21 = qty + unit_display + ' x ' + price_unit;
+                var l21 = qty  + ' x ' + price_unit;
                 var l22 = ' ' + line.get_display_price().toFixed(currency_rounding);
                 var lines_to_send = new Array(
                     this.proxy.align_left(line.get_product().display_name, line_length),
@@ -97,12 +98,13 @@ odoo.define('pos_customer_display.customer_display', function(require) {
                 return;
             }
 
-            console.log("=== SEND TO DC:",lines_to_send,line_length)
-            //alert("BEFORE SEND: "+ lines_to_send[0] +"::"+ lines_to_send[1]);
+            var lam1 = lines_to_send[0].split(" ").join("-");
+            var lam2 = lines_to_send[1].split(" ").join("-");
+            console.log("===== BEFORE SEND TO DISPLAY CLIENT, LENGTH:",(lam1+lam2).length,"::",(lam1+lam2));
             $.post("http://localhost:8000/com/send", {
                 port: 'COM6',
                 band: 9600,
-                msg: lines_to_send[0] +"::"+ lines_to_send[1],
+                msg: lam1+lam2,
             })
             //alert("AFTER");
             //this.proxy.send_text_customer_display(lines_to_send, line_length);
@@ -131,7 +133,6 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         },
 
         align_left: function(string, length){
-        console.log("== align_left: (string, length): ",string, length);
             if (string) {
                 if (string.length > length)
                 {
@@ -152,7 +153,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         },
 
         align_right: function(string, length){
-        console.log("== align_right: (string, length): ",string, length);
+        //console.log("== align_right: (string, length): ",string, length);
             if (string) {
                 if (string.length > length)
                 {
@@ -173,7 +174,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         },
 
         align_center: function(string, length){
-        console.log("== align_center: (string, length): ",string, length);
+        //console.log("== align_center: (string, length): ",string, length);
             if (string) {
                 if (string.length > length)
                 {
@@ -205,7 +206,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         So, when you add a product, we call prepare_text_customer_display() twice...
         but I haven't found any good solution to avoid this -- Alexis */
         set_quantity: function(quantity){
-        console.log("== set_quantity: (quantity): ",quantity);
+        //console.log("== set_quantity: (quantity): ",quantity);
             var res = OrderlineSuper.prototype.set_quantity.call(this, quantity);
             if (quantity != 'remove') {
                 var line = this;
@@ -217,7 +218,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         },
 
         set_discount: function(discount){
-        console.log("== set_discount: (discount): ",discount);
+        //console.log("== set_discount: (discount): ",discount);
             var res = OrderlineSuper.prototype.set_discount.call(this, discount);
             if (discount) {
                 var line = this;
