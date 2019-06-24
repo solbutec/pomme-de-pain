@@ -7,7 +7,6 @@ from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
 import json
 import serial
-import unicodedata
 from pprint import pprint
 
 
@@ -20,14 +19,8 @@ def send_message(request):
         port = request.POST.get('port')
         band = request.POST.get('band')
         msg = request.POST.get('msg')
-        msg = msg.strip()
-        msg_clean = ' '*40
-        print("B MSG:",msg)
-        msg = unicodedata.normalize('NFKD', msg).encode('ascii','ignore')
-        msg_clean = unicodedata.normalize('NFKD', msg_clean
-                                          ).encode('ascii','ignore')
-        print("=== MESSAGE ", msg)
-        #print("INFOS: ", port,band,msg)
+        msg = msg.strip().encode()
+        print("INFOS: ", port,band,msg)
         if True:
             com6 = serial.Serial(
                 port = port, 
@@ -39,8 +32,9 @@ def send_message(request):
             print("=== IS OPEN COM: ", com6.is_open)
             if not com6.is_open:
                 com6.open()
-            com6.write(msg_clean)
-            com6.write(msg)
+            msg = msg.encode('utf-8')
+            com6.write(("%40s"%'').encode())
+            com6.write(("%40s"%msg).encode())
         #except Exception as e:
             #msg_res = str(e)
         
