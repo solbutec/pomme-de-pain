@@ -40,6 +40,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
                     unit_display = unit.name;
                 }
                 //var l21 = qty + unit_display + ' x ' + price_unit;
+                //todo priceunit must be taxed
                 var l21 = qty  + ' x ' + price_unit;
                 var l22 = ' ' + line.get_display_price().toFixed(currency_rounding);
                 //l22 += ' ' + line.
@@ -59,6 +60,11 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             } else if (type == 'add_paymentline') {
                 var total = this.get('selectedOrder').get_total_with_tax().toFixed(currency_rounding);
                // total += ' ' + data.currency_id[1]
+               if(data.cashregister){
+                if(data.data.currency_id){
+                    total += ' ' + data.currency_id[1]
+                }
+               }
                 var lines_to_send = new Array(
                     this.proxy.align_left(_t("TOTAL: "), line_length),
                     this.proxy.align_right(total, line_length)
