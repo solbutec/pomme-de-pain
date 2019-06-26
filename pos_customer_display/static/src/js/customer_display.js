@@ -42,7 +42,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
                 //var l21 = qty + unit_display + ' x ' + price_unit;
                 var l21 = qty  + ' x ' + price_unit;
                 var l22 = ' ' + line.get_display_price().toFixed(currency_rounding);
-                l22 += ' ' + line.
+                //l22 += ' ' + line.
                 var lines_to_send = new Array(
                     this.proxy.align_left(line.get_product().display_name, line_length),
                     this.proxy.align_left(l21, line_length - l22.length) + l22
