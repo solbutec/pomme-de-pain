@@ -1,14 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import os, sys
-import win32api
-import win32print
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
-from . import amh_tools
 import json
 import serial
 import unicodedata
@@ -25,10 +21,12 @@ def send_message(request):
         band = request.POST.get('band')
         msg = request.POST.get('msg')
         msg = msg.strip()
-        msg_clean = ' ' * 40
+        msg_clean = ' '*40
+        print("B MSG:",msg)
         msg = unicodedata.normalize('NFKD', msg).encode('ascii','ignore')
         msg_clean = unicodedata.normalize('NFKD', msg_clean
                                           ).encode('ascii','ignore')
+        print("=== MESSAGE ", msg)
         #print("INFOS: ", port,band,msg)
         if True:
             com6 = serial.Serial(
@@ -38,6 +36,7 @@ def send_message(request):
                 bytesize = serial.EIGHTBITS,
                 stopbits = serial.STOPBITS_ONE,
             )
+            print("=== IS OPEN COM: ", com6.is_open)
             if not com6.is_open:
                 com6.open()
             com6.write(msg_clean)
@@ -50,21 +49,5 @@ def send_message(request):
         return HttpResponse(json.dumps({'OK': False, 'msg': 'AJAX CALL REQUIRED'}), content_type="application/json")
 
 @csrf_exempt
-def open_cash_drawer(request):
-    printer_name = ""
-    ok, res = False, ""
-    if not printer_name:
-        printer_name = "NCR 7197 Receipt"
-    try:
-        amh_tools.open_cash_drawer(printer_name)
-        res = "Success"
-        ok = True
-    except Exception as e:
-        res = str(e)
-    return HttpResponse(json.dumps({'OK': ok, 'msg': res}), content_type="application/json")
-
-
-@csrf_exempt
 def test_com(request):
-    return render(request, 'ComCommunicatServer/test_com.html')
-
+    return render(request, 'ComCommunicatServer/index.html')

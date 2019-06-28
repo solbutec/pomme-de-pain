@@ -19,6 +19,5 @@ from . import views
 
 urlpatterns = [
     url(r'^send$', views.send_message, name="send"),
-    url(r'^opencashdrawer$', views.open_cash_drawer, name="open_cash_drawer"),
     url(r'^test$', views.test_com, name="test"),
 ]

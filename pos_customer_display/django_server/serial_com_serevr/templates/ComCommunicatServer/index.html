@@ -1,77 +1,25 @@
+{% load static %}
 <html>
     <head>
         <title>COM PORT COMMUNICATE</title>
-      	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+      	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
   </head>
 	<body>
 
+		<center>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
+			<br/>
 
-		<section id="cover">
-			<div id="cover-caption">
-				<div id="container" class="container">
-					<div class="row">
-						<div class="col-sm-10 offset-sm-1 text-center">
-							<h3 class="display-6">Welcome to port com testor</h3>
-							<div class="info-form">
-                   
-								<form>
-								  <div class="form-group row">
-									<label for="port_com" class="col-sm-2 col-form-label col-form-label-sm">Serial port</label>
-									<div class="col-sm-10">
-									  <input type="email" class="form-control form-control-sm" id="port_com" placeholder="COM6">
-									</div>
-								  </div>
-								  <div class="form-group row">
-									<label for="baudrate_com" class="col-sm-2 col-form-label col-form-label-sm">Baudrate</label>
-									<div class="col-sm-10">
-									  <input type="email" class="form-control form-control-sm" id="baudrate_com" placeholder="9600">
-									</div>
-								  </div>
-								  <div class="form-group row">
-									<label for="message_com" class="col-sm-2 col-form-label col-form-label-sm">Message</label>
-									<div class="col-sm-10">
-									  <input type="email" class="form-control form-control-sm" id="message_com" placeholder="Mjid want to show his name">
-									</div>
-								  </div>
-								  <div class="col-auto">
-									  <button type="button" class="btn btn-primary mb-2" id="send_msg">Send</button>
-									</div> 
-								</form>
-								<div>
-								  <div class="alert alert-info" id="result_com">
-									
-								  </div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</section>
-			  
+			<br/>
+			<br/>
+			<br/>
+
+			<a href="/com/test"> TESTER L'AFFICHE CLIENT </a><br/>
+			<a href="/com/opencashdrawer"> TESTER L'OUVERTURE TIROIR DEPUIS L'IMPRIMENTE </a>
+		</center>
 	</body>
-	<script src="https://code.jquery.com/jquery-3.3.1.min.js"  crossorigin="anonymous"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-	<script>
-	   $("#send_msg").click(function() {
-          var port = $("#port_com").val();
-		  var band = $("#baudrate_com").val();
-		  var msg = $("#message_com").val();
-		  if(port && band && msg){
-		         alert("BEFORE:: "+port+":"+band+":"+msg);
-				$.post("http://localhost:8000/com/send",{
-				 port: port,
-				 band: band,
-				 msg: msg,
-				}).done(function( data ) {
-				    alert("DONE:: "+port+":"+band+":"+msg);
-					$("#result_com").text("Result:  -> "+JSON.stringify(data));
-				  });
-		  }else{
-			alert("All fields are required");
-		  }
-       });
-	</script>
-	
-  </html>
+	</html>
