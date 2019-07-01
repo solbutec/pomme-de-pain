@@ -110,13 +110,12 @@ odoo.define('pos_customer_display.customer_display', function(require) {
 
             var lam1 = lines_to_send[0].split(" ").join("-");
             var lam2 = lines_to_send[1].split(" ").join("-");
-            console.log("===== BEFORE SEND TO DISPLAY CLIENT, LENGTH:",(lam1+lam2).length,"L1::"+lam1+"::"+lam2+"::");
-            console.log()
+            //console.log("===== BEFORE SEND TO DISPLAY CLIENT, LENGTH:",(lam1+lam2).length,"L1::"+lam1+"::"+lam2+"::");
             $.post("http://localhost:8000/com/send", {
                 port: 'COM6',
                 band: 9600,
                 msg: lam1+lam2,
-            })
+            });
             //alert("AFTER");
             //this.proxy.send_text_customer_display(lines_to_send, line_length);
         },
@@ -207,6 +206,17 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             }
             return string;
         },
+
+        // ask for the cashbox (the physical box where you store the cash) to be opened
+    open_cashbox: function(){
+        try {
+            $.post("http://localhost:8000/com/opencashdrawer", {});
+        }
+        catch (e) {
+           console.log("Erreur: can't open the cash drawer from printer, "+e);
+        }
+        return this.message('open_cashbox');
+    },
     });
 
     var OrderlineSuper = models.Orderline;
