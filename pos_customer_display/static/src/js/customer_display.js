@@ -41,9 +41,9 @@ odoo.define('pos_customer_display.customer_display', function(require) {
                 }
                 //var l21 = qty + unit_display + ' x ' + price_unit;
                 //todo priceunit must be taxed
-                var l21 = qty  + ' x ' + price_unit;
+                var l21 = qty  + ' x ';// + price_unit;
                 var l22 = ' ' + line.get_display_price().toFixed(currency_rounding);
-                //l22 += ' ' + line.
+                //l22 += ' ' + line.//is supplement add supplement price
                 var lines_to_send = new Array(
                     this.proxy.align_left(line.get_product().display_name, line_length),
                     this.proxy.align_left(l21, line_length - l22.length) + l22
@@ -60,12 +60,11 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             } else if (type == 'add_paymentline') {
                 var total = this.get('selectedOrder').get_total_with_tax().toFixed(currency_rounding);
                // total += ' ' + data.currency_id[1]
-               console.log("Add PAYMENT LINE: data ",data);
-//               if(data.cashregister){
-//                if(data.currency_id){
-//                    total += ' ' + data.currency_id[1]
-//                }
-//               }
+               if(data.cashregister){
+                if(data.cashregister.currency_id){
+                    total += ' ' + data.cashregister.currency_id[1];
+                }
+               }
                 var lines_to_send = new Array(
                     this.proxy.align_left(_t("TOTAL: "), line_length),
                     this.proxy.align_right(total, line_length)
@@ -304,7 +303,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
 
     screens.PaymentScreenWidget.include({
         render_paymentlines: function(){
-             console.log("== render_paymentlines: (): ");
+             //console.log("== render_paymentlines: (): ");
             var res = this._super();
             var currentOrder = this.pos.get_order();
             if (currentOrder) {
@@ -323,7 +322,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             var self = this;
             var order = this.pos.get_order();
             var res = this._super();
-
+            console.log("Finalize validation:",order.is_paid_with_cash() , this.pos.config.iface_customer_display);
             if (order.is_paid_with_cash() && this.pos.config.iface_customer_display){
                     try {
                         $.post("http://localhost:8000/com/opencashdrawer", {});
