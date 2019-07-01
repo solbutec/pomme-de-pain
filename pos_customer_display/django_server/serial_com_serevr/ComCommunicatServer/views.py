@@ -55,7 +55,7 @@ def open_cash_drawer(request):
     ok, res = False, ""
     if request.method == 'POST':
         printer_name = request.POST.get('printer_name')
-        print("== PRINTER RECEIPT FROM HTTP POST:", printer_name)
+        #print("== PRINTER RECEIPT FROM HTTP POST:", printer_name)
     if not printer_name:
         #get from data base model "Printer"
         pass

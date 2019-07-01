@@ -48,9 +48,6 @@ class PosOrder(models.Model):
     def _process_order(self, pos_order):
         # res = super(PosOrder, self)._process_order(pos_order)
         pos_session = self.env['pos.session'].browse(pos_order['pos_session_id'])
-        print("=================hbhb=================")
-        from pprint import pprint
-        pprint(pos_order)
         if pos_session.state == 'closing_control' or pos_session.state == 'closed':
             pos_order['pos_session_id'] = self._get_valid_session(pos_order).id
         order = self.create(self._order_fields(pos_order))
@@ -58,7 +55,7 @@ class PosOrder(models.Model):
         journal_ids = set()
         for payments in pos_order['statement_ids']:
             if not float_is_zero(payments[2]['amount'], precision_digits=prec_acc):
-                print("ORDER ADD PAY?NT ::", self._payment_fields(payments[2]))
+                #print("ORDER ADD PAY?NT ::", self._payment_fields(payments[2]))
                 order.add_payment(self._payment_fields(payments[2]))
             journal_ids.add(payments[2]['journal_id'])
 

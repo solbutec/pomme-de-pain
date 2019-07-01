@@ -44,17 +44,19 @@ odoo.define('pos_customer_display.customer_display', function(require) {
                 var l21 = qty  + ' x ';// + price_unit;
                 var l22 = ' ' + line.get_display_price().toFixed(currency_rounding);
                 //l22 += ' ' + line.//is supplement add supplement price
+                var prd_name = line.get_product().display_name.substr(0, line_length-1);
                 var lines_to_send = new Array(
-                    this.proxy.align_left(line.get_product().display_name, line_length),
+                    this.proxy.align_left(prd_name, line_length),
                     this.proxy.align_left(l21, line_length - l22.length) + l22
                     );
 
             } else if (type == 'remove_orderline') {
                 // first click on the backspace button set the amount to 0 => we can't precise the deleted qunatity and price
                 var line = data['line'];
+                var prd_name = line.get_product().display_name.substr(0, line_length-1);
                 var lines_to_send = new Array(
                     this.proxy.align_left(_t("Delete Item"), line_length),
-                    this.proxy.align_right(line.get_product().display_name, line_length)
+                    this.proxy.align_right(prd_name, line_length)
                     );
 
             } else if (type == 'add_paymentline') {
