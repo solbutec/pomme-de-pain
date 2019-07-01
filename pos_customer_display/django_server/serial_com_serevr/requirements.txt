@@ -1,3 +1,0 @@
-pip install django-cors-headers
-pip install pypiwin32
-pip install pyserial

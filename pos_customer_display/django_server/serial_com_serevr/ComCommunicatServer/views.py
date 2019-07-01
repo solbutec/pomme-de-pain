@@ -51,17 +51,10 @@ def send_message(request):
 
 @csrf_exempt
 def open_cash_drawer(request):
-    printer_name = False
+    printer_name = ""
     ok, res = False, ""
-    if request.method == 'POST':
-        printer_name = request.POST.get('printer_name')
-        #print("== PRINTER RECEIPT FROM HTTP POST:", printer_name)
     if not printer_name:
-        #get from data base model "Printer"
-        pass
-    if not printer_name:
-        "NCR 7197 Receipt"
-
+        printer_name = "NCR 7197 Receipt"
     try:
         amh_tools.open_cash_drawer(printer_name)
         res = "Success"
@@ -70,12 +63,8 @@ def open_cash_drawer(request):
         res = str(e)
     return HttpResponse(json.dumps({'OK': ok, 'msg': res}), content_type="application/json")
 
+
 @csrf_exempt
 def test_com(request):
     return render(request, 'ComCommunicatServer/test_com.html')
-
-@csrf_exempt
-def test_cashdrawer(request):
-    printers = amh_tools.get_all_printers_from_os()
-    return render(request, 'ComCommunicatServer/printer_config.html', context={'printers_list':printers})
 
