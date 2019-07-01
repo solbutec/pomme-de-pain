@@ -60,11 +60,12 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             } else if (type == 'add_paymentline') {
                 var total = this.get('selectedOrder').get_total_with_tax().toFixed(currency_rounding);
                // total += ' ' + data.currency_id[1]
-               if(data.cashregister){
-                if(data.data.currency_id){
-                    total += ' ' + data.currency_id[1]
-                }
-               }
+               console.log("Add PAYMENT LINE: data ",data);
+//               if(data.cashregister){
+//                if(data.currency_id){
+//                    total += ' ' + data.currency_id[1]
+//                }
+//               }
                 var lines_to_send = new Array(
                     this.proxy.align_left(_t("TOTAL: "), line_length),
                     this.proxy.align_right(total, line_length)
