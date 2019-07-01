@@ -4,5 +4,5 @@ from __future__ import unicode_literals
 from django.db import models
 
 # Create your models here.
-class Event(models.Model):
+class Printer(models.Model):
 	name = models.CharField('Imprimente', max_length=200)
