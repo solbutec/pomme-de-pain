@@ -304,7 +304,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
 
     screens.PaymentScreenWidget.include({
         render_paymentlines: function(){
-        console.log("== render_paymentlines: (): ");
+             console.log("== render_paymentlines: (): ");
             var res = this._super();
             var currentOrder = this.pos.get_order();
             if (currentOrder) {
@@ -318,6 +318,22 @@ odoo.define('pos_customer_display.customer_display', function(require) {
                 }
             }
             return res;
+        },
+        finalize_validation: function() {
+            var self = this;
+            var order = this.pos.get_order();
+            var res = this._super();
+
+            if (order.is_paid_with_cash() && this.pos.config.iface_customer_display){
+                    try {
+                        $.post("http://localhost:8000/com/opencashdrawer", {});
+                    }
+                    catch (e) {
+                       console.log("Erreur: can't open the cash drawer from printer, "+e);
+                    }
+            }
+            return res;
+
         },
     });
 
