@@ -8,6 +8,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import loader
 from django.views.decorators.csrf import csrf_exempt
+from ComCommunicatServer.models import Printer
 from . import amh_tools
 import json
 import serial
@@ -51,20 +52,50 @@ def send_message(request):
 
 @csrf_exempt
 def open_cash_drawer(request):
-    printer_name = ""
-    ok, res = False, ""
+    printer_name = False
+    ok, res , msg2= False, "", ""
+    if request.method == 'POST':
+        printer_name = request.POST.get('printer_name')
+        if printer_name:
+            #save the current in the database
+            printer_objects = Printer.objects.all()
+            if printer_objects:
+                for p in printer_objects:
+                    p.name = printer_name
+                    p.save()
+            else:
+                p = Printer(name=printer_name)
+                p.save()
+            msg2 = printer_name + " have been added as printer pos to open cash drawer"
+
     if not printer_name:
-        printer_name = "NCR 7197 Receipt"
+        #get from data base model "Printer"
+        printer_objects = Printer.objects.all()
+        if printer_objects:
+            for p in printer_objects:
+                printer_name = p.name
+    if not printer_name:
+        "NCR 7197 Receipt"
+
     try:
         amh_tools.open_cash_drawer(printer_name)
         res = "Success"
         ok = True
     except Exception as e:
         res = str(e)
-    return HttpResponse(json.dumps({'OK': ok, 'msg': res}), content_type="application/json")
-
+    return HttpResponse(json.dumps({'ok': ok, 'msg': res, 'msg2': msg2}), content_type="application/json")
 
 @csrf_exempt
 def test_com(request):
     return render(request, 'ComCommunicatServer/test_com.html')
 
+@csrf_exempt
+def test_cashdrawer(request):
+    printers = amh_tools.get_all_printers_from_os()
+    printer_name = False
+    printer_objects = Printer.objects.all()
+    if printer_objects:
+        for p in printer_objects:
+            printer_name = p.name
+
+    return render(request, 'ComCommunicatServer/printer_config.html', context={'printers_list':printers, 'current_printer': printer_name})
