@@ -112,7 +112,8 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             var lam1 = lines_to_send[0].split(" ").join("-");
             var lam2 = lines_to_send[1].split(" ").join("-");
             //console.log("===== BEFORE SEND TO DISPLAY CLIENT, LENGTH:",(lam1+lam2).length,"L1::"+lam1+"::"+lam2+"::");
-            $.post("http://localhost:8000/com/send", {
+            console.log("SEND DSIPLAY TO:",this.config.server_devices+"/com/send");
+            $.post(this.config.server_devices+"/com/send", {
                 port: 'COM6',
                 band: 9600,
                 msg: lam1+lam2,
@@ -211,6 +212,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         // ask for the cashbox (the physical box where you store the cash) to be opened
     open_cashbox: function(){
         try {
+        console.log("open_cashbox SEND opencashdrawer TO:",this.pos.config.server_devices+"/com/send");
             $.post(this.pos.config.server_devices+"/com/opencashdrawer", {});
         }
         catch (e) {
@@ -327,6 +329,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             console.log("Finalize validation:",order.is_paid_with_cash() , this.pos.config.iface_customer_display);
             if (order.is_paid_with_cash() && this.pos.config.iface_customer_display){
                     try {
+                    console.log("Finalize Send opencashdrawer TO:",this.pos.config.server_devices+"/com/send");
                         $.post(this.pos.config.server_devices+"/com/opencashdrawer", {});
                     }
                     catch (e) {
