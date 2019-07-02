@@ -211,7 +211,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         // ask for the cashbox (the physical box where you store the cash) to be opened
     open_cashbox: function(){
         try {
-            $.post("http://localhost:8000/com/opencashdrawer", {});
+            $.post(this.pos.config.server_devices+"/com/opencashdrawer", {});
         }
         catch (e) {
            console.log("Erreur: can't open the cash drawer from printer, "+e);
@@ -327,7 +327,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             console.log("Finalize validation:",order.is_paid_with_cash() , this.pos.config.iface_customer_display);
             if (order.is_paid_with_cash() && this.pos.config.iface_customer_display){
                     try {
-                        $.post("http://localhost:8000/com/opencashdrawer", {});
+                        $.post(this.pos.config.server_devices+"/com/opencashdrawer", {});
                     }
                     catch (e) {
                        console.log("Erreur: can't open the cash drawer from printer, "+e);

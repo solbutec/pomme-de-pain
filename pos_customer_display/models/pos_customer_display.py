@@ -11,26 +11,27 @@ class PosConfig(models.Model):
     _inherit = 'pos.config'
 
     iface_customer_display = fields.Boolean(
-        string='Customer Display', help="Display data on the customer display")
+        string='Affiche Client', help="Display data on the customer display")
     customer_display_line_length = fields.Integer(
-        string='Line Length of the Customer Display', default=20,
+        string="Longueur de ligne de l'écran client", default=20,
         help="Length of the LEDs lines of the customer display")
     customer_display_msg_next_l1 = fields.Char(
-        string="Next Customer (top line)", default="Welcome!",
+        string="Client suivant (ligne 1)", default="Bienvenue!",
         help="Top line of the message on the customer display which is "
         "displayed after starting POS and also after validation of an order")
     customer_display_msg_next_l2 = fields.Char(
-        string="Next Customer (bottom line)", default="Point of Sale Open",
+        string="Client suivant (ligne 2)", default="Point de vente ouvert",
         help="Bottom line of the message on the customer display which is "
         "displayed after starting POS and also after validation of an order")
     customer_display_msg_closed_l1 = fields.Char(
-        string="POS Closed (top line)", default="Point of Sale Closed",
+        string="POS ouvert (ligne 1)", default="Point de vente ferme",
         help="Top line of the message on the customer display which "
         "is displayed when POS is closed")
     customer_display_msg_closed_l2 = fields.Char(
-        string="POS Closed (bottom line)", default="See you soon!",
+        string="POS fermée (ligne 2)", default="A bientot !",
         help="Bottom line of the message on the customer display which "
         "is displayed when POS is closed")
+    server_devices = fields.Char("Serveur dispositifs", default="http://localhost:8000")
 
     @api.constrains(
         'customer_display_line_length',

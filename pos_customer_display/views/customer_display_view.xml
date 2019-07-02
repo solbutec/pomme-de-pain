@@ -6,13 +6,15 @@
             <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@id='posbox_reference']" position="after">
-                    <h2>Display customer infos</h2>
-                    <div class="row mt16 o_settings_container" id="display_customer_infos">
-                        <group>
-                                <field name="iface_customer_display"/>
+                    <h2>Dispositifs du POS</h2>
+                    <h4>Display client, Tiroir, imprimante, ...</h4>
+                    <div class="row mt14 o_settings_container" id="display_customer_infos" style="margin-left:10px;">
+                            <group>
+                                <field name="iface_customer_display" string="Utiliser serveur dispositifs"/>
                                 <field name="customer_display_line_length"/>
+                                <field name="server_devices"/>
                             </group>
-                            <group name="customer_display" string="Customer Display">
+                            <group name="customer_display" string="Affiche client">
                                 <label string="Next Customer Message ----" name="next_customer" colspan="2" for="customer_display_msg_next_l1"/>
                                 <field name="customer_display_msg_next_l1" string="Top Line"/>
                                 <field name="customer_display_msg_next_l2" string="Bottom Line"/>
