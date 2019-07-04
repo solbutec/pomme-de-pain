@@ -20,6 +20,7 @@ from pprint import pprint
 @csrf_exempt
 def send_message(request):
     msg_res = "OK"
+    ok = False
     #pprint(request)
     if request.method == 'POST':
         port = request.POST.get('port')
@@ -31,7 +32,7 @@ def send_message(request):
         msg_clean = unicodedata.normalize('NFKD', msg_clean
                                           ).encode('ascii','ignore')
         #print("INFOS: ", port,band,msg)
-        if True:
+        try:
             com6 = serial.Serial(
                 port = port, 
                 baudrate = int(band), 
@@ -43,10 +44,11 @@ def send_message(request):
                 com6.open()
             com6.write(msg_clean)
             com6.write(msg)
-        #except Exception as e:
-            #msg_res = str(e)
+            ok = True
+        except Exception as e:
+            msg_res = str(e)
         
-        return HttpResponse(json.dumps({'OK': True, 'msg': msg_res}), content_type="application/json")
+        return HttpResponse(json.dumps({'OK': ok, 'msg': msg_res}), content_type="application/json")
     else :
         return HttpResponse(json.dumps({'OK': False, 'msg': 'AJAX CALL REQUIRED'}), content_type="application/json")
 

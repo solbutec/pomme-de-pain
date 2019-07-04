@@ -1,5 +1,0 @@
-pip install django==1.11.20
-pip install django-cors-headers
-pip install pypiwin32
-pip install pyserial
-pip install bbfreeze
