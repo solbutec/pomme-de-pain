@@ -131,7 +131,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         },
 
     });
-
+    var ProxyDeviceSuper = devices.ProxyDevice;
     devices.ProxyDevice = devices.ProxyDevice.extend({
         send_text_customer_display: function(data, line_length){
         //console.log("== send_text_customer_display: (data, line_length):",data, line_length);
@@ -218,7 +218,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         catch (e) {
            console.log("Erreur: can't open the cash drawer from printer, "+e);
         }
-        return this.message('open_cashbox');
+        return ProxyDeviceSuper.prototype.open_cashbox.call(this);
     },
     });
 
@@ -326,7 +326,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             var self = this;
             var order = this.pos.get_order();
             var res = this._super();
-            console.log("Finalize validation:",order.is_paid_with_cash() , this.pos.config.iface_customer_display);
+            //console.log("Finalize validation:",order.is_paid_with_cash() , this.pos.config.iface_customer_display);
             if (order.is_paid_with_cash() && this.pos.config.iface_customer_display){
                     try {
                     console.log("Finalize Send opencashdrawer TO:",this.pos.config.server_devices+"/com/send");
