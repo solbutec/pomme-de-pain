@@ -1,1 +1,0 @@
-C:\Python27\python.exe C:\serial_com_serevr\manage.py runserver

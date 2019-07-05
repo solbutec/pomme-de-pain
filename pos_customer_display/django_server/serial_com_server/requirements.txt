@@ -1,0 +1,5 @@
+django==1.11.20
+django-cors-headers
+pypiwin32
+pyserial
+pyinstaller
