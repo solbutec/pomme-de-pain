@@ -18,6 +18,7 @@ class PosConfig(models.Model):
 
     enable_combo = fields.Boolean('Enable Combo')
     enable_supplement = fields.Boolean(string="Supplement", default=False)
+    prds_tmpl_ids = fields.Many2many('product.template', string='Articles à vendre')
 
 
 class PosOrder(models.Model):
@@ -53,7 +54,8 @@ class ProductTemplate(models.Model):
     product_combo_ids = fields.One2many('product.combo', 'product_tmpl_id')
     pos_price_tot = fields.Float("prix total", compute='_compute_total', store=True)
     price_supplement = fields.Float("Prix supplement", help="price in case it is a supplement")
-    can_sale_pos_solo = fields.Boolean("POS menu seul", help="Ne peut être vendre séparément", default=False)
+    can_sale_pos_solo = fields.Boolean("POS menu seul", help="Can not be sold separately", default=False)
+    when_be_sale = fields.Many2many('pos.config', string='Sell on')
 
     @api.depends('price_supplement', 'list_price')
     def _compute_total(self):

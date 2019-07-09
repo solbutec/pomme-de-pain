@@ -20,7 +20,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
 
     // LET'S START CODING
 
-	models.load_fields("product.product", ['is_combo','product_combo_ids', 'pos_price_tot', 'price_supplement', 'can_sale_pos_solo']);
+	models.load_fields("product.product", ['is_combo','product_combo_ids', 'pos_price_tot', 'price_supplement', 'can_sale_pos_solo','when_be_sale']);
 	models.load_fields("pos.order.line", ['is_splmnt','real_supplement_price']);
 
     models.PosModel.prototype.models.push({
@@ -62,7 +62,14 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             product_node.addEventListener('keypress', this.keypress_product_handler);
             //console.log("=== PRODUCT:", this.product_list[i].display_name, ", AFFICHER SUR LES MENU SEUL:",this.product_list[i].can_sale_pos_solo);
             if(!this.product_list[i].can_sale_pos_solo){
-                list_container.appendChild(product_node);
+                if(this.product_list[i].when_be_sale && this.product_list[i].when_be_sale.length > 0){
+                    if(this.product_list[i].when_be_sale.indexOf(this.pos.config.id) >= 0){
+                        list_container.appendChild(product_node);
+                    }
+                }else{
+                    list_container.appendChild(product_node);
+                }
+
             }
         }
     },

@@ -20,6 +20,13 @@
 	                    </div>
 	                </div>
                 </div>
+				<xpath expr="//sheet" position="inside">
+					<notebook>
+						<page string="Produits disponibles">
+							<field name="prds_tmpl_ids"/>
+						</page>
+					</notebook>
+				</xpath>
 			</field>
 		</record>
 
@@ -29,7 +36,8 @@
 	        <field name="inherit_id" ref="point_of_sale.product_template_form_view"/>
 	        <field name="arch" type="xml">
 				<xpath expr="//field[@name='available_in_pos']" position="after">
-					<field name="can_sale_pos_solo"/>
+					<field name="can_sale_pos_solo" attrs="{'invisible': [('available_in_pos', '=', False)]}"/>
+					<field name="when_be_sale" attrs="{'invisible': [('available_in_pos', '=', False)]}" widget="many2many_tags"/>
 				</xpath>
 			</field>
 		</record>
