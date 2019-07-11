@@ -213,7 +213,8 @@ odoo.define('pos_customer_display.customer_display', function(require) {
     open_cashbox: function(){
         try {
         //console.log("open_cashbox SEND opencashdrawer TO:",this.pos.config.server_devices+"/com/send");
-            $.post(this.pos.config.server_devices+"/com/opencashdrawer", {});
+        //todo AMH DECOMMENT
+            //$.post(this.pos.config.server_devices+"/com/opencashdrawer", {});
         }
         catch (e) {
            console.log("Erreur: can't open the cash drawer from printer, "+e);
@@ -305,6 +306,25 @@ odoo.define('pos_customer_display.customer_display', function(require) {
 
     });
 
+    screens.ReceiptScreenWidget.include({
+        opencashdrawer_kzm: function(){
+                try {
+                        $.post(this.pos.config.server_devices+"/com/opencashdrawer", {});
+                    }
+                catch (e) {
+                    console.log("Erreur: can't open the cash drawer from printer, "+e);
+                }
+        },
+        renderElement: function() {
+            var self = this;
+            this._super();
+            this.$('.opencashkzm').click(function(){
+                    self.opencashdrawer_kzm();
+
+            });
+        },
+    });
+
     screens.PaymentScreenWidget.include({
         render_paymentlines: function(){
              //console.log("== render_paymentlines: (): ");
@@ -329,7 +349,8 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             //console.log("Finalize validation:",order.is_paid_with_cash() , this.pos.config.iface_customer_display);
             if (order.is_paid_with_cash() && this.pos.config.iface_customer_display){
                     try {
-                        $.post(this.pos.config.server_devices+"/com/opencashdrawer", {});
+                    //todo AMH DECOMMENT
+                        //$.post(this.pos.config.server_devices+"/com/opencashdrawer", {});
                     }
                     catch (e) {
                        console.log("Erreur: can't open the cash drawer from printer, "+e);

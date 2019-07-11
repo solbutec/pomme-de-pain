@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-extend="ReceiptScreenWidget">
+
+        <t t-jquery="[class='button print']" t-operation="after">
+            <div class="button opencashkzm">
+                <i class='fa fa-briefcase'></i> Ouvrir tiroir-caisse
+            </div>
+        </t>
+    </t>
+
+</templates>
