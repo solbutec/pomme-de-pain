@@ -57,6 +57,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
 
         var list_container = el_node.querySelector('.product-list');
         for(var i = 0, len = this.product_list.length; i < len; i++){
+            //this.set_unit_price(this.product.get_price(this.order.pricelist, this.get_quantity()))
             var product_node = this.render_product(this.product_list[i]);
             product_node.addEventListener('click', this.click_product_handler);
             product_node.addEventListener('keypress', this.keypress_product_handler);
@@ -191,12 +192,14 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                                     });
                     var product_id = combo_line_obj.product_id[0];
         			var obj_product_id = self.pos.db.get_product_by_id(product_id);
+                    var pricelist_price = obj_product_id.get_price(self.pos.get_order().pricelist, 1);
         			//alert(product_id);
         			//console.log("Product "+product_id + " ::",obj_product_id);
 //        			console.log("++++");
 //        			console.log(obj_product_id);
 //        			console.log("-------");
         			// END AMH_ADDED
+                    
         			    new_product_ids.push(product_id);
         				if(combo_line.require){
         					var data = {
@@ -205,8 +208,8 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                         		'product_id': product_id,
                         		'category_id': combo_line.pos_category_id[0] || false,
                         		'used_time': combo_line.no_of_items,
-                        		'price_supplement': combo_line_obj.price_supplement,// AMH_ADDED
-                        		'price_supplement_str': self.format_currency(combo_line_obj.price_supplement,'Supp Price'),// AMH_ADDED
+                        		'price_supplement': pricelist_price,//combo_line_obj.price_supplement,// AMH_ADDED
+                        		'price_supplement_str': self.format_currency(pricelist_price,'Supp Price'),// AMH_ADDED
                         		'sale_price': obj_product_id.pos_price_tot,// AMH_ADDED
                         		'sale_price_str': self.format_currency(obj_product_id.pos_price_tot,'Product Price'),
                         	}
@@ -220,8 +223,8 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                         		'product_id': product_id,
                         		'category_id': combo_line.pos_category_id[0] || false,
                         		'used_time': 0,
-                        		'price_supplement': combo_line_obj.price_supplement,// AMH_ADDED
-                        		'price_supplement_str': self.format_currency(combo_line_obj.price_supplement,'Supp Price'),// AMH_ADDED
+                        		'price_supplement': pricelist_price,//combo_line_obj.price_supplement,// AMH_ADDED
+                        		'price_supplement_str': self.format_currency(pricelist_price,'Supp Price'),// AMH_ADDED
                         		'sale_price': obj_product_id.pos_price_tot,// AMH_ADDED
                         		'sale_price_str': self.format_currency(obj_product_id.pos_price_tot,'Product Price'),
                         	}
