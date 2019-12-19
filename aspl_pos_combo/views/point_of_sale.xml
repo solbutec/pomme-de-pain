@@ -73,6 +73,7 @@
 										   <tree  editable="bottom">
 											   <field name="product_id"
 													  domain="[('available_in_pos', '=', True),('pos_categ_id','=?',parent.pos_category_id)]"/>
+												<field name="based_on_priceliste"/>
 											   <field name="price_supplement"/>
 										   </tree>
 									   </field>
