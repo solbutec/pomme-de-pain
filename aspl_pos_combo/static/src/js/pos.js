@@ -25,7 +25,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
 
     models.PosModel.prototype.models.push({
         model:  'kzm.pos.supplement',
-        fields: ['product_id', 'price_supplement'],
+        fields: ['product_id', 'price_supplement', 'based_on_priceliste'],
         loaded: function(self,product_combo_line){
             self.product_combo_line = product_combo_line;
         },
@@ -192,6 +192,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                                     });
                     var product_id = combo_line_obj.product_id[0];
         			var obj_product_id = self.pos.db.get_product_by_id(product_id);
+                    console.log("------- Pricelist ---", combo_line_obj);
                     var pricelist_price = obj_product_id.get_price(self.pos.get_order().pricelist, 1);
         			//alert(product_id);
         			//console.log("Product "+product_id + " ::",obj_product_id);

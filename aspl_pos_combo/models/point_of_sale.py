@@ -169,5 +169,6 @@ class PosSupplement(models.Model):
     price_supplement = fields.Float("Price supplement", default=0)
     name = fields.Char("Name", compute= compute_name_prod, store=True)
     product_combo_id = fields.Many2one("product.combo", "Combo")
+    based_on_priceliste = fields.Boolean('Basé sur liste prix', default=False)
 
     _sql_constraints = [('uniq_prod_combo', 'unique(product_combo_id, product_id)', "The product has already chosen !")]
