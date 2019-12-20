@@ -192,8 +192,13 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                                     });
                     var product_id = combo_line_obj.product_id[0];
         			var obj_product_id = self.pos.db.get_product_by_id(product_id);
-                    console.log("------- Pricelist ---", combo_line_obj);
-                    var pricelist_price = obj_product_id.get_price(self.pos.get_order().pricelist, 1);
+                    var is_supplement = !(combo_line_obj.based_on_priceliste);
+
+                    var pricelist_price = combo_line_obj.price_supplement;
+                    if(!is_supplement){
+                        pricelist_price = obj_product_id.get_price(self.pos.get_order().pricelist, 1);
+                    }
+                    
         			//alert(product_id);
         			//console.log("Product "+product_id + " ::",obj_product_id);
 //        			console.log("++++");
@@ -204,12 +209,12 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         			    new_product_ids.push(product_id);
         				if(combo_line.require){
         					var data = {
-        					    'is_supplement': combo_line_obj.price_supplement != 0,
+        					    'is_supplement': is_supplement && pricelist_price > 0,
                         		'no_of_items': combo_line.no_of_items,
                         		'product_id': product_id,
                         		'category_id': combo_line.pos_category_id[0] || false,
                         		'used_time': combo_line.no_of_items,
-                        		'price_supplement': pricelist_price,//combo_line_obj.price_supplement,// AMH_ADDED
+                        		'price_supplement': pricelist_price,//,// AMH_ADDED
                         		'price_supplement_str': self.format_currency(pricelist_price,'Supp Price'),// AMH_ADDED
                         		'sale_price': obj_product_id.pos_price_tot,// AMH_ADDED
                         		'sale_price_str': self.format_currency(obj_product_id.pos_price_tot,'Product Price'),
@@ -219,7 +224,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         				    //console.log("==++= PRODUCT ID:",product_id);
         				    //console.log("== COMBO LINE:", combo_line);
         					var data = {
-        					    'is_supplement': combo_line_obj.price_supplement != 0,
+        					    'is_supplement': is_supplement && pricelist_price > 0,
                         		'no_of_items': combo_line.no_of_items,
                         		'product_id': product_id,
                         		'category_id': combo_line.pos_category_id[0] || false,
