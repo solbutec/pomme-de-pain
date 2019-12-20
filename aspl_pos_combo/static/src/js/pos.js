@@ -118,6 +118,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         	for(var i=0; i< this.combo_prod_info.length; i++){
         	    supp_price += this.combo_prod_info[i].product_detail.price_supplement;
         	}
+            console.log("TOT:", supp_price);
         	this.set_unit_price(supp_price);
         },
         get_combo_prod_info: function(){
@@ -132,6 +133,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             var combo_ext_line_info = [];
             if(this.product.is_combo && this.combo_prod_info.length > 0){
                 _.each(this.combo_prod_info, function(item){
+                    //console.log("---- JSON:", item.real_supplement_price, item.price, item.display_name);//correct
                 	combo_ext_line_info.push([0, 0, {'product_id':item.product.id, 'qty':item.qty, 'price':item.price,
                 	'is_splmnt':true,
                 	'real_supplement_price': item.real_supplement_price}]);
@@ -341,6 +343,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             		combo_line.product_details.map(function(prod_detail){
             			if(prod_detail.used_time){
             				var product = self.pos.db.get_product_by_id(prod_detail.product_id);
+                            //console.log("-----",product.display_name, prod_detail.price_supplement);//correct
                 			if(product){
 //                				total_amount = self.product.get_price(pricelist, 1);
                 				products_info.push({
