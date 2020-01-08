@@ -211,7 +211,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         			    new_product_ids.push(product_id);
         				if(combo_line.require){
         					var data = {
-        					    'is_supplement': is_supplement && pricelist_price > 0,
+        					    'is_supplement': true,//show all compansant in ticket//is_supplement && pricelist_price > 0,
                         		'no_of_items': combo_line.no_of_items,
                         		'product_id': product_id,
                         		'category_id': combo_line.pos_category_id[0] || false,
@@ -226,7 +226,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         				    //console.log("==++= PRODUCT ID:",product_id);
         				    //console.log("== COMBO LINE:", combo_line);
         					var data = {
-        					    'is_supplement': is_supplement && pricelist_price > 0,
+        					    'is_supplement': true,//show all compansant in ticket//is_supplement && pricelist_price > 0,
                         		'no_of_items': combo_line.no_of_items,
                         		'product_id': product_id,
                         		'category_id': combo_line.pos_category_id[0] || false,
