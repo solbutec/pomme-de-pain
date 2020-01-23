@@ -159,11 +159,15 @@ class PosOrderLine(models.Model):
 
 class PosSupplement(models.Model):
     _name = 'kzm.pos.supplement'
+    _order = 'sequence, id'
+
 
     @api.depends('product_id')
     def compute_name_prod(self):
         for o in self:
            o.name = o.product_id.name
+    
+    sequence = fields.Integer('Sequence')
 
     product_id = fields.Many2one("product.product", "Produit", required=True)
     price_supplement = fields.Float("Price supplement", default=0)
