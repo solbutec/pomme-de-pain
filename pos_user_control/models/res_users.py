@@ -9,3 +9,4 @@ class ResUsers(models.Model):
     has_pos_qty_control = fields.Boolean("Quantity Control")
     has_pos_back_backspace_control = fields.Boolean("Backspace Control")
     has_pos_delete_order_control = fields.Boolean("Remove Order Control")
+    has_pos_discount_control = fields.Boolean("Remove remise Control")
