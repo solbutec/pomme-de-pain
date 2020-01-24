@@ -6,11 +6,12 @@
         <field name="inherit_id" ref="point_of_sale.res_users_view_form"/>
         <field name="arch" type="xml">
             <field name="pos_security_pin" position="after">
-                <separator string="Controls"/>
-                <field name="has_pos_price_control"/>
-                <field name="has_pos_qty_control"/>
-                <field name="has_pos_back_backspace_control"/>
-                <field name="has_pos_delete_order_control"/>
+                <separator string="Controls POS"/>
+                <field name="has_pos_price_control" string="Autorisation changement prix"/>
+                <field name="has_pos_qty_control" string="Autorisation changement quantité"/>
+                <field name="has_pos_discount_control" string="Autorisation changement remise"/>
+                <field name="has_pos_back_backspace_control" string="Autorisation suppression ligne"/>
+                <field name="has_pos_delete_order_control" string="Autorisation suppression commande"/>
             </field>
         </field>
     </record>
