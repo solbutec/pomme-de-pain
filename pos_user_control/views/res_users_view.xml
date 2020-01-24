@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="res_users_form_view_ts" model="ir.ui.view">
+        <field name="name">res.users.form.view</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="point_of_sale.res_users_form_view"/>
+        <field name="arch" type="xml">
+            <field name="pos_security_pin" position="after">
+                <separator string="Controls"/>
+                <field name="has_pos_price_control"/>
+                <field name="has_pos_qty_control"/>
+                <field name="has_pos_back_backspace_control"/>
+                <field name="has_pos_delete_order_control"/>
+            </field>
+        </field>
+    </record>
+</odoo>

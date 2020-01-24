@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name="ConfirmPopupWidget">
+        <div class="modal-dialog">
+        <div class="popup popup-confirm">
+            <p class="title">
+                <t t-esc=" widget.options.title || 'Confirm ?' "/>
+            </p>
+            <p class="body">
+                <t t-esc="  widget.options.body || '' "/>
+            </p>
+            <div class="footer" >
+                <t t-if="widget.pos.get_cashier().has_pos_delete_order_control ">
+                    <div class="button confirm" disabled="true">
+                        Confirm
+                    </div>
+                </t>
+                <div class="button cancel">
+                    Cancel
+                </div>
+            </div>
+        </div>
+    </div>
+    </t>
+
+    <t t-name="NumpadWidget">
+        <div class="numpad">
+            <button class="input-button number-char">1</button>
+            <button class="input-button number-char">2</button>
+            <button class="input-button number-char">3</button>
+            <button class="mode-button" data-mode='quantity'>Qty</button>
+            <br />
+            <button class="input-button number-char">4</button>
+            <button class="input-button number-char">5</button>
+            <button class="input-button number-char">6</button>
+            <button class="mode-button" data-mode='discount'>Disc</button>
+            <br />
+            <button class="input-button number-char">7</button>
+            <button class="input-button number-char">8</button>
+            <button class="input-button number-char">9</button>
+            <button class="mode-button" data-mode='price'>Price</button>
+            <br />
+            <button class="input-button numpad-minus" >+/-</button>
+            <button class="input-button number-char zero">0</button>
+            <button class="input-button number-char">.</button>
+            <button class="input-button numpad-backspace">
+                <img style="pointer-events: none;" src="/point_of_sale/static/src/img/backspace.png" width="24" height="21" />
+            </button>
+        </div>
+    </t>
+</templates>
