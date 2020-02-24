@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="seq_crm_lead" model="ir.sequence">
+            <field name="name">crm_lead_ref_sequencer</field>
+            <field name="code">crm.lead</field>
+            <field name="padding">6</field>
+        </record>
+</odoo>

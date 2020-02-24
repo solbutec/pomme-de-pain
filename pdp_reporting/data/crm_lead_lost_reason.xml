@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="all_sale_order_cancel_lost_reason" model="crm.lost.reason">
+            <field name="name">All sale orders canceled</field>
+        </record>
+
+        <record id="work_time_tag" model="account.analytic.tag">
+            <field name="name">Temps travaillé</field>
+        </record>
+    <function model="account.analytic.line" name="update_worked_tag"/>
+    <function model="project.task" name="update_progress_hours"/>
+</odoo>
