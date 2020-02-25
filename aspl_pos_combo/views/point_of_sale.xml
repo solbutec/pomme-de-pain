@@ -100,6 +100,9 @@
 	        <field name="arch" type="xml">
 				<xpath expr="//field[@name='price_unit']" position="after">
 					<field name="real_supplement_price"/>
+					<field name="is_splmnt"/>
+					<field name="is_combo"/>
+					<field name="parent_combo_product_id"/>
 				</xpath>
 			</field>
 		</record>

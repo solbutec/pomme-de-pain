@@ -1,9 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record model="res.groups" id="group_pos_team_lead">
-        <field name="name">Team lead</field>
-<!--        <field name="category_id" ref=""/>-->
-<!--        <field name="users" eval=""/>-->
-<!--        <field name="implied_ids" eval=""/>-->
-    </record>
+
 </odoo>

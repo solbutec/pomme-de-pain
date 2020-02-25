@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	<data>
+		 <record  id="group_pos_team_lead" model="res.groups">
+	        <field name="name">POS team lead</field>
+	        <field name="category_id" ref="base.module_category_point_of_sale"/>
+	        <field name="implied_ids" eval="[(4, ref('point_of_sale.group_pos_user'))]"/>
+	    </record>
+
+	    <record id="point_of_sale.group_pos_manager" model="res.groups">
+	        <field name="implied_ids" eval="[(6,0, [ref('point_of_sale.group_pos_user'), ref('stock.group_stock_user'), ref('pos_user_control.group_pos_team_lead')])]"/>
+	    </record>
+	</data>
+</odoo>

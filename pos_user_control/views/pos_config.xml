@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="control_view_pos_config_kanban_inherited" model="ir.ui.view">
+        <field name="name">pos.config.kanban.view.inherited</field>
+        <field name="model">pos.config</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_config_kanban"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@role='menu']" position="attributes">
+                <attribute name="groups">pos_user_control.group_pos_team_lead</attribute>
+            </xpath>
+            <xpath expr="//t[@t-name='kanban-box']/div/div/div[2]" position="attributes">
+                <attribute name="groups">pos_user_control.group_pos_team_lead</attribute>
+            </xpath>
+            <xpath expr="//button[@name='open_ui']" position="attributes">
+                <attribute name="groups">pos_user_control.group_pos_team_lead</attribute>
+            </xpath>
+            <xpath expr="//button[@name='open_existing_session_cb'][1]" position="attributes">
+                <attribute name="groups">pos_user_control.group_pos_team_lead</attribute>
+            </xpath>
+            <xpath expr="//button[@name='open_existing_session_cb'][2]" position="attributes">
+                <attribute name="groups">pos_user_control.group_pos_team_lead</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    
+    <menuitem id="point_of_sale.menu_point_of_sale" groups="pos_user_control.group_pos_team_lead" name="Orders"
+             parent="point_of_sale.menu_point_root"
+             sequence="10"/>
+    <menuitem id="point_of_sale.menu_report_pos_order_all" groups="pos_user_control.group_pos_team_lead" name="Orders" action="point_of_sale.action_report_pos_order_all" parent="point_of_sale.menu_point_rep" sequence="3"/>
+    <menuitem id="point_of_sale.pos_config_menu_catalog" groups="pos_user_control.group_pos_team_lead" 
+        name="Product"
+        parent="point_of_sale.menu_point_root"/>
+</odoo>

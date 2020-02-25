@@ -17,7 +17,7 @@
     'description': 'Allow setting available Points of Sale for users. Restricts access for POS users to Points of Sales.',
     'images': ['static/description/banner.png'],
     'depends': [
-        'point_of_sale',
+        'point_of_sale', 'pos_user_control'
     ],
     'data': [
         'security/pos_user_restrict_security.xml',

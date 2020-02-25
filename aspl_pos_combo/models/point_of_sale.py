@@ -11,6 +11,7 @@
 
 from odoo import models, fields, api, _
 from functools import partial
+from pprint import pprint
 
 
 class PosConfig(models.Model):
@@ -38,7 +39,9 @@ class PosOrder(models.Model):
                 own_pro_list = [process_line(l) for l in order_line[2]['combo_ext_line_info']] if order_line[2][
                     'combo_ext_line_info'] else False
                 if own_pro_list:
+                    parent_combo_product_id = order_line[2].get('product_id', False)
                     for own in own_pro_list:
+                        own[2].update(parent_combo_product_id=parent_combo_product_id)
                         new_order_line.append(own)
 
         res.update({
@@ -105,7 +108,9 @@ class ProductCombo(models.Model):
 class PosOrderLine(models.Model):
     _inherit = 'pos.order.line'
 
-    is_splmnt = fields.Boolean("Is supplement", default=False)
+    is_splmnt = fields.Boolean("Is supplement", default=False, help="Is a Submenu")
+    is_combo = fields.Boolean("Is Menu", default=False, help="Is a Mmenu", related="product_id.is_combo", store=True)
+    parent_combo_product_id = fields.Many2one("product.product",string="Combo Menu", help="Parent product")
     real_supplement_price = fields.Float("Real supplement price")
 
 
@@ -150,6 +155,7 @@ class PosOrderLine(models.Model):
             values.update(nw_vls)
 
         if values.get('price_unit', 0) == 0:
+            #todo attention aux is_splmnt il est recalculer ici
             values['is_splmnt'] = True
 
         from pprint import pprint

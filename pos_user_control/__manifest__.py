@@ -9,10 +9,15 @@
     'maintainer': 'Teqstars, Elhamdaoui Abdelmajid',
     'license': 'OPL-1',
     'summary': "To apply or restrict specific control for each user.",
-    'depends': ['point_of_sale'],
+    'depends': [
+        'point_of_sale', 
+        'aspl_pos_order_sync',
+    ],
     'data': [
+        'security/security.xml',
         'views/templates.xml',
         'views/res_users_view.xml',
+        'views/pos_config.xml',
     ],
     'qweb': ['static/src/xml/pos.xml'],
     'images': ['static/description/images/main_screen.png'],

@@ -7,9 +7,17 @@
             <p class="title">
                 <t t-esc=" widget.options.title || 'Confirm ?' "/>
             </p>
-            <p class="body">
-                <t t-esc="  widget.options.body || '' "/>
-            </p>
+            <t t-if="widget.pos.get_cashier().has_pos_delete_order_control">
+                <p class="body">
+                    <t t-esc="  widget.options.body || '' "/>
+                </p>
+            </t>
+            <t t-if="!widget.pos.get_cashier().has_pos_delete_order_control">
+                <p class="body">
+                    Seuls les chefs d'équipe qui peuvent annuler une commande !
+                </p>
+            </t>
+            
             <div class="footer" >
                 <t t-if="widget.pos.get_cashier().has_pos_delete_order_control ">
                     <div class="button confirm" disabled="true">
