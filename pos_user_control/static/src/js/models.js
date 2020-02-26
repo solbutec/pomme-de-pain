@@ -48,8 +48,8 @@ odoo.define('pos_user_control.models', function (require) {
                 this.$el.find('.mode-button[data-mode="quantity"]')
                     .toggleClass('selected-mode', has_pos_qty_control);
 
-                this.$el.find('.zero').toggleClass('disabled-mode', !has_pos_qty_control)
-                    .prop('disabled', !has_pos_qty_control);
+                // this.$el.find('.zero').toggleClass('disabled-mode', !has_pos_qty_control)
+                //     .prop('disabled', !has_pos_qty_control);
                 this.$el.find('.numpad-minus').toggleClass('disabled-mode', !has_pos_qty_control)
                     .prop('disabled', !has_pos_qty_control);
 
@@ -61,9 +61,8 @@ odoo.define('pos_user_control.models', function (require) {
                     .toggleClass('disabled-mode', !has_pos_back_backspace_control)
                     .prop('disabled', !has_pos_back_backspace_control);
 
-                this.$el.find('.deleteorder-button')
-                    .toggleClass('disabled-mode', !has_pos_delete_order_control)
-                    .prop('disabled', !has_pos_delete_order_control);
+                $('.deleteorder-button')
+                    .css('display', (has_pos_delete_order_control)?'inline-block':'none');
 
             }
 
@@ -78,8 +77,8 @@ odoo.define('pos_user_control.models', function (require) {
                 var has_pos_price_control = user.has_pos_price_control;
                 var has_pos_back_backspace_control = user.has_pos_back_backspace_control;
 
-                this.$el.find('.zero').toggleClass('disabled-mode', !has_pos_qty_control)
-                    .prop('disabled', !has_pos_qty_control);
+                // this.$el.find('.zero').toggleClass('disabled-mode', !has_pos_qty_control)
+                //     .prop('disabled', !has_pos_qty_control);
                 this.$el.find('.numpad-minus').toggleClass('disabled-mode', !has_pos_qty_control)
                     .prop('disabled', !has_pos_qty_control);
                 var newMode = event.currentTarget.attributes['data-mode'].nodeValue;
@@ -127,8 +126,8 @@ odoo.define('pos_user_control.models', function (require) {
                 $('.mode-button[data-mode="quantity"]')
                     .toggleClass('selected-mode', has_pos_qty_control);
 
-                $('.zero').toggleClass('disabled-mode', !has_pos_qty_control)
-                    .prop('disabled', !has_pos_qty_control);
+                // $('.zero').toggleClass('disabled-mode', !has_pos_qty_control)
+                //     .prop('disabled', !has_pos_qty_control);
                 $('.numpad-minus').toggleClass('disabled-mode', !has_pos_qty_control)
                     .prop('disabled', !has_pos_qty_control);
 

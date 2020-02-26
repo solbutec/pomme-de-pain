@@ -10,7 +10,7 @@
     'name': 'Restriction of POS User',
     'version': '12.0.1.0.1',
     'category': 'Point of Sale',
-    'author': 'Garazd Creation',
+    'author': 'Elhamdaoui Abdelmajid, Karizma-conseil',
     'website': 'https://garazd.biz',
     'license': 'LGPL-3',
     'summary': """Limits the POS User to available Points of Sale.""",

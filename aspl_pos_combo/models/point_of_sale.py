@@ -42,6 +42,7 @@ class PosOrder(models.Model):
                     parent_combo_product_id = order_line[2].get('product_id', False)
                     for own in own_pro_list:
                         own[2].update(parent_combo_product_id=parent_combo_product_id)
+                        own[2].update(qty=order_line[2].get('qty', 1))
                         new_order_line.append(own)
 
         res.update({
