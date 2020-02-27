@@ -1,5 +1,3 @@
-
-
 odoo.define('pos_customer_display.customer_display', function(require) {
     "use strict";
     var chrome = require('point_of_sale.chrome');
@@ -231,15 +229,16 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         So, when you add a product, we call prepare_text_customer_display() twice...
         but I haven't found any good solution to avoid this -- Alexis */
         set_quantity: function(quantity){
-        //console.log("== set_quantity: (quantity): ",quantity);
-            var res = OrderlineSuper.prototype.set_quantity.call(this, quantity);
+            console.log("Display customer: --- set quantity", quantity);
+            //var res = 
+            OrderlineSuper.prototype.set_quantity.apply(this,arguments);
             if (quantity != 'remove') {
                 var line = this;
                 if(this.selected){
                     this.pos.prepare_text_customer_display('add_update_line', {'line': line});
                 }
             }
-            return res;
+            //return res;
         },
 
         set_discount: function(discount){

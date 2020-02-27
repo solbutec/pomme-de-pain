@@ -13,6 +13,7 @@
         'point_of_sale', 
         'aspl_pos_combo',
         'pos_user_control',
+        'pos_customer_display',
     ],
     'data': [
         'views/pos_order.xml',

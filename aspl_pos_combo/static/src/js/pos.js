@@ -106,11 +106,8 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             this.combo_prod_info = false;
             this.is_splmnt = (options.is_splmnt)?options.is_splmnt:false;
             this.real_supplement_price = (options.real_supplement_price)?options.real_supplement_price:false;
-            _super_orderline.initialize.call(this, attr, options);
-//            // ADD_AMH SUPPLEMENT PRICE
-//            var supp_price = this.get_unit_price() + options.product.price_supplement;
-//            console.log("INITIALISE ====+OLD:"+this.get_unit_price()+ " SUPP:");
-//            this.set_unit_price(combo_price);
+            _super_orderline.initialize.apply(this, arguments);
+            console.log("Order line initialize: pos combo aspl module");
         },
         set_combo_prod_info: function(combo_prod_info){
         	this.combo_prod_info = combo_prod_info;
