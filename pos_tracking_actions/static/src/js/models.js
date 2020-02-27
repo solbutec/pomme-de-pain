@@ -12,7 +12,7 @@ odoo.define('pos_tracking_actions.models', function(require) {
     // add new field
     var _super_posorder = models.Order.prototype;
     models.Order = models.Order.extend({
-        initialize: function () {
+        initialize: function() {
                 // Add field to model
                 _super_posorder.initialize.apply(this,arguments);
                 this.pos_history_operations = "";
@@ -54,10 +54,14 @@ odoo.define('pos_tracking_actions.models', function(require) {
                order.add_actions_history(user_name+" /}{/ suppression /}{/ ligne de commande '"+order_line_name+"' \n");
             }else{
                 var quant = parseFloat(quantity) || 0;
-                if(quant != 0){
+                if(quant && quant != 0){
                     if(quant < 0){
-                    order.add_actions_history(user_name+" /}{/ suppression /}{/ ligne de commande '"+order_line_name+"', qty: '"+current_qty+"' => '"+quant+"' \n");
+                    order.add_actions_history(user_name+" /}{/ modification négative /}{/ ligne de commande '"+order_line_name+"', qty: '"+(current_qty || '0')+"' => '"+(quant || '0')+"' \n");
+                   }else{
+                    order.add_actions_history(user_name+" /}{/ modification positive /}{/ ligne de commande '"+order_line_name+"', qty: '"+(current_qty || '0')+"' => '"+(quant || '0')+"' \n");
                    }
+                }else{
+                    order.add_actions_history(user_name+" /}{/ modification nulle /}{/ ligne de commande '"+order_line_name+"', qty: '"+(current_qty || '0')+"' => '"+(quant || '0')+"' \n");
                 }
             }
             console.log("--- DESC:", order.pos_history_operations);

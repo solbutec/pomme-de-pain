@@ -37,6 +37,11 @@ odoo.define('pos_user_control.models', function (require) {
                 var has_pos_back_backspace_control = user.has_pos_back_backspace_control;
                 var has_pos_delete_order_control = user.has_pos_delete_order_control;
 
+                // console.log("POS model: has_pos_price_control:",has_pos_price_control, ",has_pos_qty_control: ",
+                //     has_pos_qty_control, ", has_pos_discount_control:", has_pos_discount_control,
+                //     ", has_pos_back_backspace_control:", has_pos_back_backspace_control,
+                //     ", has_pos_delete_order_control:",has_pos_delete_order_control);
+
                 this.$el.find('.mode-button[data-mode="price"]')
                     .toggleClass('disabled-mode', !has_pos_price_control)
                     .prop('disabled', !has_pos_price_control);
