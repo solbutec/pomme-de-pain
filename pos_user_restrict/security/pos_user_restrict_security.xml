@@ -31,6 +31,20 @@
             <field name="groups" eval="[(4,ref('point_of_sale.group_pos_manager'))]"/>
         </record>
 
+        <record id="user_point_of_sale_show_users_my_configs" model="ir.rule">
+            <field name="name">SHow my users configs</field>
+            <field name="model_id" ref="model_res_users"/>
+            <field name="domain_force">[('pos_config_ids','in', user.pos_config_ids.ids)]</field>
+            <field name="groups" eval="[(4,ref('point_of_sale.group_pos_user'))]"/>
+        </record>
+
+        <record id="lead_point_of_sale_show_users_my_configs" model="ir.rule">
+            <field name="name">SHow my users configs</field>
+            <field name="model_id" ref="model_res_users"/>
+            <field name="domain_force">[('pos_config_ids','in', user.pos_config_ids.ids)]</field>
+            <field name="groups" eval="[(4,ref('pos_user_control.group_pos_team_lead'))]"/>
+        </record>
+
     </data>
 
 </odoo>

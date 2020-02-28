@@ -22,6 +22,7 @@
     'data': [
         'security/pos_user_restrict_security.xml',
         'views/res_users_views.xml',
+        'views/assets.xml',
     ],
     'application': False,
     'installable': True,
