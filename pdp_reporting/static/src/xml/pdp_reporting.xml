@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+	<t t-name="ShowPosReportingUi">
+        <div class="control-button show_pos_reporting">
+            <i class="fa fa-list" aria-hidden="true"></i>
+            Rapports
+        </div>
+    </t>
+
+    <t t-name="ShowPosReportingUiWidget">
+        <div class="pos-reporting-screen screen">
+            <div class="screen-content pos-reporting-screen">
+            	<div class="top-content">
+                    <span class='button back'>
+                        <i class='fa fa-angle-double-left'></i>
+                        Back
+                    </span>
+                    <h1>
+                    	Rapports POS
+                    </h1>
+                    <span class='searchbox'>
+                        <input placeholder='Search Users' style="width: 164px;" />
+                        <span class='search-clear'></span>
+                    </span>
+                    <span class='searchbox'></span>
+                </div>
+                <div class="left-content pc40 touch-scrollable scrollable-y">
+                	LEFT ICI ON MET LES BOUTONS DE CHOISIR, TYPE ET 
+                	<div class="report-choose-container">
+                		Chooses
+                	</div>
+                </div>
+                <div class="right-content pc60 touch-scrollable scrollable-y">
+                	<div style="height:80px">
+                		Users
+                	</div>
+
+                	<div>
+                		<button id="print_report_button">Print report</button>
+                	</div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+</templates>

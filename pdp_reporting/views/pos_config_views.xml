@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="pdp_pos_config_wizard" model="ir.ui.view">
+   <!--  <record id="pdp_pos_config_wizard" model="ir.ui.view">
         <field name="name">pos.config.wizard</field>
         <field name="model">pos.config.wizard</field>
         <field name="arch" type="xml">
@@ -26,12 +26,11 @@
                 </footer>
             </form>
         </field>
-    </record>
-    <record id="action_view_pdp_pos_reporting_wizard" model="ir.actions.act_window">
+    </record> -->
+    <!-- <record id="action_view_pdp_pos_reporting_wizard" model="ir.actions.act_window">
         <field name="name">Print your current hand</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">pos.config.wizard</field>
-        <!--        <field name="context">{'default_crm_lead_id': active_id}</field>-->
         <field name="view_id" ref="pdp_reporting.pdp_pos_config_wizard"/>
         <field name="target">new</field>
     </record>
@@ -53,6 +52,6 @@
                 </div>
             </xpath>
         </field>
-    </record>
+    </record> -->
 
 </odoo>
