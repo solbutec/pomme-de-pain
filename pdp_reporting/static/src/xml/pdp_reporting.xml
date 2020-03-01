@@ -28,8 +28,18 @@
                 <div class="left-content pc40 touch-scrollable scrollable-y">
                 	LEFT ICI ON MET LES BOUTONS DE CHOISIR, TYPE ET 
                 	<div class="report-choose-container">
-                		Chooses
+                		 <select class='detail type-rapport-pdp needsclick' id='type-reporting'>
+                                <option value='main_ouvre_glob'>Main d'oeuvre</option>
+                                <option value='main_ouvre_cais'>Main d'oeuvre (Caissier)</option>
+                        </select>
                 	</div>
+                    <div class="report-choose-container button">
+                         <select class='detail user-rapport-pdp needsclick' id='user-reporting'>
+                                <t t-foreach="widget.pos.users" t-as="user">
+                                    <option t-att-value="user.id"><t t-esc="user.name"/></option>
+                                </t>
+                        </select>
+                    </div>
                 </div>
                 <div class="right-content pc60 touch-scrollable scrollable-y">
                 	<div style="height:80px">

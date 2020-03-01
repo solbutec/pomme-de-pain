@@ -25,7 +25,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         template : 'ShowPosReportingUi',
         button_click : function() {
             self = this;
-            self.gui.show_screen('pos_reporting_ui');
+            self.gui.show_screen('pos_reporting_ui');//, {users : users});
         },
     });
 
@@ -43,14 +43,19 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         events: {
             'click .button.back':  'click_back',
             'click #print_report_button': 'print_report',
+            'change #type-reporting': 'change_type_report',
             //'click #edit_order': 'click_edit_order',
             //'click .searchbox .search-clear': 'clear_search',
             //'click #re_order_duplicate': 'click_duplicate_order',
             //'click #delete_draft_sale_note': 'click_delete_sale_note',
             //'keyup .searchbox input': 'search_order',
         },
+        get_users: function(){
+            //for  user in self.pos.users
+        },
         init: function(parent, options){
             var self = this;
+
             this._super(parent, options);
             if(this.pos.config.iface_vkeyboard && self.chrome.widget.keyboard){
                 self.chrome.widget.keyboard.connect(this.$('.searchbox input'));
@@ -71,7 +76,13 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         },
 
         print_report: function(event){
-
+            alert("Print report");
+        },
+        change_type_report: function(event){
+            var value = $('#type-reporting').val();
+            alert("change type rapport 2", value);
+            console.log("Self pos", self.pos);
+            console.log($('#type-reporting'));
         },
 
     });

@@ -8,7 +8,8 @@
     'version': '10.0.1.0.1',
     'category': 'Point Of Sale',
     'summary': 'Manage Customer Display device from POS front end',
-    'author': "Abdelmajid ELhamdaoui, KARIZMA CONSEIL",
+    'author': 'Elhamdaoui Abdelmajid, Karizma Conseil',
+    'website': 'http://karizma-conseil.com',
     'license': 'AGPL-3',
     'depends': [
         'point_of_sale',

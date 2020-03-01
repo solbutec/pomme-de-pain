@@ -3,7 +3,7 @@
     'name': 'POS Tracking actions',
     'version': '11.0.0',
     'category': 'Point Of Sale',
-    'author': 'Abdelmajid Elhamdaoui, karizma-conseil',
+    'author': 'Elhamdaoui Abdelmajid, Karizma Conseil',
     'website': 'http://karizma-conseil.com',
     'support': 'elhamdaouiabdelmajid@gmail.com',
     'maintainer': 'karizma-conseil, Elhamdaoui Abdelmajid',

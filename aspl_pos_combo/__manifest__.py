@@ -15,8 +15,8 @@
     'description': """
 This module allows user to use combo feature in restaurant
 """,
-    'author': 'Acespritech Solutions Pvt. Ltd.',
-    'website': 'http://www.acespritech.com',
+    'author': 'Elhamdaoui Abdelmajid, Karizma Conseil',
+    'website': 'http://karizma-conseil.com',
     'price': 25,
     'currency': 'EUR',
     'version': '1.0.1',

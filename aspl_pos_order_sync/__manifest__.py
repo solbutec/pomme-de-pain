@@ -11,11 +11,11 @@
 {
     'name': 'POS Order Sync',
     'version': '1.0',
-    'author': 'Acespritech Solutions Pvt. Ltd.',
+    'author': 'Elhamdaoui Abdelmajid, Karizma Conseil',
+    'website': 'http://karizma-conseil.com',
     'summary': 'POS Order sync between Salesman and Cashier',
     'description': "Allow salesperson to only create draft order and send draft order to Cashier for payment",
     'category': 'Point Of Sale',
-    'website': 'http://www.acespritech.com',
     'depends': [
         'base',
         'point_of_sale',
