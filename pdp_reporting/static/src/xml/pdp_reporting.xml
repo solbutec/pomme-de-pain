@@ -22,34 +22,128 @@
                    
                 </div>
                 <div class="left-content pc40 touch-scrollable scrollable-y"> 
-                	<div class="report-choose-container">
+                	<div class="report-choose-container" style="hight:40px;">
+                		<span class='label'  style="font-weight:bold;">Type rapport</span>
                 		 <select class='detail type-rapport-pdp needsclick' id='type-reporting'>
-                                <option value='main_ouvre_glob'>Main d'oeuvre</option>
+                                <option value='main_ouvre_glob'>Main d'oeuvre global</option>
                                 <option value='main_ouvre_cais'>Main d'oeuvre (Caissier)</option>
                         </select>
                 	</div>
-                    <div class="report-choose-container">
+                    <div class="report-choose-container" id="user-reporting-container" style="hight:40px;">
+                    	<span class='label' style="font-weight:bold;">Caissier</span>
                          <select class='detail user-rapport-pdp needsclick' id='user-reporting'>
                                 <t t-foreach="widget.pos.users" t-as="user">
                                     <option t-att-value="user.id"><t t-esc="user.name"/></option>
                                 </t>
                         </select>
                     </div>
-                    <div>
-                        <span class='label'>Date debut</span>
-                        <input type="datetime" name="date_start_report" t-att-value="default_date_start" id="date_start_report" class="amh-use-keyboard"/> 
+                    <div style="hight:40px;">
+                        <span class='label' style="font-weight:bold;">Date debut</span>
+                        <input type="text" name="date_start_report" t-att-value="widget.default_date_start" id="date_start_report" class="amh-use-keyboard"/> 
+                    </div>
+                    <div style="hight:40px;">
+                        <span class='label'  style="font-weight:bold;">Date Fin</span>
+                        <input type="text" name="date_end_report" t-att-value="widget.default_date_end" id="date_end_report" class="amh-use-keyboard"/> 
                     </div>
                     <div>
-                        <span class='label'>Date Fin</span>
-                        <input type="datetime" name="date_end_report" t-att-value="default_date_end" id="date_end_report" class="amh-use-keyboard"/> 
+                    	<br/>
+                    	<br/><i>
+                    	Les dates doivent être sous le format YYYY-mm-dd HH:MM:SS <br/>
+                    	Si vous choisissez le rapport Main d'oeuvre caissier, il faut choisir le caissier en question.
+                    	</i>
                     </div>
                 </div>
                 <div class="right-content pc60 touch-scrollable scrollable-y">
+                	::<t t-esc="widget.default_date_end"/>::
                 	<div>
                 		<button id="print_report_button">Print report</button>
                 	</div>
                 </div>
             </div>
+        </div>
+    </t>
+
+    <t t-name="ReceiptReportingScreenWidget">
+        <div class='receipt-screen screen'>
+            <div class='screen-content'>
+                <div class='top-content'>
+                    <span class='button back'>
+                        Retour
+                        <i class='fa fa-angle-double-left'></i>
+                    </span>
+                    <span class='button next'>
+                        Suivant
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+                </div>
+                <div class="centered-content touch-scrollable">
+                    <div class="button print">
+                        <i class='fa fa-print'></i> Imprimet Ticket Rapport
+                    </div>
+                    <div class="pos-receipt-container-reporting">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="PosTicketReporting">
+        <div class="pos-sale-ticket">
+            <br />
+            <br />
+            <br />
+            <br />
+
+            <div class="pos-center-align"> 
+                <t t-esc="widget.pos.company.name"/><br />
+                <t t-esc="report_name"/><br/>
+            </div>
+            <br/>
+            <div>
+                PDV: <t t-esc="pos_name"/><br/>
+                 <t t-if="report_type=='main_ouvre_cais'">
+                    Caissier: <t t-esc="report_user"/><br/>
+                </t>
+                Date début : <t t-esc="widget.pos.date_start_report"/>  <br/>
+                Date fin   : <t t-esc="widget.pos.date_end_report"/>
+            </div>
+            <br />
+            <br />
+            
+
+            
+            <t t-if="report_type=='main_ouvre_glob' || report_type=='main_ouvre_cais'">
+                <table>
+                    <colgroup>
+                        <col width='50%' />
+                        <col width='25%' />
+                        <col width='25%' />
+                    </colgroup>
+                    <tr t-foreach="lines" t-as="line">
+                        <t t-if="line.type == 'normal'">
+                            <td>
+                                <t t-esc="line.name"/>
+                            </td>
+                            <td class="pos-right-align">
+                                <t t-esc="line.quantity"/>
+                            </td>
+                            <td class="pos-right-align">
+                                <t t-esc="widget.format_currency(line.total)"/>
+                            </td>
+                        </t>
+                        <t t-if="line.type == 'total_method'">
+                            <td colspan="3" style="text-align: right;">
+                                Total
+                            </td>
+                        </t>
+                    </tr>
+                </table>
+            </t>
+            <br />
+            <div>
+                Le <t t-esc="date_now"/> par <t t-esc="widget.pos.get_cashier().name"/>
+            </div>
+            
         </div>
     </t>
 

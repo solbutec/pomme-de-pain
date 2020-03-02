@@ -4,9 +4,40 @@ from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from pprint import pprint
 
+class AccountBankStatine(models.Model):
+	_inherit = 'account.bank.statement.line'
 
-# class PosConfig(models.Model):
-#     _inherit = 'pos.config'
+	pos_vendeur_id = fields.Many2one("res.users", string='Vendeur', related='pos_statement_id.user_id', store=True) 
+
+
+class PosConfig(models.Model):
+    _inherit = 'pos.config'
+
+    @api.model
+    def main_courant_rapport(self):
+    	context = self._context or {}
+    	pos_company_id = context.get('pos_company_id', False)
+    	pos_config_id = context.get('pos_config_id', False)
+    	date_start_report = context.get('date_start_report', False)
+    	date_end_report = context.get('date_end_report', False)
+    	type_reporting = context.get('type_reporting', False)
+    	user_reporting = context.get('user_reporting', False)
+
+    	if pos_company_id and pos_config_id and date_start_report and date_end_report:
+    		if type_reporting == 'main_ouvre_cais' and user_reporting:
+    			lines = self.env['account.bank.statement.line'].search([('company_id', '=', pos_company_id),
+    				('config_id', '=', pos_config_id),
+    				('date', '>=', date_start_report),
+    				('date', '<=', date_end_report),
+    				('pos_vendeur_id', '=', user_reporting)])
+    		elif type_reporting == 'main_ouvre_glob':
+    			lines = self.env['account.bank.statement.line'].search([('company_id', '=', pos_company_id),
+    				('config_id', '=', pos_config_id),
+    				('date', '>=', date_start_report),
+    				('date', '<=', date_end_report)])
+    			#journal_id
+    	return [] 
+
 
 
 # class PosConfigWizard(models.TransientModel):

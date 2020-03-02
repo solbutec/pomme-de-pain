@@ -810,6 +810,9 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
 
 	var DeliveryInfosPopupWidget = PopupWidget.extend({
 	    template: 'DeliveryInfosPopupWidget',
+        events: {
+            'focus .input-delivery': 'connect_keyborad',
+        },
 	    show: function(options){
 	    	var self = this;
 	    	options = options || {};
@@ -823,6 +826,11 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
             self.pad_widget = options.pad_widget;
 	        self.renderElement();
 	    },
+        connect_keyborad: function(event){
+            if (self.pos.config.iface_vkeyboard && self.chrome.widget.keyboard) {
+                self.chrome.widget.keyboard.connect($(event.currentTarget));
+            }
+        },
 	    click_confirm: function(){
 	    	var self = this;
 	    	var customer_name_v = ($("#cust_name_delv").val() || '').trim(),
