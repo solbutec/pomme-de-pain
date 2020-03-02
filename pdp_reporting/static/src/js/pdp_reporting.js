@@ -25,7 +25,14 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         template : 'ShowPosReportingUi',
         button_click : function() {
             self = this;
-            self.gui.show_screen('pos_reporting_ui');//, {users : users});
+            var date_start='',date_end='';
+            var today = new Date();
+            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            date_end = date+' '+time;
+            date_start = date +' '+ '08:00:00';
+            console.log("dates:", default_date_start, "->", default_date_end);
+            self.gui.show_screen('pos_reporting_ui', {default_date_start:date_start, default_date_end:date_end});//, {users : users});
         },
     });
 
@@ -43,6 +50,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         events: {
             'click .button.back':  'click_back',
             'click #print_report_button': 'print_report',
+            'click .amh-use-keyboard': 'connect_keyborad',
             'change #type-reporting': 'change_type_report',
             //'click #edit_order': 'click_edit_order',
             //'click .searchbox .search-clear': 'clear_search',
@@ -58,11 +66,17 @@ odoo.define('aspl_pos_combo.pos', function (require) {
 
             this._super(parent, options);
             if(this.pos.config.iface_vkeyboard && self.chrome.widget.keyboard){
-                self.chrome.widget.keyboard.connect(this.$('.searchbox input'));
+                //connect keyboard
+                self.chrome.widget.keyboard.connect($('.amh-use-keyboard'));
             }
         },
         click_back: function(event){
             this.gui.show_screen(this.previous_screen);//home
+        },
+        connect_keyborad: function(event){
+            if (self.pos.config.iface_vkeyboard && self.chrome.widget.keyboard) {
+                self.chrome.widget.keyboard.connect($(event.currentTarget));
+            }
         },
         show: function(){
             var self = this;
@@ -72,17 +86,23 @@ odoo.define('aspl_pos_combo.pos', function (require) {
              //this.pos.bind('change:selectedOrder';);
              //this.pos.get_order().trigger('change');
             this._super();
-            //this.reload_orders();
+            //connect keyborad
+           /* console.log("SELCTORS:",$('#date_start_report'), "end",$('#date_end_report'));
+            if (self.pos.config.iface_vkeyboard && self.chrome.widget.keyboard) {
+                    self.chrome.widget.keyboard.connect($('#date_start_report'));
+                    self.chrome.widget.keyboard.connect($('#date_end_report'));
+            }*/
+
         },
 
         print_report: function(event){
             alert("Print report");
         },
         change_type_report: function(event){
-            var value = $('#type-reporting').val();
-            alert("change type rapport 2", value);
-            console.log("Self pos", self.pos);
-            console.log($('#type-reporting'));
+            //var value = $(event.currentTarget).val();
+            //alert("change type rapport 2:::", value);
+            //console.log("Self pos", self.pos);
+            //console.log($('#type-reporting'));
         },
 
     });

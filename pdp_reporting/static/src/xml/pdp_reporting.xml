@@ -19,33 +19,32 @@
                     <h1>
                     	Rapports POS
                     </h1>
-                    <span class='searchbox'>
-                        <input placeholder='Search Users' style="width: 164px;" />
-                        <span class='search-clear'></span>
-                    </span>
-                    <span class='searchbox'></span>
+                   
                 </div>
-                <div class="left-content pc40 touch-scrollable scrollable-y">
-                	LEFT ICI ON MET LES BOUTONS DE CHOISIR, TYPE ET 
+                <div class="left-content pc40 touch-scrollable scrollable-y"> 
                 	<div class="report-choose-container">
                 		 <select class='detail type-rapport-pdp needsclick' id='type-reporting'>
                                 <option value='main_ouvre_glob'>Main d'oeuvre</option>
                                 <option value='main_ouvre_cais'>Main d'oeuvre (Caissier)</option>
                         </select>
                 	</div>
-                    <div class="report-choose-container button">
+                    <div class="report-choose-container">
                          <select class='detail user-rapport-pdp needsclick' id='user-reporting'>
                                 <t t-foreach="widget.pos.users" t-as="user">
                                     <option t-att-value="user.id"><t t-esc="user.name"/></option>
                                 </t>
                         </select>
                     </div>
+                    <div>
+                        <span class='label'>Date debut</span>
+                        <input type="datetime" name="date_start_report" t-att-value="default_date_start" id="date_start_report" class="amh-use-keyboard"/> 
+                    </div>
+                    <div>
+                        <span class='label'>Date Fin</span>
+                        <input type="datetime" name="date_end_report" t-att-value="default_date_end" id="date_end_report" class="amh-use-keyboard"/> 
+                    </div>
                 </div>
                 <div class="right-content pc60 touch-scrollable scrollable-y">
-                	<div style="height:80px">
-                		Users
-                	</div>
-
                 	<div>
                 		<button id="print_report_button">Print report</button>
                 	</div>
