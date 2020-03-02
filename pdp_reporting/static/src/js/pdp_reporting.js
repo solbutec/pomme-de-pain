@@ -31,7 +31,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
             date_end = date+' '+time;
             date_start = date +' '+ '08:00:00';
-            console.log("dates:", default_date_start, "->", default_date_end);
+            console.log("dates:", date_start, "->", date_end);
             self.gui.show_screen('pos_reporting_ui', {default_date_start:date_start, default_date_end:date_end});//, {users : users});
         },
     });
