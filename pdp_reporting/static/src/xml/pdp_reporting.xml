@@ -88,7 +88,7 @@
     </t>
 
     <t t-name="PosTicketReporting">
-        <div class="pos-sale-ticket">
+        <div class="pos-sale-ticket pos-reporting-tciket-container">
             <br />
             <br />
             <br />
@@ -113,19 +113,15 @@
 
             
             <t t-if="report_type=='main_ouvre_glob' || report_type=='main_ouvre_cais'">
-                <table>
+                <table class="pos-receipt-reporting-table">
                     <colgroup>
-                        <col width='50%' />
-                        <col width='25%' />
-                        <col width='25%' />
+                        <col width='60%' />
+                        <col width='35%' />
                     </colgroup>
                     <tr t-foreach="lines" t-as="line">
                         <t t-if="line.type == 'normal'">
                             <td>
                                 <t t-esc="line.name"/>
-                            </td>
-                            <td class="pos-right-align">
-                                <t t-esc="line.quantity"/>
                             </td>
                             <td class="pos-right-align">
                                 <t t-esc="widget.format_currency(line.total)"/>

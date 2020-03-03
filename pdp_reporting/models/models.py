@@ -22,21 +22,38 @@ class PosConfig(models.Model):
     	date_end_report = context.get('date_end_report', False)
     	type_reporting = context.get('type_reporting', False)
     	user_reporting = context.get('user_reporting', False)
-
+    	lines = []
     	if pos_company_id and pos_config_id and date_start_report and date_end_report:
     		if type_reporting == 'main_ouvre_cais' and user_reporting:
-    			lines = self.env['account.bank.statement.line'].search([('company_id', '=', pos_company_id),
+    			py_lines = self.sudo().env['account.bank.statement.line'].read_group(domain=[
+    				('company_id', '=', pos_company_id),
     				('config_id', '=', pos_config_id),
     				('date', '>=', date_start_report),
     				('date', '<=', date_end_report),
-    				('pos_vendeur_id', '=', user_reporting)])
+    				('pos_vendeur_id', '=', int(user_reporting or 0))
+    				],fields=['amount_currency', 'amount'], groupby=['journal_id'])
+    			for line in py_lines:
+    				lines.append({
+    					'type': 'normal',
+    					'name': self.sudo().env['account.journal'].browse(line['journal_id'][0]).name,
+    					'total': line['amount'],
+    					})
+
     		elif type_reporting == 'main_ouvre_glob':
-    			lines = self.env['account.bank.statement.line'].search([('company_id', '=', pos_company_id),
+    			py_lines = self.sudo().env['account.bank.statement.line'].read_group(domain=[
+    				('company_id', '=', pos_company_id),
     				('config_id', '=', pos_config_id),
     				('date', '>=', date_start_report),
-    				('date', '<=', date_end_report)])
-    			#journal_id
-    	return [] 
+    				('date', '<=', date_end_report)
+    				],fields=['amount_currency','amount'], groupby=['journal_id'])
+    			for line in py_lines:
+    				lines.append({
+    					'type': 'normal',
+    					'name': self.sudo().env['account.journal'].browse(line['journal_id'][0]).name,
+    					'total': line['amount'],
+    					})
+    	print(context, "----", lines)
+    	return lines 
 
 
 

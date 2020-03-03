@@ -203,7 +203,9 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                         'date_start_report': date_start_report,
                         'date_end_report': date_end_report,
                     },
-                }, {async: false}).then(function(lines){
+                }, {
+                    async: false
+                }).then(function(lines){
                      lines_to_print =  lines;
                 });
 
