@@ -208,6 +208,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                         'user_reporting': user_reporting,
                         'date_start_report': date_start_report,
                         'date_end_report': date_end_report,
+                        'pricelist_id': self.pos.config.pricelist_id && self.pos.config.pricelist_id[0] || -1, 
                     },
                 }, {
                     async: false

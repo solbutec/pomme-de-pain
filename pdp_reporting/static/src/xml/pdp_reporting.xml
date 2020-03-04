@@ -119,7 +119,7 @@
                 <t t-esc="widget.pos.company.name"/><br />
                 <t t-if='report_name'>
                     <br/>
-                    <span style="text-align: center; border: 2px solid grey; border-radius: 10%; padding:6px;font-weight:bold;">
+                    <span style="text-align: center; border: 2px dotted grey; border-radius: 10%; padding:6px;font-weight:bold;">
                         <t t-esc="report_name"/>
                     </span>
                      <br/>
@@ -175,6 +175,16 @@
                         <col width='15%' />
                         <col width='15%' />
                     </colgroup>
+                    <tr>
+                        <td style="text-align:left;border: 1px solid black;padding:4px;">Code</td>
+                        <td style="text-align:left;border: 1px solid black;padding:4px;">Produit</td>
+                        <td style="text-align:right;border: 1px solid black;padding:4px;">Qté</td>
+                        <td style="text-align:right;border: 1px solid black;padding:4px;">P.U</td>
+                        <td style="text-align:right;border: 1px solid black;padding:4px;">TOT.</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">&#160;</td>
+                    </tr>
 
                     <tr t-foreach="lines" t-as="line">
                         <t t-if="line.type == 'normal'">
