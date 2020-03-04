@@ -9,6 +9,15 @@ class AccountBankStatine(models.Model):
 
 	pos_vendeur_id = fields.Many2one("res.users", string='Vendeur', related='pos_statement_id.user_id', store=True) 
 
+class PosOrderLine(models.Model):
+    _inherit = 'pos.order.line'
+
+    config_id = fields.Many2one("pos.config", string="Pos config", related='order_id.config_id', store=True)
+    pos_vendeur_id = fields.Many2one("res.users", string='Vendeur', related='order_id.user_id', store=True) 
+    product_categ_id = fields.Many2one("product.category", string="Categ article", related='product_id.categ_id', store=True)
+    pos_categ_id = fields.Many2one("pos.category", string="Pos categorie", related='product_id.pos_categ_id', store=True)
+
+
 
 class PosConfig(models.Model):
     _inherit = 'pos.config'
@@ -24,37 +33,96 @@ class PosConfig(models.Model):
     	user_reporting = context.get('user_reporting', False)
     	lines = []
     	if pos_company_id and pos_config_id and date_start_report and date_end_report:
-    		if type_reporting == 'main_ouvre_cais' and user_reporting:
-    			py_lines = self.sudo().env['account.bank.statement.line'].read_group(domain=[
+            
+            if type_reporting == 'main_ouvre_cais' and user_reporting:
+                py_lines = self.sudo().env['account.bank.statement.line'].read_group(domain=[
     				('company_id', '=', pos_company_id),
     				('config_id', '=', pos_config_id),
     				('date', '>=', date_start_report),
     				('date', '<=', date_end_report),
-    				('pos_vendeur_id', '=', int(user_reporting or 0))
+    				('pos_vendeur_id', '=', int(user_reporting or 0)),
     				],fields=['amount_currency', 'amount'], groupby=['journal_id'])
-    			for line in py_lines:
-    				lines.append({
+                tot = 0
+                for line in py_lines:
+                    lines.append({
     					'type': 'normal',
     					'name': self.sudo().env['account.journal'].browse(line['journal_id'][0]).name,
     					'total': line['amount'],
     					})
+                    tot += line['amount']
+                if len(lines):
+                    lines.append({
+                        'type': 'total_method',
+                        'total': tot,
+                        })
 
-    		elif type_reporting == 'main_ouvre_glob':
-    			py_lines = self.sudo().env['account.bank.statement.line'].read_group(domain=[
+            elif type_reporting == 'main_ouvre_glob':
+                py_lines = self.sudo().env['account.bank.statement.line'].read_group(domain=[
     				('company_id', '=', pos_company_id),
     				('config_id', '=', pos_config_id),
     				('date', '>=', date_start_report),
-    				('date', '<=', date_end_report)
+    				('date', '<=', date_end_report),
     				],fields=['amount_currency','amount'], groupby=['journal_id'])
-    			for line in py_lines:
-    				lines.append({
+                tot = 0
+                for line in py_lines:
+                    lines.append({
     					'type': 'normal',
     					'name': self.sudo().env['account.journal'].browse(line['journal_id'][0]).name,
     					'total': line['amount'],
     					})
-    	print(context, "----", lines)
-    	return lines 
+                    tot += line['amount']
+                if len(lines):
+                    lines.append({
+                        'type': 'total_method',
+                        'total': tot,
+                        })
 
+            elif type_reporting == 'vente_eclat':
+                py_lines = self.sudo().env['pos.order.line'].read_group(domain=[
+                    ('company_id', '=', pos_company_id),
+                    ('config_id', '=', pos_config_id),
+                    ('create_date', '>=', date_start_report),
+                    ('create_date', '<=', date_end_report),
+                    ('is_combo', '=', False),
+                    ],fields=['price_unit','qty'], groupby=['pos_categ_id', 'product_id'], lazy=False)
+                
+                categ_id, categ_qty, total_price = -1, 0, 0
+                for line in py_lines:
+                    product = self.sudo().env['product.product'].browse(line['product_id'][0])
+                    pos_categ_id = line['pos_categ_id'] and line['pos_categ_id'][0] or False
+                    pos_categ_id = pos_categ_id and self.env['pos.category'].browse(line['pos_categ_id'][0])
+                    price_unit = 0 #price by pricelist c'est pas line price_unit
+                    #------------
+                    if categ_id != (pos_categ_id and pos_categ_id.id or False):
+                        if categ_id != -1:
+                            #add categ footer
+                            old_categ = categ_id and self.env['pos.category'].browse(categ_id)
+                            lines.append({
+                                'type': 'categ_footer',
+                                'name': old_categ and old_categ.name or '----',
+                                'qty': categ_qty,
+                                'total': total_price,
+                            })
+                        categ_id = pos_categ_id and pos_categ_id.id or False
+                        categ_qty = 0
+                        total_price = 0
+                    #----- ligne article
+                    lines.append({
+                            'type': 'normal',
+                            'code': product and product.default_code or '---',
+                            'name': product and product.name or '---',
+                            'qty': line['qty'],
+                            'price_unit': line['price_unit'],
+                            'total': line['qty'] * line['price_unit'],
+                            })
+
+                
+                    categ_qty += line['qty']
+                    total_price += line['qty'] * line['price_unit']
+
+                        
+
+    	return lines 
 
 
 # class PosConfigWizard(models.TransientModel):

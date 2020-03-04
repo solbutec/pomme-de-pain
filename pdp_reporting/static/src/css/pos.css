@@ -30,3 +30,38 @@
     word-wrap: break-word;
     border-color: black;
 }
+
+/* ------------------------------ */
+.amh-input-container{
+    width:98%;
+    height:15%;
+    margin: 1%;
+    padding: 1%; 
+    font-size: 1.2em;
+}
+
+.amh-input{
+    
+    margin: 3px;
+    margin-right: 0;
+    padding: 3px;
+    display: inline-block;
+    height: 14%;
+    width: 90%;
+    font-size: 1.1em;
+}
+
+.amh-button-print{
+    display: inline-block;
+    margin: 40px;
+    color: #eee;
+    border: 2px black ridge;
+    background-color: #008CBA;
+    font-size: 16px;
+    padding: 20px 40px;
+    border-radius: 8px;
+    text-align: center;
+    font-size:1.3em;
+    font-weight: bold;
+    cursor: pointer;;
+}
