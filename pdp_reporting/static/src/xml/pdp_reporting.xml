@@ -117,7 +117,13 @@
 
             <div class="pos-center-align"> 
                 <t t-esc="widget.pos.company.name"/><br />
-                <t t-esc="report_name"/><br/>
+                <t t-if='report_name'>
+                    <br/>
+                    <span style="text-align: center; border: 2px solid grey; border-radius: 10%; padding:6px;font-weight:bold;">
+                        <t t-esc="report_name"/>
+                    </span>
+                     <br/>
+                </t>
             </div>
             <br/>
             <div>

@@ -31,6 +31,8 @@ class PosConfig(models.Model):
     	date_end_report = context.get('date_end_report', False)
     	type_reporting = context.get('type_reporting', False)
     	user_reporting = context.get('user_reporting', False)
+        print("config *****************", pos_config_id)
+        pos_config_rec = self.sudo().env['pos.config'].browse(int(pos_config_id))
     	lines = []
     	if pos_company_id and pos_config_id and date_start_report and date_end_report:
             
@@ -88,10 +90,12 @@ class PosConfig(models.Model):
                 
                 categ_id, categ_qty, total_price = -1, 0, 0
                 for line in py_lines:
+                    pprint(line)
                     product = self.sudo().env['product.product'].browse(line['product_id'][0])
                     pos_categ_id = line['pos_categ_id'] and line['pos_categ_id'][0] or False
                     pos_categ_id = pos_categ_id and self.env['pos.category'].browse(line['pos_categ_id'][0])
-                    price_unit = 0 #price by pricelist c'est pas line price_unit
+                    price_unit = product.list_price
+                    price_unit = (line['price_unit'] / line['__count']) if (line['__count'] > 0) else 0 #price by pricelist c'est pas line price_unit
                     #------------
                     if categ_id != (pos_categ_id and pos_categ_id.id or False):
                         if categ_id != -1:
@@ -112,13 +116,21 @@ class PosConfig(models.Model):
                             'code': product and product.default_code or '---',
                             'name': product and product.name or '---',
                             'qty': line['qty'],
-                            'price_unit': line['price_unit'],
-                            'total': line['qty'] * line['price_unit'],
+                            'price_unit': price_unit,
+                            'total': line['qty'] * price_unit,
                             })
 
                 
                     categ_qty += line['qty']
-                    total_price += line['qty'] * line['price_unit']
+                    total_price += line['qty'] * price_unit
+                if len(lines):
+                    old_categ = categ_id and self.env['pos.category'].browse(categ_id)
+                    lines.append({
+                                'type': 'categ_footer',
+                                'name': old_categ and old_categ.name or '----',
+                                'qty': categ_qty,
+                                'total': total_price,
+                            })
 
                         
 

@@ -190,6 +190,11 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                 if(user_reporting){
                     user_report  = this.pos.users.find(utilisateur => utilisateur.id == user_reporting);
                 }
+            }else if(type_reporting == 'vente_eclat'){
+                name = "Vente / Préstation (éclatés)"
+            }
+            else if(type_reporting == 'vente_non_eclat'){
+                name = "Vente / Préstation (non éclatés)"
             }
             // Get from backend
             var lines_to_print = [];
