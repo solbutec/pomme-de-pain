@@ -137,79 +137,87 @@
             <br />
             <br />
             
-
-            
-            <t t-if="report_type=='main_ouvre_glob' || report_type=='main_ouvre_cais'">
-                <table class="pos-receipt-reporting-table">
-                    <colgroup>
-                        <col width='60%' />
-                        <col width='35%' />
-                    </colgroup>
-                    <tr t-foreach="lines" t-as="line">
-                        <t t-if="line.type == 'normal'">
-                            <td style="border: 1px solid black;padding:4px;">
-                                <t t-esc="line.name"/>
-                            </td>
-                            <td class="pos-right-align" style="border: 1px solid black;padding:4px;">
-                                <t t-esc="widget.format_currency(line.total)"/>
-                            </td>
-                        </t>
-                        <t t-if="line.type == 'total_method'">
-                            <td colspan="2">
-                                <br/>
-                                <div style="text-align: center; border: 2px solid black; border-radius: 20%; padding:6px;font-weight:bold;">
-                                                                    Total :  <span t-esc="line.total"/>
-
-                                </div>
-                            </td>
-                        </t>
-                    </tr>
-                </table>
+            <t t-if="!is_connected">
+                <div style="color:red; font-weight:bold; text-size:1.3em;">
+                    Le système n'est pas connecté. Ou il y a un autre problème.
+                    Merci de vérifier la connexion internet.<br/><br/>
+                    Erreur,  <t t-esc="err_message"/>
+                </div>
             </t>
-            <t t-if="report_type=='vente_eclat'">
-                <table class="pos-receipt-reporting-table">
-                    <colgroup>
-                        <col width='15%' />
-                        <col width='38%' />
-                        <col width='15%' />
-                        <col width='15%' />
-                        <col width='15%' />
-                    </colgroup>
-                    <tr>
-                        <td style="text-align:left;border: 1px solid black;padding:4px;">Code</td>
-                        <td style="text-align:left;border: 1px solid black;padding:4px;">Produit</td>
-                        <td style="text-align:right;border: 1px solid black;padding:4px;">Qté</td>
-                        <td style="text-align:right;border: 1px solid black;padding:4px;">P.U</td>
-                        <td style="text-align:right;border: 1px solid black;padding:4px;">TOT.</td>
-                    </tr>
-                    <tr>
-                        <td colspan="5">&#160;</td>
-                    </tr>
+            <t t-if="is_connected">
+            
+                <t t-if="report_type=='main_ouvre_glob' || report_type=='main_ouvre_cais'">
+                    <table class="pos-receipt-reporting-table">
+                        <colgroup>
+                            <col width='60%' />
+                            <col width='35%' />
+                        </colgroup>
+                        <tr t-foreach="lines" t-as="line">
+                            <t t-if="line.type == 'normal'">
+                                <td style="border: 1px solid black;padding:4px;">
+                                    <t t-esc="line.name"/>
+                                </td>
+                                <td class="pos-right-align" style="border: 1px solid black;padding:4px;">
+                                    <t t-esc="widget.format_currency(line.total)"/>
+                                </td>
+                            </t>
+                            <t t-if="line.type == 'total_method'">
+                                <td colspan="2">
+                                    <br/>
+                                    <div style="text-align: center; border: 2px solid black; border-radius: 20%; padding:6px;font-weight:bold;">
+                                                                        Total :  <span t-esc="line.total"/>
 
-                    <tr t-foreach="lines" t-as="line">
-                        <t t-if="line.type == 'normal'">
-                            <td style="text-align:left;border: 1px solid black;padding:4px;"><t t-esc="line.code"/></td>
-                            <td style="text-align:left;border: 1px solid black;padding:4px;"><t t-esc="line.name"/></td>
-                            <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.qty"/></td>
-                            <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.price_unit"/></td>
-                            <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.total"/></td>
-                        </t>
-                        <t t-if="line.type == 'categ_footer'">
-                            <td colspan="2" style="text-align: left;border: O;padding:7px;padding-left:10px;">
-                                <t t-esc="line.name"/>
-                            </td>
-                            <td style="text-align: right;border: 0;padding:7px;">
-                                <t t-esc="line.qty"/>
-                            </td>
-                            <td style="text-align: right;border: 0;padding:7px;">
-                                &#160;
-                            </td>
-                            <td style="text-align: right;border: 0;padding:7px;">
-                                <t t-esc="line.total"/>
-                            </td>
-                        </t>
-                    </tr>
-                </table>
+                                    </div>
+                                </td>
+                            </t>
+                        </tr>
+                    </table>
+                </t>
+                <t t-if="report_type=='vente_eclat'  || report_type=='vente_non_eclat'">
+                    <table class="pos-receipt-reporting-table">
+                        <colgroup>
+                            <col width='15%' />
+                            <col width='38%' />
+                            <col width='15%' />
+                            <col width='15%' />
+                            <col width='15%' />
+                        </colgroup>
+                        <tr>
+                            <td style="text-align:left;border: 1px solid black;padding:4px;">Code</td>
+                            <td style="text-align:left;border: 1px solid black;padding:4px;">Produit</td>
+                            <td style="text-align:right;border: 1px solid black;padding:4px;">Qté</td>
+                            <td style="text-align:right;border: 1px solid black;padding:4px;">P.U</td>
+                            <td style="text-align:right;border: 1px solid black;padding:4px;">TOT.</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">&#160;</td>
+                        </tr>
+
+                        <tr t-foreach="lines" t-as="line">
+                            <t t-if="line.type == 'normal'">
+                                <td style="text-align:left;border: 1px solid black;padding:4px;"><t t-esc="line.code"/></td>
+                                <td style="text-align:left;border: 1px solid black;padding:4px;"><t t-esc="line.name"/></td>
+                                <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.qty"/></td>
+                                <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.price_unit"/></td>
+                                <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.total"/></td>
+                            </t>
+                            <t t-if="line.type == 'categ_footer'">
+                                <td colspan="2" style="text-align: left;border: O;padding:7px;padding-left:10px;">
+                                    <t t-esc="line.name"/>
+                                </td>
+                                <td style="text-align: right;border: 0;padding:7px;">
+                                    <t t-esc="line.qty"/>
+                                </td>
+                                <td style="text-align: right;border: 0;padding:7px;">
+                                    &#160;
+                                </td>
+                                <td style="text-align: right;border: 0;padding:7px;">
+                                    <t t-esc="line.total"/>
+                                </td>
+                            </t>
+                        </tr>
+                    </table>
+                </t>
             </t>
             <br />
             <div>

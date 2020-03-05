@@ -91,10 +91,8 @@ class PosConfig(models.Model):
                 if type_reporting == 'vente_non_eclat':
                     my_demain = my_demain[:-1]
                     my_demain += [('is_splmnt', '=', False)]
-                print("=== MY DOMANE",my_demain)
                 # Try to do date + price unit menu = (amount total lines / qty)
                 py_lines = self.sudo().env['pos.order.line'].read_group(domain=my_demain,fields=['price_unit','qty'], groupby=['pos_categ_id', 'product_id'], lazy=False)
-                
                 categ_id, categ_qty, total_price = -1, 0, 0
                 for line in py_lines:
                     product = self.sudo().env['product.product'].browse(line['product_id'][0])

@@ -47,6 +47,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             'click .button.back':  'click_back',
             'click #print_report_button': 'print_report',
             'focus .amh-use-keyboard': 'connect_keyborad',
+            'blur .amh-use-keyboard': 'disconnect_keyborad',
             'change #type-reporting': 'change_type_report',
             //'click #edit_order': 'click_edit_order',
             //'click .searchbox .search-clear': 'clear_search',
@@ -72,6 +73,11 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         connect_keyborad: function(event){
             if (self.pos.config.iface_vkeyboard && self.chrome.widget.keyboard) {
                 self.chrome.widget.keyboard.connect($(event.currentTarget));
+            }
+        },
+        disconnect_keyborad: function(event){
+            if (self.pos.config.iface_vkeyboard && self.chrome.widget.keyboard) {
+                self.chrome.widget.keyboard.hide();
             }
         },
         show: function(options){
@@ -197,7 +203,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                 name = "Vente / Préstation (non éclatés)"
             }
             // Get from backend
-            var lines_to_print = [];
+            var lines_to_print= [], connected = true, err_message = '';
             rpc.query({
                     model: 'pos.config',
                     method: 'main_courant_rapport',
@@ -214,7 +220,12 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                     async: false
                 }).then(function(lines){
                      lines_to_print =  lines;
-                });
+                }, function(type,err){ 
+                    console.log("-- type:", type, "\n err:", err);
+                    connected = false;
+                    err_message = type.message;
+                 });
+                
 
             return {
                 widget: this,
@@ -227,6 +238,8 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                 report_user: user_report.name,
                 pos_name : this.pos.config.name,
                 lines: lines_to_print,
+                is_connected: connected,
+                err_message: err_message,
             };
         },
         print_web: function() {
@@ -298,7 +311,9 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         },
   
         render_receipt: function() {
+            this.$('.pos-receipt-container-reporting').hide();
             this.$('.pos-receipt-container-reporting').html(QWeb.render('PosTicketReporting', this.get_receipt_render_env()));
+            this.$('.pos-receipt-container-reporting').show();
         },
 
         export_for_printing: function(){
