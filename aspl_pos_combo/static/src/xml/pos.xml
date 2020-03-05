@@ -213,14 +213,22 @@
                     <td class="pos-right-align" t-if="orderline.is_splmnt== false" >
                         <t t-esc="widget.format_currency(orderline.get_display_price())"/>
                         <t t-foreach="orderline.get_combo_prod_info()" t-as="prod_info">
-                     <t t-if="prod_info.product_detail.is_supplement != 0">
-                        <br/>
-                         <span style="color:blue;">+<t t-esc="prod_info.product_detail.price_supplement_str"/></span>
-                     </t>
-                    </t>
+                             <t t-if="prod_info.product_detail.is_supplement != 0">
+                                <br/>
+                                 <span style="color:blue;"><t t-if="prod_info.product_detail.price_supplement &lt; 11">+<t t-esc="prod_info.product_detail.price_supplement_str"/></t>
+                                    <t t-if="prod_info.product_detail.price_supplement &gt;= 11">&#160;</t>
+                                </span>
+                             </t>
+                        </t>
                     </td>
-
-                <td class="pos-right-align" t-if="orderline.is_splmnt== true and orderline.real_supplement_price!=0" style="color:blue;">+<t t-esc="widget.format_currency(orderline.real_supplement_price)"/></td>
+                <t t-if="orderline.real_supplement_price &lt;= 10">
+                    <td class="pos-right-align" t-if="orderline.is_splmnt== true and orderline.real_supplement_price!=0" style="color:blue;">+<t t-esc="widget.format_currency(orderline.real_supplement_price)"/>
+                    </td>
+                </t>
+                <t t-if="orderline.real_supplement_price &gt; 10">
+                    <td class="pos-right-align" t-if="orderline.is_splmnt== true and orderline.real_supplement_price!=0" style="color:blue;">&#160;
+                    </td>
+                </t>
                 </tr>
         </t>
     </t>
