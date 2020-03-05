@@ -208,7 +208,6 @@
                     <td class="pos-right-align"  t-if="orderline.is_splmnt== true and orderline.real_supplement_price!=0" style="color:blue;">
                         <t t-esc="orderline.get_quantity()"/>
                     </td>
-
                     <td class="pos-right-align" t-if="orderline.is_splmnt== false" >
                         <t t-esc="widget.format_currency(orderline.get_display_price())"/>
                         <t t-foreach="orderline.get_combo_prod_info()" t-as="prod_info">
