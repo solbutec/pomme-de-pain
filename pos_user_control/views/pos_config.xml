@@ -6,29 +6,29 @@
         <field name="inherit_id" ref="point_of_sale.view_pos_config_kanban"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@role='menu']" position="attributes">
-                <attribute name="groups">pos_user_control.group_pos_team_lead</attribute>
+                <attribute name="groups">point_of_sale.group_pos_manager,pos_user_control.group_pos_team_lead</attribute>
             </xpath>
             <xpath expr="//t[@t-name='kanban-box']/div/div/div[2]" position="attributes">
-                <attribute name="groups">pos_user_control.group_pos_team_lead</attribute>
+                <attribute name="groups">point_of_sale.group_pos_manager,pos_user_control.group_pos_team_lead</attribute>
             </xpath>
             <xpath expr="//button[@name='open_ui']" position="attributes">
-                <attribute name="groups">pos_user_control.group_pos_team_lead</attribute>
+                <attribute name="groups">point_of_sale.group_pos_manager,pos_user_control.group_pos_team_lead</attribute>
             </xpath>
             <xpath expr="//button[@name='open_existing_session_cb'][1]" position="attributes">
-                <attribute name="groups">pos_user_control.group_pos_team_lead</attribute>
+                <attribute name="groups">point_of_sale.group_pos_manager,pos_user_control.group_pos_team_lead</attribute>
             </xpath>
             <xpath expr="//button[@name='open_existing_session_cb'][2]" position="attributes">
-                <attribute name="groups">pos_user_control.group_pos_team_lead</attribute>
+                <attribute name="groups">point_of_sale.group_pos_manager,pos_user_control.group_pos_team_lead</attribute>
             </xpath>
         </field>
     </record>
 
     
-    <menuitem id="point_of_sale.menu_point_of_sale" groups="pos_user_control.group_pos_team_lead" name="Orders"
+    <menuitem id="point_of_sale.menu_point_of_sale" groups="point_of_sale.group_pos_manager,pos_user_control.group_pos_team_lead" name="Orders"
              parent="point_of_sale.menu_point_root"
              sequence="10"/>
-    <menuitem id="point_of_sale.menu_report_pos_order_all" groups="pos_user_control.group_pos_team_lead" name="Orders" action="point_of_sale.action_report_pos_order_all" parent="point_of_sale.menu_point_rep" sequence="3"/>
-    <menuitem id="point_of_sale.pos_config_menu_catalog" groups="pos_user_control.group_pos_team_lead" 
+    <menuitem id="point_of_sale.menu_report_pos_order_all" groups="point_of_sale.group_pos_manager,pos_user_control.group_pos_team_lead" name="Orders" action="point_of_sale.action_report_pos_order_all" parent="point_of_sale.menu_point_rep" sequence="3"/>
+    <menuitem id="point_of_sale.pos_config_menu_catalog" groups="point_of_sale.group_pos_manager" 
         name="Product"
         parent="point_of_sale.menu_point_root"/>
 </odoo>

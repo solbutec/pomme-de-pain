@@ -32,8 +32,8 @@
                         <td><span class='label'  style="font-weight:bold;">Type rapport</span></td>
                         <td>
                             <select class='detail type-rapport-pdp needsclick amh-input' id='type-reporting'>
-                                <option value='main_ouvre_glob'>Main d'oeuvre global</option>
-                                <option value='main_ouvre_cais'>Main d'oeuvre (Caissier)</option>
+                                <option value='main_ouvre_glob'>Main courante global</option>
+                                <option value='main_ouvre_cais'>Main courante (Caissier)</option>
                                 <option value='vente_eclat'>Ventes éclatées</option>
                                 <option value='vente_non_eclat'>Ventes non éclatées</option>
                         </select>
