@@ -23,6 +23,29 @@
         </field>
     </record>
 
+    <record id="view_pos_session_form_inherited" model="ir.ui.view">
+        <field name="name">pos.session.form.view.inherited</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='stop_at']" position="after">
+                <field name="closed_by" readonly="1" force_save='1' attrs="{'invisible' : [('state', '!=', 'closed')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_pos_session_tree_inherited" model="ir.ui.view">
+        <field name="name">pos.session.tree.view.inherited</field>
+        <field name="model">pos.session</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_session_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='stop_at']" position="after">
+                <field name="closed_by" readonly="1" force_save='1' attrs="{'invisible' : [('state', '!=', 'closed')]}"/>
+            </xpath>
+        </field>
+    </record>
+
+
     
     <menuitem id="point_of_sale.menu_point_of_sale" groups="pos_user_control.group_pos_team_lead" name="Orders"
              parent="point_of_sale.menu_point_root"
