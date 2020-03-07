@@ -10,7 +10,8 @@
                         <field name="pos_config_id" invisible="1"/>
                         <field name="type" required="1"/>
                         <field name="cashier_id"
-                               attrs="{'invisible': [('type', '!=', 'main_ouvre_cais')], 'required': [('type', '=', 'main_ouvre_cais')]}" domain="[('pos_config_ids','in',[pos_config_id])]"/>
+                               attrs="{'invisible': [('type', '!=', 'main_ouvre_cais')], 'required': [('type', '=', 'main_ouvre_cais')]}" domain="[('pos_config_ids','in',[pos_config_id])]"
+                               options="{'no_open': True, 'no_create': True}"/>
                     </group>
                     <group>
                         <field name="debut_date" required="1"/>
