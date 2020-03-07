@@ -21,35 +21,209 @@
                     </h1>
                    
                 </div>
-                <div class="left-content pc40 touch-scrollable scrollable-y"> 
-                	<div class="report-choose-container">
-                		 <select class='detail type-rapport-pdp needsclick' id='type-reporting'>
-                                <option value='main_ouvre_glob'>Main d'oeuvre</option>
-                                <option value='main_ouvre_cais'>Main d'oeuvre (Caissier)</option>
+                <div class="left-content pc70 touch-scrollable scrollable-y"> 
+
+                <table>
+                    <colgroup>
+                        <col width='40%' />
+                        <col width='60%' />
+                    </colgroup>
+                    <tr>
+                        <td><span class='label'  style="font-weight:bold;">Type rapport</span></td>
+                        <td>
+                            <select class='detail type-rapport-pdp needsclick amh-input' id='type-reporting'>
+                                <option value='main_ouvre_glob'>Main courante global</option>
+                                <option value='main_ouvre_cais'>Main courante (Caissier)</option>
+                                <option value='vente_eclat'>Ventes éclatées</option>
+                                <option value='vente_non_eclat'>Ventes non éclatées</option>
                         </select>
-                	</div>
-                    <div class="report-choose-container">
-                         <select class='detail user-rapport-pdp needsclick' id='user-reporting'>
+                        </td>
+                    </tr>
+                    <tr id="user-reporting-cont">
+                        <td><span class='label' style="font-weight:bold;">Caissier</span></td>
+                        <td>
+                            <select class='detail user-rapport-pdp needsclick amh-input' id='user-reporting'>
                                 <t t-foreach="widget.pos.users" t-as="user">
                                     <option t-att-value="user.id"><t t-esc="user.name"/></option>
                                 </t>
-                        </select>
-                    </div>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class='label' style="font-weight:bold;">Date debut</span></td>
+                        <td><input type="text" name="date_start_report" t-att-value="widget.default_date_start" id="date_start_report" class="amh-use-keyboard amh-input"/> </td>
+                    </tr>
+                    <tr>
+                        <td><span class='label'  style="font-weight:bold;">Date Fin</span></td>
+                        <td><input type="text" name="date_end_report" t-att-value="widget.default_date_end" id="date_end_report" class="amh-use-keyboard amh-input"/></td>
+                    </tr>
+                </table>
+
+                	
                     <div>
-                        <span class='label'>Date debut</span>
-                        <input type="datetime" name="date_start_report" t-att-value="default_date_start" id="date_start_report" class="amh-use-keyboard"/> 
-                    </div>
-                    <div>
-                        <span class='label'>Date Fin</span>
-                        <input type="datetime" name="date_end_report" t-att-value="default_date_end" id="date_end_report" class="amh-use-keyboard"/> 
+                    	<br/>
+                    	<br/><i>
+                    	Les dates doivent être sous le format YYYY-mm-dd HH:MM:SS <br/>
+                    	Si vous choisissez le rapport Main d'oeuvre caissier, il faut choisir le caissier en question.
+                    	</i>
                     </div>
                 </div>
-                <div class="right-content pc60 touch-scrollable scrollable-y">
+                <div class="right-content pc30 touch-scrollable scrollable-y">
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
                 	<div>
-                		<button id="print_report_button">Print report</button>
+                        <span class='button amh-button-print' id="print_report_button">
+                            Imprimer le rapport
+                            <i class='fa fa-angle-double-right'></i>
+                        </span>
                 	</div>
                 </div>
             </div>
+        </div>
+    </t>
+
+    <t t-name="ReceiptReportingScreenWidget">
+        <div class='receipt-screen screen'>
+            <div class='screen-content'>
+                <div class='top-content'>
+                    <span class='button back'>
+                        <i class='fa fa-angle-double-left'></i>
+                        Retour
+                    </span>
+                    <span class='button next'>
+                        Suivant
+                        <i class='fa fa-angle-double-right'></i>
+                    </span>
+                </div>
+                <div class="centered-content touch-scrollable">
+                    <div class="button print">
+                        <i class='fa fa-print'></i> Imprimet Ticket Rapport
+                    </div>
+                    <div class="pos-receipt-container-reporting">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+
+    <t t-name="PosTicketReporting">
+        <div class="pos-sale-ticket pos-reporting-tciket-container">
+            <br />
+            <br />
+            <br />
+            <br />
+
+            <div class="pos-center-align"> 
+                <t t-esc="widget.pos.company.name"/><br />
+                <t t-if='report_name'>
+                    <br/>
+                    <span style="text-align: center; border: 2px dotted grey; border-radius: 10%; padding:6px;font-weight:bold;">
+                        <t t-esc="report_name"/>
+                    </span>
+                     <br/>
+                </t>
+            </div>
+            <br/>
+            <div>
+                PDV: <t t-esc="pos_name"/><br/>
+                 <t t-if="report_type=='main_ouvre_cais'">
+                    Caissier: <t t-esc="report_user"/><br/>
+                </t>
+                Date début : <t t-esc="widget.pos.date_start_report"/>  <br/>
+                Date fin   : <t t-esc="widget.pos.date_end_report"/>
+            </div>
+            <br />
+            <br />
+            
+            <t t-if="!is_connected">
+                <div style="color:red; font-weight:bold; text-size:1.3em;">
+                    Le système n'est pas connecté. Ou il y a un autre problème.
+                    Merci de vérifier la connexion internet.<br/><br/>
+                    Erreur,  <t t-esc="err_message"/>
+                </div>
+            </t>
+            <t t-if="is_connected">
+            
+                <t t-if="report_type=='main_ouvre_glob' || report_type=='main_ouvre_cais'">
+                    <table class="pos-receipt-reporting-table">
+                        <colgroup>
+                            <col width='60%' />
+                            <col width='35%' />
+                        </colgroup>
+                        <tr t-foreach="lines" t-as="line">
+                            <t t-if="line.type == 'normal'">
+                                <td style="border: 1px solid black;padding:4px;">
+                                    <t t-esc="line.name"/>
+                                </td>
+                                <td class="pos-right-align" style="border: 1px solid black;padding:4px;">
+                                    <t t-esc="widget.format_currency(line.total)"/>
+                                </td>
+                            </t>
+                            <t t-if="line.type == 'total_method'">
+                                <td colspan="2">
+                                    <br/>
+                                    <div style="text-align: center; border: 2px solid black; border-radius: 20%; padding:6px;font-weight:bold;">
+                                                                        Total :  <span t-esc="line.total"/>
+
+                                    </div>
+                                </td>
+                            </t>
+                        </tr>
+                    </table>
+                </t>
+                <t t-if="report_type=='vente_eclat'  || report_type=='vente_non_eclat'">
+                    <table class="pos-receipt-reporting-table">
+                        <colgroup>
+                            <col width='15%' />
+                            <col width='38%' />
+                            <col width='15%' />
+                            <col width='15%' />
+                            <col width='15%' />
+                        </colgroup>
+                        <tr>
+                            <td style="text-align:left;border: 1px solid black;padding:4px;">Code</td>
+                            <td style="text-align:left;border: 1px solid black;padding:4px;">Produit</td>
+                            <td style="text-align:right;border: 1px solid black;padding:4px;">Qté</td>
+                            <td style="text-align:right;border: 1px solid black;padding:4px;">P.U</td>
+                            <td style="text-align:right;border: 1px solid black;padding:4px;">TOT.</td>
+                        </tr>
+                        <tr>
+                            <td colspan="5">&#160;</td>
+                        </tr>
+
+                        <tr t-foreach="lines" t-as="line">
+                            <t t-if="line.type == 'normal'">
+                                <td style="text-align:left;border: 1px solid black;padding:4px;"><t t-esc="line.code"/></td>
+                                <td style="text-align:left;border: 1px solid black;padding:4px;"><t t-esc="line.name"/></td>
+                                <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.qty"/></td>
+                                <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.price_unit"/></td>
+                                <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.total"/></td>
+                            </t>
+                            <t t-if="line.type == 'categ_footer'">
+                                <td colspan="2" style="text-align: left;border: O;padding:7px;padding-left:10px;">
+                                    <t t-esc="line.name"/>
+                                </td>
+                                <td style="text-align: right;border: 0;padding:7px;">
+                                    <t t-esc="line.qty"/>
+                                </td>
+                                <td style="text-align: right;border: 0;padding:7px;">
+                                    &#160;
+                                </td>
+                                <td style="text-align: right;border: 0;padding:7px;">
+                                    <t t-esc="line.total"/>
+                                </td>
+                            </t>
+                        </tr>
+                    </table>
+                </t>
+            </t>
+            <br />
+            <div>
+                Le <t t-esc="date_now"/> par <t t-esc="widget.pos.get_cashier().name"/>
+            </div>
+            
         </div>
     </t>
 

@@ -246,6 +246,13 @@
     </t>
 
     <t t-extend="PosTicket">
+      <t t-jquery="div.pos-center-align:first" t-operation="before">
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+      </t>
     	<t t-jquery="[t-esc='order.name']" t-operation="replace">
     		<t t-esc="order.get_pos_reference() ? order.get_pos_reference() : order.name" />
     	</t>

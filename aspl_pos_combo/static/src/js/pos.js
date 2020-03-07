@@ -98,6 +98,26 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         		});
         	}
 		},
+        // get_subtotal : function(){
+        //     var res =  _super_Order.get_subtotal.call(this,arguments);
+        //     console.log("--- get_subtotal:", res);
+        //     return res;
+        // },
+        get_total_with_tax: function() {
+            var res =  _super_Order.get_total_with_tax.call(this,arguments);
+            res = round_pr(res, 0.1);
+            return res;
+        },
+        // get_total_without_tax: function() {
+        //     var res =  _super_Order.get_total_without_tax.call(this,arguments);
+        //     console.log("--- get_total_without_tax:", res);
+        //     return res;
+        // },
+        // get_total_discount: function() {
+        //     var res =  _super_Order.get_total_discount.call(this,arguments);
+        //     console.log("--- get_total_discount:", res);
+        //     return res;
+        // },
 	});
 
 	var _super_orderline = models.Orderline.prototype;

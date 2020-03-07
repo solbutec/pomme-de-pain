@@ -5,9 +5,9 @@
           <xpath expr="." position="inside">
               <script type="text/javascript" src="/pdp_reporting/static/src/js/pdp_reporting.js"></script>
           </xpath>
-          <!-- <xpath expr="//link[@id='pos-stylesheet']" position="after">
-              <link rel="stylesheet" href="/pos_restaurant/static/src/css/restaurant.css"/>
-          </xpath> -->
+          <xpath expr="//link[@id='pos-stylesheet']" position="after">
+              <link rel="stylesheet" href="/pdp_reporting/static/src/css/pos.css"/>
+          </xpath>
         </template>
 
 </odoo>

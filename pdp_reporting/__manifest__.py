@@ -22,8 +22,11 @@
     # always loaded
     'data': [
         'security/security.xml',
-        'views/pos_config_views.xml',
         'views/assets.xml',
+        'wizards/reporting_wizard.xml',
+        'reports/main_courante.xml',
+        'views/pos_config_views.xml',
+
     ],
     'qweb': [
         'static/src/xml/pdp_reporting.xml',
