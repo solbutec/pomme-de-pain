@@ -3,6 +3,8 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 from datetime import datetime
+from itertools import groupby
+
 from pprint import pprint
 
 REPORT_TITLES = {
@@ -41,26 +43,44 @@ class PosConfigWizard(models.TransientModel):
     @api.multi
     def action_print(self):
         rapport = self.sudo().env.ref('pdp_reporting.report_main_courante')
+        return rapport.report_action(self)
 
-        # lines getted on report qweb by get_data_reporting method
+    def get_data_reporting(self):
+        lines_report = []
         if self.type in ['main_ouvre_glob', 'main_ouvre_cais']:
             my_domaine = [
-                    ('config_id', '=', self.pos_config_id.id),
+                    ('config_id', '=', self.sudo().pos_config_id.id),
                     ('date', '>=', self.debut_date),
                     ('date', '<=', self.end_date),
                     ]
             if self.type == 'main_ouvre_cais':
-                my_domaine.append(('pos_vendeur_id', '=', self.cashier_id.id))
-            py_lines = self.sudo().env['account.bank.statement.line'].read_group(domain=my_domaine,
-                fields=['amount_currency', 'amount'], groupby=['journal_id'])
-
-            return rapport.report_action(self)
-
-        elif self.type == 'vente_eclat':
-            pass
-        elif self.type == 'vente_non_eclat':
-            pass
-
-    def get_data_reporting(slef):
-        return []
+                my_domaine.append(('pos_vendeur_id', '=', self.sudo().cashier_id.id))
+            py_lines = self.sudo().env['account.bank.statement.line'].search(my_domaine)
+            tot = 0
+            for journal_id, lines_jrn in groupby(py_lines, lambda l: l.sudo().journal_id):
+                lines_jrn = list(lines_jrn)
+                for pos_order, lines in groupby(lines_jrn, lambda l: l.sudo().pos_statement_id):
+                    lines = list(lines)
+                    detail = ""
+                    lines_report.append({
+                        'type': 'normal',
+                        'name': pos_order.sudo().name,
+                        'cashier': pos_order.sudo().user_id.name,
+                        'total': sum([l.sudo().amount for l in lines]),
+                        'detail': "<br/>".join([("&#160;&#160;&#160;&#160;*" if l.sudo().is_splmnt else " ")+str(l.sudo().qty)+" "+str(l.sudo().product_id.name) for l in pos_order.lines]),
+                        })
+                tot_line = sum([l.sudo().amount for l in lines_jrn])
+                lines_report.append({
+                    'type': 'method',
+                    'name': journal_id.sudo().name,
+                    'total': tot_line,
+                })
+                tot += tot_line
+            
+            if len(lines_report):
+                lines_report.append({
+                    'type': 'total',
+                     'total': tot,
+                    })
+        return lines_report
 

@@ -18,12 +18,40 @@
                     <!-- <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" class="float-left"
                              alt="Logo"/> -->
                     <div style="text-align:center;">
-                        <span > <t t-esc="doc.get_report_title()"/></span><br/>
+                        <span styme="border: 1px black solid;padding:5px;"> <t t-esc="doc.get_report_title()"/></span><br/>
                         <t t-esc="doc.pos_config_id.name"/>
                     </div>
+                    <div>
+                        Du <span t-field="doc.debut_date"/> Au <span t-field="doc.end_date"/>
+                    </div>
+                    <p>
+                        Date d'édition: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y/%m/%d %H:%M')"/> 
+                    </p>
                 </div>
-                <div class="page article">
-                    Article
+                <div class="page article">                
+                    <table t-if="doc.type in ['main_ouvre_cais', 'main_ouvre_glob']" class="table table-bordered">
+                        <tr>
+                            <th>Facture</th>
+                            <th t-if="doc.type=='main_ouvre_cais'">Serveur</th>
+                            <th>Total TTC</th>
+                            <th>Détail</th>
+                        </tr>
+                        <tr t-foreach="doc.get_data_reporting()" t-as="line">
+                            <t t-if="line['type'] == 'normal'">
+                                <td><span t-esc="line['name']"/></td>
+                                <td t-if="doc.type=='main_ouvre_cais'"><span t-esc="line['cashier']"/></td>
+                                <td style="text-align:right;"><span t-esc="line['total']"/></td>
+                                <td><span t-raw="line['detail']"/></td>
+                            </t>
+                            <t t-if="line['type'] == 'method'">
+                                <td colspan="2"><span t-esc="line['name']"/></td>
+                                <td  colspan="2"><span t-esc="line['total']"/></td>
+                            </t>
+                            <t t-if="line['type'] == 'total'">
+                                <td colspan="4" style="text-align: center;"><strong>Total:</strong> <strong t-esc="line['total']"/></td>
+                            </t>
+                        </tr>
+                    </table>
                 </div>
             </t>
         </t>
