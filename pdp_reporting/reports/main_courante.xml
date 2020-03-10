@@ -6,6 +6,7 @@
             string="Main courante"
             name="pdp_reporting.main_courant_report_view"
             file="pdp_reporting.main_courant_report_view"
+            paperformat="pdp_reporting.pdp_paperformat_report"
             menu="False"
             report_type="qweb-pdf"/>
 
@@ -14,32 +15,33 @@
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
                 <t t-set="doc" t-value="doc.sudo()"/>
-                <div class="header">
-                    <!-- <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" class="float-left"
-                             alt="Logo"/> -->
-                    <div style="text-align:center;">
-                        <span styme="border: 1px black solid;padding:5px;"> <t t-esc="doc.get_report_title()"/></span><br/>
-                        <t t-esc="doc.pos_config_id.name"/>
-                    </div>
-                    <div>
-                        Du <span t-field="doc.debut_date"/> Au <span t-field="doc.end_date"/>
-                    </div>
-                    <p>
-                        Date d'édition: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y/%m/%d %H:%M')"/> 
-                    </p>
-                </div>
-                <div class="page article">                
+                
+                <div class="page article">
+                    <div ><!--class="header"-->
+                        <!-- <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" class="float-left"
+                                 alt="Logo"/> -->
+                        <div style="text-align:center;">
+                            <span styme="border: 1px black solid;padding:5px;"> <t t-esc="doc.get_report_title()"/></span><br/>
+                            <t t-esc="doc.pos_config_id.name"/>
+                        </div>
+                        <div>
+                            Du <span t-field="doc.debut_date"/> Au <span t-field="doc.end_date"/>
+                        </div>
+                        <p>
+                            Date d'édition: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y/%m/%d %H:%M')"/> 
+                        </p>
+                    </div>                
                     <table t-if="doc.type in ['main_ouvre_cais', 'main_ouvre_glob']" class="table table-bordered">
                         <tr>
                             <th>Facture</th>
-                            <th t-if="doc.type=='main_ouvre_cais'">Serveur</th>
+                            <th t-if="doc.type=='main_ouvre_glob'">Serveur</th>
                             <th>Total TTC</th>
                             <th>Détail</th>
                         </tr>
                         <tr t-foreach="doc.get_data_reporting()" t-as="line">
                             <t t-if="line['type'] == 'normal'">
                                 <td><span t-esc="line['name']"/></td>
-                                <td t-if="doc.type=='main_ouvre_cais'"><span t-esc="line['cashier']"/></td>
+                                <td t-if="doc.type=='main_ouvre_glob'"><span t-esc="line['cashier']"/></td>
                                 <td style="text-align:right;"><span t-esc="line['total']"/></td>
                                 <td><span t-raw="line['detail']"/></td>
                             </t>

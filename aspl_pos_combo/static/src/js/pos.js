@@ -209,8 +209,13 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         			var combo_line_obj = _.find(self.pos.product_combo_line, function(data){
                                         return data.id === combo_line_id;
                                     });
+
                     var product_id = combo_line_obj.product_id[0];
         			var obj_product_id = self.pos.db.get_product_by_id(product_id);
+                    if(!obj_product_id){
+                        alert("L'article <"+combo_line_obj.product_id[0]+" : "+combo_line_obj.product_id[1]+ ">\n n'existe pas, archivé ou n'est pas disponible sur le PDV");
+                        return;
+                    }
                     var is_supplement = !(combo_line_obj.based_on_priceliste);
 
                     var pricelist_price = combo_line_obj.price_supplement;

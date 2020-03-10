@@ -21,6 +21,7 @@
 
     # always loaded
     'data': [
+        'data/paper_format.xml',
         'security/security.xml',
         'views/assets.xml',
         'wizards/reporting_wizard.xml',
