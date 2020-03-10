@@ -30,6 +30,7 @@ class PosConfig(models.Model):
     @api.model
     def main_courant_rapport(self):
         context = self._context or {}
+        print("context", context)
         pos_company_id = context.get('pos_company_id', False)
         pos_config_id = context.get('pos_config_id', False)
         date_start_report = context.get('date_start_report', False)
@@ -46,8 +47,8 @@ class PosConfig(models.Model):
                 py_lines = self.sudo().env['account.bank.statement.line'].read_group(domain=[
                     ('company_id', '=', pos_company_id),
                     ('config_id', '=', pos_config_id),
-                    ('date', '>=', date_start_report),
-                    ('date', '<=', date_end_report),
+                    ('create_date', '>=', date_start_report),
+                    ('create_date', '<=', date_end_report),
                     ('pos_vendeur_id', '=', int(user_reporting or 0)),
                     ],fields=['amount_currency', 'amount'], groupby=['journal_id'])
                 tot = 0
@@ -68,8 +69,8 @@ class PosConfig(models.Model):
                 py_lines = self.sudo().env['account.bank.statement.line'].read_group(domain=[
                     ('company_id', '=', pos_company_id),
                     ('config_id', '=', pos_config_id),
-                    ('date', '>=', date_start_report),
-                    ('date', '<=', date_end_report),
+                    ('create_date', '>=', date_start_report),
+                    ('create_date', '<=', date_end_report),
                     ],fields=['amount_currency','amount'], groupby=['journal_id'])
                 tot = 0
                 for line in py_lines:

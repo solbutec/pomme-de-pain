@@ -47,11 +47,12 @@ class PosConfigWizard(models.TransientModel):
 
     def get_data_reporting(self):
         lines_report = []
+        print("----- SELF::", self.type)
         if self.type in ['main_ouvre_glob', 'main_ouvre_cais']:
             my_domaine = [
                     ('config_id', '=', self.sudo().pos_config_id.id),
-                    ('date', '>=', self.debut_date),
-                    ('date', '<=', self.end_date),
+                    ('create_date', '>=', self.debut_date),
+                    ('create_date', '<=', self.end_date),
                     ]
             if self.type == 'main_ouvre_cais':
                 my_domaine.append(('pos_vendeur_id', '=', self.sudo().cashier_id.id))
@@ -82,5 +83,24 @@ class PosConfigWizard(models.TransientModel):
                     'type': 'total',
                      'total': tot,
                     })
+        print("--------------------- TYPE",self.type)
+        if self.type in ['vente_eclat', 'vente_non_eclat']:
+            new_context = {
+             'pos_config_id': self.sudo().pos_config_id.id,
+             'pos_company_id': self.sudo().env.user.company_id.id,
+             'date_start_report': self.debut_date,
+             'date_end_report': self.end_date,
+             'type_reporting': self.type,
+             'user_reporting': self.sudo().cashier_id and self.sudo().cashier_id.id or False,
+             'pricelist_id': self.sudo().pos_config_id.pricelist_id.id,
+            }
+            print("Before calling ...-----------------------------")
+            result = self.pos_config_id.with_context(**new_context).main_courant_rapport()
+            if len(result):
+                lines_report = result
+                result.append({
+                    'type': 'total',
+                    'total_qty': sum([l['qty'] for l in result if l['type']=='categ_footer']),
+                })
         return lines_report
 
