@@ -93,6 +93,18 @@
                             </t>
                         </tr>
                     </table>
+                    <table t-if="doc.type == 'rapport_des_traces'" class="table table-bordered">
+                        <tr>
+                            <th>Date commande</th>
+                            <th>Référence commande</th>
+                            <th>Opération</th>
+                        </tr>
+                        <tr t-foreach="doc.get_data_reporting()" t-as="line">
+                            <td style="text-align:left"><t t-esc="line['date_order']"/></td>
+                            <td style="text-align:left"><t t-esc="line['name']"/></td>
+                            <td style="text-align:right;"><t t-esc="line['pos_history_operations']"/></td>
+                        </tr>
+                    </table>
                 </div>
             </t>
         </t>

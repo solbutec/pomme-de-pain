@@ -12,6 +12,7 @@ REPORT_TITLES = {
     'main_ouvre_cais': "Main courante (Caissier)", 
     'vente_eclat': "Ventes éclatées",
     'vente_non_eclat': "Ventes non éclatées",
+    'rapport_des_traces': "Rapport des traces",
 }
 class PosConfigWizard(models.TransientModel):
     _name = 'pos.config.reporting.wizard'
@@ -35,7 +36,8 @@ class PosConfigWizard(models.TransientModel):
         ('main_ouvre_glob', "Main courante global"), 
         ('main_ouvre_cais', "Main courante (Caissier)"), 
         ('vente_eclat', "Ventes éclatées"),
-        ('vente_non_eclat', "Ventes non éclatées")],
+        ('vente_non_eclat', "Ventes non éclatées"),
+        ('rapport_des_traces', "Rapport des traces")],
                             default='main_ouvre_glob')
     cashier_id = fields.Many2one('res.users', string="Cashier")
     pos_config_id = fields.Many2one("pos.config", string="Pos config", default= get_pos_config)
@@ -101,6 +103,23 @@ class PosConfigWizard(models.TransientModel):
                 result.append({
                     'type': 'total',
                     'total_qty': sum([l['qty'] for l in result if l['type']=='categ_footer']),
+                })
+        if self.type == 'rapport_des_traces':
+            my_domaine = [
+                ('config_id', '=', self.sudo().pos_config_id.id),
+                ('create_date', '>=', self.debut_date),
+                ('create_date', '<=', self.end_date),
+            ]
+            py_lines = self.sudo().env['pos.order'].search(my_domaine)
+            filtred_lines = py_lines.filtred(lambda r: 'modification nulle' in r.pos_history_operations or
+                                                       'modification négative' in r.pos_history_operations or
+                                                       'suppression' in r.pos_history_operations)
+            for pos_order in filtred_lines:
+                lines_report.append({
+                    'type': 'rapport_des_traces',
+                    'date_order': pos_order.sudo().date_order,
+                    'name': pos_order.sudo().name,
+                    'pos_history_operations': pos_order.sudo().pos_history_operations,
                 })
         return lines_report
 
