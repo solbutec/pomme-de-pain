@@ -115,11 +115,16 @@ class PosConfigWizard(models.TransientModel):
                                                        'modification négative' in r.pos_history_operations or
                                                        'suppression' in r.pos_history_operations)
             for pos_order in filtred_lines:
+                text_line = []
+                text = pos_order.sudo().pos_history_operations.split('\n')
+                for line in text:
+                    if 'modification nulle' in line or 'modification négative' in line or 'suppression' in line:
+                        text_line.append(", ".join(line.split(' /}{/ ')))
                 lines_report.append({
                     'type': 'rapport_des_traces',
                     'date_order': pos_order.sudo().date_order,
                     'name': pos_order.sudo().name,
-                    'pos_history_operations': pos_order.sudo().pos_history_operations,
+                    'pos_history_operations': "<br/>".join(text_line),
                 })
         return lines_report
 
