@@ -85,7 +85,6 @@ class PosConfigWizard(models.TransientModel):
                     'type': 'total',
                      'total': tot,
                     })
-        print("--------------------- TYPE",self.type)
         if self.type in ['vente_eclat', 'vente_non_eclat']:
             new_context = {
              'pos_config_id': self.sudo().pos_config_id.id,
@@ -96,7 +95,6 @@ class PosConfigWizard(models.TransientModel):
              'user_reporting': self.sudo().cashier_id and self.sudo().cashier_id.id or False,
              'pricelist_id': self.sudo().pos_config_id.pricelist_id.id,
             }
-            print("Before calling ...-----------------------------")
             result = self.pos_config_id.with_context(**new_context).main_courant_rapport()
             if len(result):
                 lines_report = result
@@ -115,16 +113,16 @@ class PosConfigWizard(models.TransientModel):
                                                        'modification négative' in r.pos_history_operations or
                                                        'suppression' in r.pos_history_operations)
             for pos_order in filtred_lines:
-                text_line = []
-                text = pos_order.sudo().pos_history_operations.split('\n')
-                for line in text:
+                show_lines = []
+                text_lines = pos_order.sudo().pos_history_operations.split('\n')
+                for line in text_lines:
                     if 'modification nulle' in line or 'modification négative' in line or 'suppression' in line:
-                        text_line.append(", ".join(line.split(' /}{/ ')))
+                        show_lines.append((", ".join(line.strip().split(' /}{/ '))).strip())
                 lines_report.append({
                     'type': 'rapport_des_traces',
                     'date_order': pos_order.sudo().date_order,
                     'name': pos_order.sudo().name,
-                    'pos_history_operations': "<br/>".join(text_line),
+                    'pos_history_operations': "<br/>".join(show_lines),
                 })
         return lines_report
 
