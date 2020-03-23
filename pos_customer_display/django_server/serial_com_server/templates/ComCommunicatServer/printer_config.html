@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <title>CASH DRAWER PRINTER</title>
+      	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" crossorigin="anonymous">
+  </head>
+	<body>
+
+
+		<section id="cover">
+			<div id="cover-caption">
+				<div id="container" class="container">
+					<div class="row">
+						<div class="col-sm-10 offset-sm-1 text-center">
+							<h3 class="display-6">Welcome to cash drawer printer configuration<h3>
+								<br/>
+							<div class="info-form">
+                   
+								<form>
+								  <div class="form-group row">
+									<label for="port_com" class="col-sm-2 col-form-label col-form-label-sm">Printer</label>
+									<div class="col-sm-10">
+									  <select type="email" class="form-control form-control-sm" id="printer_name">
+									  	{% for printer in printers_list %}
+										    <option value="{{ printer }}">{{ printer }}</option>
+										{% endfor %}
+									  </select>
+									</div>
+								  </div>
+								  <div class="col-auto">
+									  <button type="button" class="btn btn-primary mb-2" id="send_msg">Send</button>
+									</div> 
+								</form>
+								<div>
+								  <div class="alert alert-info" id="result_printer">
+									
+								  </div>
+								  <div class="alert alert-success" id="result_printer_add">
+									
+									{% if current_printer %}
+										   Current printer is '{{ current_printer }}'
+										{% endif %}
+								  </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+			  
+	</body>
+	<script src="https://code.jquery.com/jquery-3.3.1.min.js"  crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	<script>
+	   $("#send_msg").click(function() {
+          var printer_name = $("#printer_name").val();
+		  if(printer_name){
+				$.post("http://localhost:8000/com/opencashdrawer",{
+				 printer_name: printer_name,
+				}).done(function( data ) {
+					$("#result_printer").html("Result:  -> <br/>OK: "+data.ok+"<br/>Infos:"+data.msg);
+
+				$("#result_printer_add").text(data.msg2);
+				  });
+		  }else{
+			alert("All fields are required");
+		  }
+       });
+	</script>
+	
+  </html>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <report
+            id="report_main_courante"
+            model="pos.config.reporting.wizard"
+            string="Main courante"
+            name="pdp_reporting.main_courant_report_view"
+            file="pdp_reporting.main_courant_report_view"
+            paperformat="pdp_reporting.pdp_paperformat_report"
+            menu="False"
+            report_type="qweb-pdf"/>
+
+    <template id="main_courant_report_view">
+
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-set="doc" t-value="doc.sudo()"/>
+                
+                <div class="page article">
+                    <div ><!--class="header"-->
+                        <!-- <img t-if="doc.company_id.logo" t-att-src="image_data_uri(doc.company_id.logo)" class="float-left"
+                                 alt="Logo"/> -->
+                        <div style="text-align:center;">
+                            <br/>
+                            <span style="border: 1px black solid;padding:5px;border-radius:6px;margin:3px;"> <t t-esc="doc.get_report_title()"/></span><br/>
+                            <t t-esc="doc.pos_config_id.name"/>
+                        </div>
+                        <br/>
+                        <t t-if="doc.type=='main_ouvre_cais'">Opérateur: <span t-esc="doc.cashier_id.name"/></t>
+                        <div>
+                            Du <span t-field="doc.debut_date"/> Au <span t-field="doc.end_date"/>
+                        </div>
+                        <p>
+                            Date d'édition: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y/%m/%d %H:%M')"/> 
+                        </p>
+                    </div>                
+                    <table t-if="doc.type in ['main_ouvre_cais', 'main_ouvre_glob']" class="table table-bordered">
+                        <tr>
+                            <th>Facture</th>
+                            <th t-if="doc.type=='main_ouvre_glob'">Serveur</th>
+                            <th>Total TTC</th>
+                            <th>Détail</th>
+                        </tr>
+                        <tr t-foreach="doc.get_data_reporting()" t-as="line">
+                            <t t-if="line['type'] == 'normal'">
+                                <td><span t-esc="line['name']"/></td>
+                                <td t-if="doc.type=='main_ouvre_glob'"><span t-esc="line['cashier']"/></td>
+                                <td style="text-align:right;"><span t-esc="line['total']"/></td>
+                                <td><span t-raw="line['detail']"/></td>
+                            </t>
+                            <t t-if="line['type'] == 'method'">
+                                <td colspan="2"><span t-esc="line['name']"/></td>
+                                <td  colspan="2"><span t-esc="line['total']"/></td>
+                            </t>
+                            <t t-if="line['type'] == 'total'">
+                                <td colspan="4" style="text-align: center;"><strong>Total:</strong> <strong t-esc="line['total']"/></td>
+                            </t>
+                        </tr>
+                    </table>
+
+                    <table t-if="doc.type in ['vente_eclat', 'vente_non_eclat']" class="table table-bordered">
+                        <tr>
+                            <th>Code</th>
+                            <th>Produit</th>
+                            <th>Qté</th>
+                            <th>P.U</th>
+                            <th>Total</th>
+                        </tr>
+                        <tr t-foreach="doc.get_data_reporting()" t-as="line">
+                            <t t-if="line['type'] == 'normal'">
+                                <td style="text-align:left"><t t-esc="line['code']"/></td>
+                                <td style="text-align:left"><t t-esc="line['name']"/></td>
+                                <td style="text-align:right;"><t t-esc="int(line['qty'])"/></td>
+                                <td style="text-align:right;"><t t-esc="line['price_unit']"/></td>
+                                <td style="text-align:right;"><t t-esc="line['total']"/></td>
+                            </t>
+                            <t t-if="line['type'] == 'categ_footer'">
+                                <td colspan="2" style="text-align: left;border: O;padding:7px;padding-left:10px;">
+                                    <t t-esc="line['name']"/>
+                                </td>
+                                <td style="text-align: right;border: 0;padding:7px;">
+                                    <t t-esc="int(line['qty'])"/>
+                                </td>
+                                <td style="text-align: right;border: 0;padding:7px;">
+                                    &#160;
+                                </td>
+                                <td style="text-align: right;border: 0;padding:7px;">
+                                    <t t-esc="line['total']"/>
+                                </td>
+                            </t>
+                            <t t-if="line['type'] == 'total'">
+                                <td colspan="5" style="text-align: center; padding:6px;"><strong>Quantité totale: </strong> <strong t-esc="int(line['total_qty'])"/></td>
+                            </t>
+                        </tr>
+                    </table>
+                    <table t-if="doc.type == 'rapport_des_traces'" class="table table-bordered">
+                        <tr>
+                            <th>Date commande</th>
+                            <th>Référence commande</th>
+                            <th>Opérations</th>
+                        </tr>
+                        <tr t-foreach="doc.get_data_reporting()" t-as="line">
+                            <td style="text-align:left"><t t-esc="line['date_order']"/></td>
+                            <td style="text-align:left"><t t-esc="line['name']"/></td>
+                            <td style="text-align:right;"><t t-raw="line['pos_history_operations']"/></td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

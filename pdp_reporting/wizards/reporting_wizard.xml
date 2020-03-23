@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+   <record id="pdp_pos_reporting_wizard" model="ir.ui.view">
+        <field name="name">pos.config.reporting.wizard</field>
+        <field name="model">pos.config.reporting.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Print your current hand">
+                <group>
+                    <group>
+                        <field name="pos_config_id" invisible="1"/>
+                        <field name="type" required="1"/>
+                        <field name="cashier_id"
+                               attrs="{'invisible': [('type', '!=', 'main_ouvre_cais')], 'required': [('type', '=', 'main_ouvre_cais')]}" domain="[('pos_config_ids','in',[pos_config_id])]"
+                               options="{'no_open': True, 'no_create': True}"/>
+                    </group>
+                    <group>
+                        <field name="debut_date" required="1"/>
+                        <field name="end_date" required="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_print"
+                            string="Print" type="object"
+                            class="btn-primary"/>
+                    <button string="Cancel"
+                            class="btn-default"
+                            special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_pdp_pos_reporting_wizard" model="ir.actions.act_window">
+        <field name="name">Rapport de POS</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pos.config.reporting.wizard</field>
+        <field name="view_id" ref="pdp_reporting.pdp_pos_reporting_wizard"/>
+        <field name="target">new</field>
+    </record>
+
+
+</odoo>

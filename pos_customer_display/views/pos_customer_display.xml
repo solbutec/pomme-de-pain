@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="pos_customer_display index" name="pos_customer_display assets" inherit_id="point_of_sale.index">
+            <xpath expr="." position="inside">
+                <script type="text/javascript" src="/pos_customer_display/static/src/js/customer_display.js"></script>
+                <link rel="stylesheet" href="/aspl_pos_combo/static/src/css/pos.css"/>
+            </xpath>
+        </template>
+
+</odoo>

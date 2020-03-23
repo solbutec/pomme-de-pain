@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_pos_pos_form" model="ir.ui.view">
+            <field name="name">pos.order.form.view.inherit</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"></field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='statement_id']" position="after">
+                    <field name="amount_change" invisible="0"/>
+                    <field name="amount_due" invisible="0"/>
+                    <field name="change_currency" invisible="0"/>
+                    <field name="due_currency" invisible="0"/>
+                    <field name="amount_change_curr" widget="monetary"/>
+                    <field name="amount_due_curr" widget="monetary"/>
+
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_bank_statement_form_inherited" model="ir.ui.view">
+            <field name="name">account.bank.statement.view.inherit</field>
+            <field name="model">account.bank.statement</field>
+            <field name="inherit_id" ref="account.view_bank_statement_form"></field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='line_ids']/tree/field[@name='amount']" position="before">
+                    <field name="amount_change" invisible="1"/>
+                    <field name="amount_due" invisible="1"/>
+                    <field name="change_currency" invisible="1"/>
+                    <field name="due_currency" invisible="1"/>
+                    <field name="amount_change_curr" widget="monetary"/>
+                    <field name="amount_due_curr" widget="monetary"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_bank_statement_line_tree_inherit" model="ir.ui.view">
+            <field name="name">account.bank.statement.line.view.inherit</field>
+            <field name="model">account.bank.statement.line</field>
+            <field name="inherit_id" ref="account.view_bank_statement_line_tree"></field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='journal_currency_id']" position="after">
+                    <field name="amount_change" invisible="0"/>
+                    <field name="change_currency" invisible="0"/>
+                    <field name="amount_due" invisible="0"/>
+                    <field name="due_currency" invisible="0"/>
+                    <field name="amount_change_curr" widget="monetary" invisible="1"/>
+                    <field name="amount_due_curr" widget="monetary" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+
+         <record id="view_bank_statement_line_search_inherited" model="ir.ui.view">
+            <field name="name">account.bank.statement.line.search.inherit</field>
+            <field name="model">account.bank.statement.line</field>
+            <field name="inherit_id" ref="account.view_bank_statement_line_search"></field>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='journal_id']" position="after">
+                    <field name="amount_change" />
+                    <field name="change_currency"/>
+                    <field name="amount_due"/>
+                    <field name="due_currency"/>
+                    <separator/>
+                    <filter name="date_stat_filter" string="Filter Date" date="date"/>
+                    <filter string="Today" name="today_stat_lines"
+                            domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                    <separator/>
+                     <group expand="0" string="Group By">
+                        <filter string="Change currency" name="chng_curr_grp" domain="[]" context="{'group_by':'change_currency'}"/>
+                        <filter string="Due currecy" name="due_curr_grp" domain="[]" context="{'group_by':'due_currency'}"/>
+                         <filter string="By date" name="state_day_grp" domain="[]" context="{'group_by':'date'}"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+         <record id="kzm_action_bank_statement_line" model="ir.actions.act_window">
+            <field name="name">Bank Statement Lines</field>
+            <field name="res_model">account.bank.statement.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,pivot,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'search_default_today_stat_lines':1, 'search_default_chng_curr_grp':1}</field>
+            <field name="search_view_id" ref="account.view_bank_statement_line_search"/>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_empty_folder">
+                A bank statement line is a financial transaction on a bank account
+              </p><p>
+                Odoo allows you to reconcile a statement line directly with
+                the related sale or puchase invoice(s).
+              </p>
+            </field>
+        </record>
+
+        <menuitem id="curr_bank_stat_line_menu_parent" parent="account.menu_finance_reports" name="Bank statments POS"/>
+
+        <menuitem id="curr_bank_stat_line_menu" parent="curr_bank_stat_line_menu_parent" name="Bank statments lines" action="kzm_action_bank_statement_line"/>
+
+<!-- Requete-->
+
+        <record id="kzm_account_bank_statement_line_reporting_pivot" model="ir.ui.view">
+            <field name="name">kzm.account.bank.statement.line.reporting.pivot</field>
+            <field name="model">kzm.account.bank.statement.line.reporting</field>
+           <!-- <field name="inherit_id" ref="account.view_bank_statement_line_tree"></field> -->
+            <field name="arch" type="xml">
+                <pivot string="sales statistics" disable_linking="True">
+                    <field name="r_config_id" type="row"/>
+                    <field name="r_date" type="row"/>
+                    <field name="currency_id" type="col"/>
+                    <field name="amount_change" type="measure"/>
+                    <field name="amount_due" type="measure"/>
+                </pivot>
+            </field>
+        </record>
+
+        <record id="kzm_account_bank_statement_line_reporting_action" model="ir.actions.act_window">
+            <field name="name">Pos payments anlaysis</field>
+            <field name="res_model">kzm.account.bank.statement.line.reporting</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">pivot</field>
+        </record>
+
+
+        <menuitem id="account_bank_statement_line_reporting_menu" parent="curr_bank_stat_line_menu_parent"
+                  name="Pos payment Analysis" action="kzm_account_bank_statement_line_reporting_action"/>
+
+
+    </data>
+</odoo>

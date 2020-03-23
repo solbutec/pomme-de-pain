@@ -1,0 +1,42 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* pos_user_restrict
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-03-05 11:33+0000\n"
+"PO-Revision-Date: 2020-03-05 11:33+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: pos_user_restrict
+#: model:ir.model.fields,field_description:pos_user_restrict.field_res_users__pos_config_ids
+msgid "Allowed POS"
+msgstr "POS alloués"
+
+#. module: pos_user_restrict
+#: model:ir.model.fields,help:pos_user_restrict.field_res_users__pos_config_ids
+msgid "Allowed POS for users. POS managers can view all Points of Sale."
+msgstr "Allouer POS pour des utilisateurs, les managers de POS voient tous"
+
+#. module: pos_user_restrict
+#: model:ir.model,name:pos_user_restrict.model_pos_config
+msgid "Point of Sale Configuration"
+msgstr "Paramétrage du point de vente"
+
+#. module: pos_user_restrict
+#: model:ir.model,name:pos_user_restrict.model_pos_order
+msgid "Point of Sale Orders"
+msgstr "Commandes du point de vente"
+
+#. module: pos_user_restrict
+#: model:ir.model,name:pos_user_restrict.model_res_users
+msgid "Users"
+msgstr "Utilisateurs"
+
