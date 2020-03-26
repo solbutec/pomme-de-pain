@@ -108,9 +108,9 @@ class PosConfigWizard(models.TransientModel):
                 ('create_date', '<=', self.end_date),
             ]
             py_lines = self.sudo().env['pos.order'].search(my_domaine)
-            filtred_lines = py_lines.filtered(lambda r: 'modification nulle' in r.pos_history_operations or
+            filtred_lines = py_lines and py_lines.filtered(lambda r: r.pos_history_operations and ('modification nulle' in r.pos_history_operations or
                                                        'modification négative' in r.pos_history_operations or
-                                                       'suppression' in r.pos_history_operations)
+                                                       'suppression' in r.pos_history_operations)) or []
             for pos_order in filtred_lines:
                 show_lines = []
                 text_lines = pos_order.sudo().pos_history_operations and pos_order.sudo().pos_history_operations.split('\n') or []
