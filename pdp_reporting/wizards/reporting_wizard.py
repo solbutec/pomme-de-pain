@@ -121,7 +121,7 @@ class PosConfigWizard(models.TransientModel):
                     'type': 'rapport_des_traces',
                     'date_order': pos_order.sudo().date_order,
                     'name': pos_order.sudo().name,
-                    'pos_history_operations': "<br/>".join(show_lines),
+                    'pos_history_operations': "- <br/>".join(show_lines),
                 })
         return lines_report
 
