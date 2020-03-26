@@ -49,7 +49,6 @@ class PosConfigWizard(models.TransientModel):
 
     def get_data_reporting(self):
         lines_report = []
-        print("----- SELF::", self.type)
         if self.type in ['main_ouvre_glob', 'main_ouvre_cais']:
             my_domaine = [
                     ('config_id', '=', self.sudo().pos_config_id.id),
@@ -114,7 +113,7 @@ class PosConfigWizard(models.TransientModel):
                                                        'suppression' in r.pos_history_operations)
             for pos_order in filtred_lines:
                 show_lines = []
-                text_lines = pos_order.sudo().pos_history_operations.split('\n')
+                text_lines = pos_order.sudo().pos_history_operations and pos_order.sudo().pos_history_operations.split('\n') or []
                 for line in text_lines:
                     if 'modification nulle' in line or 'modification négative' in line or 'suppression' in line:
                         show_lines.append((", ".join(line.strip().split(' /}{/ '))).strip())
