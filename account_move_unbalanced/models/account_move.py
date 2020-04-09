@@ -23,7 +23,7 @@ class AccountMove(models.Model):
         for move in self:
             print("MOVE ID", move.id)
             for l in move.line_ids:
-                print("ML:",l.id, l.name,l.debit,l.credit)
+                print("ML:",l.id,l.debit,l.credit)
         # if len(self._cr.fetchall()) != 0:
         #     raise UserError(_("Cannot create unbalanced journal entry."))
         return super(AccountMove, self).assert_balanced()
