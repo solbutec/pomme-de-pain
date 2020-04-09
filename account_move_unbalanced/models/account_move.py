@@ -20,10 +20,10 @@ class AccountMove(models.Model):
             HAVING      abs(sum(debit) - sum(credit)) > %s
             """, (tuple(self.ids), 10 ** (-max(5, prec))))
         print(self._cr.fetchall())
-        for m in self:
-            print("---- MOVE ", m.id)
-            for l in m.line_ids:
-                print("LI", l.id, l.name, l.debit, l.credit)
+        for move in self:
+            print("MOVE ID", move.id)
+            for l in move.line_ids:
+                print("ML:",l.id, l.name,l.debit,l.credit)
         # if len(self._cr.fetchall()) != 0:
         #     raise UserError(_("Cannot create unbalanced journal entry."))
         return super(AccountMove, self).assert_balanced()
