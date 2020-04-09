@@ -22,6 +22,7 @@ class AccountMove(models.Model):
         for res in self._cr.fetchall():
             move_id, debit, credit = res
             diff = debit - credit
+            move = self.env['account.move'].browse(move_id)
             if diff <= (10 ** (-prec)):
                 last_move_line = [l for l in move.line_ids ]
                 last_move_line = last_move_line[-1]
@@ -30,6 +31,4 @@ class AccountMove(models.Model):
                     SET credit =  %s
                     WHERE id = %s
                     """, (l.credit + diff,last_move_line.id))      
-        # if len(self._cr.fetchall()) != 0:
-        #     raise UserError(_("Cannot create unbalanced journal entry."))
         return super(AccountMove, self).assert_balanced()
