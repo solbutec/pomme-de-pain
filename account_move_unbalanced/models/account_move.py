@@ -19,11 +19,17 @@ class AccountMove(models.Model):
             GROUP BY    move_id
             HAVING      abs(sum(debit) - sum(credit)) > %s
             """, (tuple(self.ids), 10 ** (-max(5, prec))))
-        print(self._cr.fetchall())
-        for move in self:
-            print("MOVE ID", move.id)
-            for l in move.line_ids:
-                print("ML:",l.id,l.debit,l.credit)
+        for res in self._cr.fetchall():
+            move_id, debit, credit = res
+            diff = debit - credit
+            if diff <= (10 ** (-prec)):
+                last_move_line = [l for l in move.line_ids ]
+                last_move_line = last_move_line[-1]
+                self._cr.execute("""\
+                    UPDATE      account_move_line
+                    SET credit =  %s
+                    WHERE id = %s
+                    """, (l.credit + diff,last_move_line.id))      
         # if len(self._cr.fetchall()) != 0:
         #     raise UserError(_("Cannot create unbalanced journal entry."))
         return super(AccountMove, self).assert_balanced()
