@@ -23,9 +23,11 @@ class AccountMove(models.Model):
             move_id, debit, credit = res
             diff = debit - credit
             move = self.env['account.move'].browse(move_id)
-            if diff <= (10 ** (-prec)):
-                last_move_line = [l for l in move.line_ids ]
-                last_move_line = last_move_line[-1]
+            if diff <= (10 ** (-(prec-1))):
+                last_move_line = 0
+                for l in move.line_ids:
+                    if l.credit > 0:
+                        last_move_line = l
                 self._cr.execute("""\
                     UPDATE      account_move_line
                     SET credit =  %s
