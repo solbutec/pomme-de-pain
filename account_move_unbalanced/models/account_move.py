@@ -30,5 +30,5 @@ class AccountMove(models.Model):
                     UPDATE      account_move_line
                     SET credit =  %s
                     WHERE id = %s
-                    """, (l.credit + diff,last_move_line.id))      
+                    """, (last_move_line.credit + diff,last_move_line.id))      
         return super(AccountMove, self).assert_balanced()
