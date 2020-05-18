@@ -145,9 +145,9 @@ odoo.define('pos_user_control.models', function (require) {
                     .prop('disabled', !has_pos_qty_control);
                 //disable dot button
                 
-                $('.dot').toggleClass('disabled-mode', !has_pos_qty_control)
-                    .prop('disabled', !has_pos_qty_control);
-                console.log("===Pos model apply access",$('.dot'),!has_pos_qty_control);
+                // $('.dot').toggleClass('disabled-mode', !has_pos_qty_control)
+                //     .prop('disabled', !has_pos_qty_control);
+                // console.log("===Pos model apply access",$('.dot'),!has_pos_qty_control);
 
                 $('.numpad-minus').toggleClass('disabled-mode', !has_pos_qty_control)
                     .prop('disabled', !has_pos_qty_control);
