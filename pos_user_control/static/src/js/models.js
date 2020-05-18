@@ -120,6 +120,7 @@ odoo.define('pos_user_control.models', function (require) {
          applyAccessRights: function () {
             //_super_posmodel.prototype.applyAccessRights.call(this);
             var user = this.get_cashier();
+            console.log("--- POSMODEL:",user);
             if(user != undefined){
                 var has_pos_price_control = user.has_pos_price_control;
                 var has_pos_qty_control = user.has_pos_qty_control;
