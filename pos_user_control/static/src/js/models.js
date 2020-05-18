@@ -99,6 +99,10 @@ odoo.define('pos_user_control.models', function (require) {
                     num_zero.removeClass('disabled-mode');
                     num_zero.removeProp('disabled');
                 }
+                this.$el.find('.zero').toggleClass('disabled-mode', !has_pos_qty_control)
+                    .prop('disabled', !has_pos_qty_control);
+                this.$el.find('.number-char').last().toggleClass('disabled-mode', !has_pos_qty_control)
+                    .prop('disabled', !has_pos_qty_control);
             }
         },
 

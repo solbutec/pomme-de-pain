@@ -155,5 +155,5 @@ class StockPickingRest(models.Model):
         for o in self:
             o.warehouse_to_id = False
             if o.location_dest_id:
-                o.warehouse_to_id = self.env['stock.warehouse'].sudo().search([('location_id','=',o.location_dest_id.id)], limit=1)
+                o.warehouse_to_id = self.env['stock.warehouse'].sudo().search([('lot_stock_id','=',o.location_dest_id.id)], limit=1)
     warehouse_to_id = fields.Many2one('stock.warehouse', string="Warehouse TO", compute=get_warehouse_to)
