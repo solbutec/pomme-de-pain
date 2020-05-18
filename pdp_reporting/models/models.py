@@ -152,7 +152,7 @@ class StockPickingRest(models.Model):
     _inherit = 'stock.picking'
 
     def get_warehouse_to(self):
-        for o in slef:
+        for o in self:
             o.warehouse_to_id = False
             if o.location_dest_id:
                 o.warehouse_to_id = self.env['stock.warehouse'].sudo().search([('location_id','=',o.location_dest_id.id)], limit=1)
