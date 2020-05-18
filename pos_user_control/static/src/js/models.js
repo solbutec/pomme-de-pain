@@ -57,9 +57,8 @@ odoo.define('pos_user_control.models', function (require) {
                     .prop('disabled', !has_pos_qty_control);
 
                 //disable dot button
-                // this.$el.find('.number-char').last().toggleClass('disabled-mode', !has_pos_qty_control)
-                //     .prop('disabled', !has_pos_qty_control);
-                console.log("===Numpadwidget apply access", user);
+                this.$el.find('.number-char:last').toggleClass('disabled-mode', !has_pos_qty_control).prop('disabled', !has_pos_qty_control);
+                console.log("===Pos model apply access",$('.number-char:last'),!has_pos_qty_control);
 
 
                 this.$el.find('.numpad-minus').toggleClass('disabled-mode', !has_pos_qty_control)
