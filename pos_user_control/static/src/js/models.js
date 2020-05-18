@@ -53,10 +53,17 @@ odoo.define('pos_user_control.models', function (require) {
                 this.$el.find('.mode-button[data-mode="quantity"]')
                     .toggleClass('selected-mode', has_pos_qty_control);
 
-                // this.$el.find('.zero').toggleClass('disabled-mode', !has_pos_qty_control)
-                //     .prop('disabled', !has_pos_qty_control);
+                this.$el.find('.zero').toggleClass('disabled-mode', !has_pos_qty_control)
+                    .prop('disabled', !has_pos_qty_control);
+
+                //disable dot button
+                this.$el.find('.number-char').last().toggleClass('disabled-mode', !has_pos_qty_control)
+                    .prop('disabled', !has_pos_qty_control);
+
                 this.$el.find('.numpad-minus').toggleClass('disabled-mode', !has_pos_qty_control)
                     .prop('disabled', !has_pos_qty_control);
+
+
 
                 this.$el.find('.mode-button[data-mode="discount"]').toggleClass('disabled-mode', !has_pos_discount_control)
                     .prop('disabled', !has_pos_discount_control);
