@@ -147,3 +147,13 @@ class PosConfig(models.Model):
                         
 
         return lines 
+
+class StockPickingRest(models.Model):
+    _inherit = 'stock.picking'
+
+    def get_warehouse_to(self):
+        for o in slef:
+            o.warehouse_to_id = False
+            if o.location_dest_id:
+                o.warehouse_to_id = self.env['stock.warehouse'].sudo().search([('location_id','=',o.location_dest_id.id)], limit=1)
+    warehouse_to_id = fields.Many2one('stock.warehouse', string="Warehouse TO", compute=get_warehouse_to)

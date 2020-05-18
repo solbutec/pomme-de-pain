@@ -5,10 +5,10 @@
         	<t t-if="o.picking_type_id and o.picking_type_id.code == 'internal'">
                       <div class="row">
                           <div class="col-6">
-                            <center><strong>Source: </strong><span t-field="o.picking_type_id.warehouse_id and o.picking_type_id.warehouse_id.name"/></center>
+                            <center><strong>Source: </strong><span t-field="o.picking_type_id.warehouse_id"/></center>
                           </div>
                           <div class="col-6">
-                            <center><strong>Destination: </strong><span t-field="o.location_dest_id and o.location_dest_id.name"/> </center>
+                            <center><strong>Destination: </strong><span t-field="o.warehouse_to_id"/> </center>
                           </div>
                       </div>
                       <br/>
