@@ -57,9 +57,8 @@ odoo.define('pos_user_control.models', function (require) {
                     .prop('disabled', !has_pos_qty_control);
 
                 //disable dot button
-                this.$el.find('.number-char:last').toggleClass('disabled-mode', !has_pos_qty_control).prop('disabled', !has_pos_qty_control);
-                console.log("===Pos model apply access",$('.number-char:last'),!has_pos_qty_control);
-
+                this.$el.find('.pointP').toggleClass('disabled-mode', !has_pos_qty_control)
+                    .prop('disabled', !has_pos_qty_control);
 
                 this.$el.find('.numpad-minus').toggleClass('disabled-mode', !has_pos_qty_control)
                     .prop('disabled', !has_pos_qty_control);
@@ -118,7 +117,6 @@ odoo.define('pos_user_control.models', function (require) {
          applyAccessRights: function () {
             //_super_posmodel.prototype.applyAccessRights.call(this);
             var user = this.get_cashier();
-            console.log("--- POSMODEL:",user);
             if(user != undefined){
                 var has_pos_price_control = user.has_pos_price_control;
                 var has_pos_qty_control = user.has_pos_qty_control;
@@ -144,9 +142,8 @@ odoo.define('pos_user_control.models', function (require) {
                 $('.zero').toggleClass('disabled-mode', !has_pos_qty_control)
                     .prop('disabled', !has_pos_qty_control);
                 //disable dot button
-                
-                $('.number-char:last').toggleClass('disabled-mode', !has_pos_qty_control).prop('disabled', !has_pos_qty_control);
-                console.log("===Pos model apply access",$('.number-char:last'),!has_pos_qty_control);
+                $('.pointP').toggleClass('disabled-mode', !has_pos_qty_control)
+                    .prop('disabled', !has_pos_qty_control);
 
                 $('.numpad-minus').toggleClass('disabled-mode', !has_pos_qty_control)
                     .prop('disabled', !has_pos_qty_control);

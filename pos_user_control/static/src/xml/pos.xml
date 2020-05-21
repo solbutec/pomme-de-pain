@@ -51,7 +51,7 @@
             <br />
             <button class="input-button numpad-minus" >+/-</button>
             <button class="input-button number-char zero">0</button>
-            <button class="input-button number-char">.</button>
+            <button class="input-button number-char pointP">.</button>
             <button class="input-button numpad-backspace">
                 <img style="pointer-events: none;" src="/point_of_sale/static/src/img/backspace.png" width="24" height="21" />
             </button>

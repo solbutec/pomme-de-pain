@@ -105,7 +105,8 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         // },
         get_total_with_tax: function() {
             var res =  _super_Order.get_total_with_tax.call(this,arguments);
-            res = round_pr(res, 0.1);
+            //TODO MJID , THIS METHOD FOR ROUND AMOUNT (29.0 -> 29.01)(due to tax included)
+            //res = round_pr(res, 0.1);
             return res;
         },
         // get_total_without_tax: function() {
