@@ -176,7 +176,12 @@ class PosConfig(models.Model):
                                 'total': total_price,
                             })
 
-                        
+                if len(lines):
+                    lines.append({
+                        'type': 'total_pos',
+                        'total_qty': sum([l['qty'] for l in lines if l['type']=='categ_footer']),
+                        'total_ca': sum([l['total'] for l in lines if l['type']=='categ_footer']),
+                    })        
 
         return lines 
 
