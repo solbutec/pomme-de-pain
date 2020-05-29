@@ -41,6 +41,24 @@ class PosConfig(models.Model):
         pricelist_id = pricelist_id if (pricelist_id and (pricelist_id!= -1)) else False
         pricelist_id = pricelist_id and self.sudo().env['product.pricelist'].browse(pricelist_id) or False
         lines = []
+
+        #--- add metho
+        def grp_order_line_compos_byproduct(my_order_lines):
+            res = {}
+            for m_l in my_order_lines:
+                if not res.get(m_l.product_id.id, False):
+                    res[m_l.product_id.id] = {
+                    'type': 'compos_line',
+                    'code': m_l.product_id and m_l.product_id.default_code or '---',
+                    'name': m_l.product_id and m_l.product_id.name or '---',
+                    'qty': 0,
+                    'price_unit': m_l.real_supplement_price,
+                    'total': 0,
+                    }
+                res[m_l.product_id.id]['qty'] += m_l.qty
+                #res[m_l.product_id.id]['total'] += m_l.price_subtotal_incl
+            return res
+        #---
         if pos_company_id and pos_config_id and date_start_report and date_end_report:
             
             if type_reporting == 'main_ouvre_cais' and user_reporting:
@@ -98,13 +116,14 @@ class PosConfig(models.Model):
                     my_demain = my_demain[:-1]
                     my_demain += [('is_splmnt', '=', False)]
                 # Try to do date + price unit menu = (amount total lines / qty)
-                py_lines = self.sudo().env['pos.order.line'].read_group(domain=my_demain,fields=['price_unit','qty'], groupby=['pos_categ_id', 'product_id'], lazy=False)
+                py_lines = self.sudo().env['pos.order.line'].read_group(domain=my_demain,fields=['price_unit',
+                    'qty', 'price_subtotal_incl'], groupby=['pos_categ_id', 'product_id'], lazy=False)
                 categ_id, categ_qty, total_price = -1, 0, 0
                 for line in py_lines:
                     product = self.sudo().env['product.product'].browse(line['product_id'][0])
                     pos_categ_id = line['pos_categ_id'] and line['pos_categ_id'][0] or False
                     pos_categ_id = pos_categ_id and self.sudo().env['pos.category'].browse(line['pos_categ_id'][0])
-                    price_unit = product.list_price
+                    price_unit = product.list_price 
                     price_unit = (line['price_unit'] / line['__count']) if (line['__count'] > 0) else 0 #price by pricelist c'est pas line price_unit
                     if pricelist_id:
                         price_unit = pricelist_id.get_product_price(product, 1.0, False)
@@ -131,6 +150,19 @@ class PosConfig(models.Model):
                             'price_unit': float(price_unit),
                             'total': float(line['qty'] * price_unit),
                             })
+                    if type_reporting == 'vente_non_eclat' and product.is_combo:
+                        #get comopsant
+                        domain_compos = my_demain[:-1] + [
+                            ('is_splmnt', '=', True),('parent_combo_product_id', '=', product.id)] 
+
+                        composants_ol = self.sudo().env['pos.order.line'].search(domain_compos)
+                        composants_ol = grp_order_line_compos_byproduct(composants_ol)
+                        for comp_line in composants_ol.values():
+                            comp_line['total'] = comp_line['qty'] * comp_line['price_unit']
+                            lines.append(comp_line)
+                            #not important to add (qty compos to total quantity (categ))
+                            categ_qty += comp_line['qty']
+                            total_price += comp_line['total']
 
                 
                     categ_qty += line['qty']

@@ -29,6 +29,12 @@ class PosConfigWizard(models.TransientModel):
     def get_report_title(self):
         return REPORT_TITLES[self.type] if self.type else '-'
 
+    def _get_report_base_filename(self):
+        name = self.get_report_title()
+        if self.type == 'main_ouvre_cais':
+            name += '_'+str(self.cashier_id.name)
+        return name
+
 
     debut_date = fields.Datetime("Du", default=get_start_date)
     end_date = fields.Datetime("Au", default=fields.Datetime.now)
@@ -45,7 +51,8 @@ class PosConfigWizard(models.TransientModel):
     @api.multi
     def action_print(self):
         rapport = self.sudo().env.ref('pdp_reporting.report_main_courante')
-        return rapport.report_action(self)
+        report_action = rapport.report_action(self)
+        return report_action
 
     def get_data_reporting(self):
         lines_report = []
@@ -100,6 +107,7 @@ class PosConfigWizard(models.TransientModel):
                 result.append({
                     'type': 'total',
                     'total_qty': sum([l['qty'] for l in result if l['type']=='categ_footer']),
+                    'total_ca': sum([l['total'] for l in result if l['type']=='categ_footer']),
                 })
         if self.type == 'rapport_des_traces':
             my_domaine = [
