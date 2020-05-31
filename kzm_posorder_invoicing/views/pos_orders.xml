@@ -12,7 +12,7 @@
             </field>
         </record>
         <record id="action_pos_pos_to_invoice_form" model="ir.actions.act_window">
-            <field name="name">Invoice client orders</field>
+            <field name="name">Client Orders</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">pos.order</field>
             <field name="view_type">form</field>
@@ -36,7 +36,7 @@
             <field name="binding_model_id" ref="point_of_sale.model_pos_order"/>
             <field name="state">code</field>
             <field name="code">
-                records.action_create_invoices()
+                action = records.action_create_invoices()
             </field>
         </record>
 
@@ -58,7 +58,8 @@
                   sequence="1" groups="point_of_sale.group_pos_manager,point_of_sale.group_pos_user"/>
 
 
-        <menuitem id="orders_pos" parent="point_of_sale.menu_point_ofsale"
+        <menuitem id="orders_pos"
+                  parent="point_of_sale.menu_point_ofsale"
                   action="action_pos_pos_to_invoice_form"
                   sequence="2"
                   groups="point_of_sale.group_pos_manager,point_of_sale.group_pos_user"/>
