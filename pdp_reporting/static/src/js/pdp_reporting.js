@@ -128,7 +128,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         },
         change_type_report: function(event){
             var type_reporting = ($("#type-reporting").val() || '').trim();
-            console.log("--- type_reporting:::", type_reporting);
+            //console.log("--- type_reporting:::", type_reporting);
             if(type_reporting == 'main_ouvre_cais'){
                 $('#user-reporting-cont').show();
             }else{
@@ -221,7 +221,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                 }).then(function(lines){
                      lines_to_print =  lines;
                 }, function(type,err){ 
-                    console.log("-- type:", type, "\n err:", err);
+                    //console.log("-- type:", type, "\n err:", err);
                     connected = false;
                     err_message = type.message;
                  });

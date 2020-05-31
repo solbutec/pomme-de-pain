@@ -8,6 +8,7 @@
             file="pdp_reporting.main_courant_report_view"
             paperformat="pdp_reporting.pdp_paperformat_report"
             menu="False"
+            print_report_name="(object._get_report_base_filename())"
             report_type="qweb-pdf"/>
 
     <template id="main_courant_report_view">
@@ -74,6 +75,14 @@
                                 <td style="text-align:right;"><t t-esc="line['price_unit']"/></td>
                                 <td style="text-align:right;"><t t-esc="line['total']"/></td>
                             </t>
+                            <t t-if="line['type'] == 'compos_line'">
+                                <td style="text-align:left"><t t-esc="line['code']"/></td>
+                                <td style="text-align:left">&#160;&#160;<span style="color:navy;font-weight:bold;">-&gt; </span><t t-esc="line['name']"/></td>
+                                <td style="text-align:right;"><t t-esc="int(line['qty'])"/></td>
+                                <td style="text-align:right;"><t t-esc="line['price_unit']"/></td>
+                                <td style="text-align:right;"><t t-esc="line['total']"/></td>
+                            </t>
+                            
                             <t t-if="line['type'] == 'categ_footer'">
                                 <td colspan="2" style="text-align: left;border: O;padding:7px;padding-left:10px;">
                                     <t t-esc="line['name']"/>
@@ -89,7 +98,8 @@
                                 </td>
                             </t>
                             <t t-if="line['type'] == 'total'">
-                                <td colspan="5" style="text-align: center; padding:6px;"><strong>Quantité totale: </strong> <strong t-esc="int(line['total_qty'])"/></td>
+                                <td colspan="3" style="text-align: center; padding:6px;"><strong>Quantité totale: </strong> <strong t-esc="int(line['total_qty'])"/></td>
+                                <td colspan="2" style="text-align: center; padding:6px;"><strong>CA: </strong> <strong t-esc="int(line['total_ca'])"/></td>
                             </t>
                         </tr>
                     </table>
