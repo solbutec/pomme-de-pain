@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_pos_form_orders" model="ir.ui.view">
+            <field name="name">pos.order.form</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='fiscal_position_id']" position="before">
+                    <field name="kzm_invoice_client_id"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="action_pos_pos_to_invoice_form" model="ir.actions.act_window">
+            <field name="name">Client Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,kanban,form</field>
+            <field name="view_id" eval="False"/>
+            <field name="domain">[('is_pos_client_order', '=', True),('kzm_invoice_client_id', '=', False)]</field>
+            <field name="context">{'group_by': ['date_order:month', 'kzm_pos_client_id']}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    No orders found
+                </p>
+                <p>
+                    To record new orders, start a new session.
+                </p>
+            </field>
+        </record>
+
+        <record model="ir.actions.server" id="create_inv_act">
+            <field name="name">Create invoice</field>
+            <field name="model_id" ref="point_of_sale.model_pos_order"/>
+            <field name="binding_model_id" ref="point_of_sale.model_pos_order"/>
+            <field name="state">code</field>
+            <field name="code">
+                action = records.action_create_invoices()
+            </field>
+        </record>
+
+        <record id="view_pos_form_orders" model="ir.ui.view">
+            <field name="name">pos.order.form</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="kzm_pos_client_id"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <menuitem id="menu_point_ofsale2"
+                  parent="point_of_sale.menu_point_ofsale"
+                  action="point_of_sale.action_pos_pos_form"
+                  sequence="1" groups="point_of_sale.group_pos_manager,point_of_sale.group_pos_user"/>
+
+
+        <menuitem id="orders_pos"
+                  parent="point_of_sale.menu_point_ofsale"
+                  action="action_pos_pos_to_invoice_form"
+                  sequence="2"
+                  groups="point_of_sale.group_pos_manager,point_of_sale.group_pos_user"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,92 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* kzm_posorder_invoicing
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-06-01 08:23+0000\n"
+"PO-Revision-Date: 2020-06-01 09:26+0100\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: fr\n"
+"X-Generator: Poedit 2.3.1\n"
+
+#. module: kzm_posorder_invoicing
+#: model:ir.actions.act_window,name:kzm_posorder_invoicing.action_pos_pos_to_invoice_form
+#: model:ir.ui.menu,name:kzm_posorder_invoicing.orders_pos
+msgid "Client Orders"
+msgstr "Commandes clients"
+
+#. module: kzm_posorder_invoicing
+#: model:ir.model.fields,field_description:kzm_posorder_invoicing.field_pos_order__kzm_invoice_client_id
+msgid "Client invoice"
+msgstr "Facture client"
+
+#. module: kzm_posorder_invoicing
+#: model:ir.actions.server,name:kzm_posorder_invoicing.create_inv_act
+msgid "Create invoice"
+msgstr "Créer une facture"
+
+#. module: kzm_posorder_invoicing
+#: model:ir.model,name:kzm_posorder_invoicing.model_account_invoice
+msgid "Invoice"
+msgstr "Facture"
+
+#. module: kzm_posorder_invoicing
+#: model:ir.model.fields,field_description:kzm_posorder_invoicing.field_pos_order__kzm_pos_client_id
+msgid "KZM Client"
+msgstr "Client KZM"
+
+#. module: kzm_posorder_invoicing
+#: model_terms:ir.actions.act_window,help:kzm_posorder_invoicing.action_pos_pos_to_invoice_form
+msgid "No orders found"
+msgstr "Pas de commandes trouvées"
+
+#. module: kzm_posorder_invoicing
+#: model:ir.model.fields,field_description:kzm_posorder_invoicing.field_account_invoice__kzm_order_ids
+#: model:ir.ui.menu,name:kzm_posorder_invoicing.menu_point_ofsale2
+msgid "Orders"
+msgstr "Commandes"
+
+#. module: kzm_posorder_invoicing
+#: model_terms:ir.ui.view,arch_db:kzm_posorder_invoicing.view_invoice_form_orders
+msgid "POS Orders"
+msgstr "Commandes en PdV"
+
+#. module: kzm_posorder_invoicing
+#: code:addons/kzm_posorder_invoicing/models/pos_order.py:36
+#, python-format
+msgid "Please provide a partner for the sale."
+msgstr "Veuillez fournir un client pour la vente."
+
+#. module: kzm_posorder_invoicing
+#: model:ir.model,name:kzm_posorder_invoicing.model_pos_order
+msgid "Point of Sale Orders"
+msgstr "Commandes du point de vente"
+
+#. module: kzm_posorder_invoicing
+#: model:ir.model.fields,field_description:kzm_posorder_invoicing.field_account_invoice__orders
+msgid "Pos Orders"
+msgstr "Commandes PDV"
+
+#. module: kzm_posorder_invoicing
+#: model:ir.model.fields,field_description:kzm_posorder_invoicing.field_pos_order__is_pos_client_order
+msgid "Pos client order"
+msgstr "Commandes client PDV"
+
+#. module: kzm_posorder_invoicing
+#: code:addons/kzm_posorder_invoicing/models/pos_order.py:43
+#, python-format
+msgid "The customer partner must be unique."
+msgstr "Le client doit être unique."
+
+#. module: kzm_posorder_invoicing
+#: model_terms:ir.actions.act_window,help:kzm_posorder_invoicing.action_pos_pos_to_invoice_form
+msgid "To record new orders, start a new session."
+msgstr "Pour enregistrer de nouvelles commandes, commencez une nouvelle session."
