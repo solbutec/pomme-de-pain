@@ -27,6 +27,9 @@ class PosOrder(models.Model):
             o.delivring_order = (o.customer_name or o.customer_phone or o.customer_addr)
 
     salesman_id = fields.Many2one('res.users', string='Salesman')
+    #init_user_id, c'est le createur, car parfois, quand on change pos user (manger)
+    #pour faire des corrections, le systeme passe dans caissier, le modificateur
+    init_user_id = fields.Many2one("res.users", string="Initiator")
     customer_name = fields.Char("Delivered name")
     customer_phone = fields.Char("Delivered phone")
     customer_addr = fields.Char("Delivered address")
@@ -53,10 +56,10 @@ class PosOrder(models.Model):
 
     def _order_fields(self, ui_order):
         res = super(PosOrder, self)._order_fields(ui_order)
+        from pprint import pprint
         res.update({
             'salesman_id': ui_order.get('salesman_id') or False,
-        })
-        res.update({
+            'init_user_id': ui_order.get('init_user_id') or False,
             'customer_name': ui_order.get('customer_name') or False,
             'customer_phone': ui_order.get('customer_phone') or False,
             'customer_addr': ui_order.get('customer_addr') or False,

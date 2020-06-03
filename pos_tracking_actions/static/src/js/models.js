@@ -15,7 +15,11 @@ odoo.define('pos_tracking_actions.models', function(require) {
         initialize: function() {
                 // Add field to model
                 _super_posorder.initialize.apply(this,arguments);
+                console.log("ARGS:",this.init_user_id,"::::",arguments);
                 this.pos_history_operations = "";
+                if(this.init_user_id == undefined)
+                    this.init_user_id = this.pos.get_cashier().id || false;
+
                 //return this
             },
         add_actions_history: function(text){

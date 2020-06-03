@@ -51,6 +51,7 @@
             </field>
             <field name="user_id" position="before">
                 <field name="salesman_id"/>
+                <field name="init_user_id"/>
             </field>
             <xpath expr="//notebook" position="inside">
                 <page string="Delivery information" attrs="{'invisible': [('delivring_order','=',False)]}">

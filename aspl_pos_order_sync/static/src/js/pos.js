@@ -21,7 +21,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
 
 	models.load_fields("res.users", ['based_on','can_give_discount','can_change_price', 'price_limit', 'discount_limit','pos_user_type','sales_persons']);
 	models.load_fields("product.product", ['is_combo','product_combo_ids', 'pos_price_tot', 'price_supplement']);
-	models.load_fields("pos.order", ['customer_name','customer_phone', 'customer_addr']);
+	models.load_fields("pos.order", ['init_user_id','customer_name','customer_phone', 'customer_addr']);
 	models.load_fields("pos.order.line", ['is_splmnt','real_supplement_price']);
     models.load_fields("restaurant.table", "is_for_delivery");
 
@@ -320,10 +320,14 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
 	var _super_Order = models.Order.prototype;
     models.Order = models.Order.extend({
         initialize: function(attributes,options){
-           _super_Order.initialize.call(this, attributes, options);
+            _super_Order.initialize.call(this, attributes, options);
             this.customer_name = options.customer_name || false;
             this.customer_phone = options.customer_phone || false;
             this.customer_addr = options.customer_addr || false;
+            this.init_user_id = options.init_user_id || this.pos.get_cashier().id || false;
+            // Si on veut ajouter un field avec valeur initial, il faut le redefinir sur initialise du module pos_tracking_actions            
+            //_super_Order.initialize.call(this, attributes, options);
+            return this;
         },
     	generateUniqueId_barcode: function() {
             return new Date().getTime();
@@ -337,6 +341,12 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
         },
         get_salesman_id: function(){
         	return this.get('salesman_id');
+        },
+        set_init_user_id: function(init_user_id){
+            this.set('init_user_id',init_user_id);
+        },
+        get_init_user_id: function(){
+            return this.init_user_id;
         },
         set_sequence:function(sequence){
         	this.set('sequence',sequence);
@@ -432,12 +442,16 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
             var orders = _super_Order.export_as_JSON.call(this);
             new_val = {
             	salesman_id: this.get_salesman_id() || this.pos.get_cashier().id,
+                init_user_id: this.get_init_user_id(),
                 old_order_id: this.get_order_id(),
                 sequence: this.get_sequence(),
-                pos_reference: this.get_pos_reference()
+                pos_reference: this.get_pos_reference(),
             }
             $.extend(orders, new_val);
             $.extend(orders, this.get_delivery_infos());
+            orders = Object.assign(orders, new_val);
+            console.log("-GET", this.get_init_user_id(),this.init_user_id);
+            console.log("Export as json Order:", this.init_user_id,"::",orders);
             return orders;
         },
         export_for_printing: function(){
@@ -446,6 +460,7 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
             	reprint_payment: this.get_journal() || false,
             	ref: this.get_pos_reference() || false,
             	date_order: this.get_date_order() || false,
+                init_user_id: this.get_init_user_id(),
             };
             $.extend(orders, new_val);
             $.extend(orders, this.get_delivery_infos());
@@ -485,6 +500,9 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
 		 initialize: function(session, attributes) {
 	            var self = this;
 	            _super_posmodel.prototype.initialize.call(this, session, attributes);
+                //this.get_cashier()//NULL
+                //console.log("INIT POSMODEL:",this.get_cashier());
+                //this.get_cashier().id;
 		},
 		set_cashier: function(user){
 			var self = this;
