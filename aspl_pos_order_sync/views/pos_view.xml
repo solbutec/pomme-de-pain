@@ -68,4 +68,17 @@
         </field>
     </record>
 
+    <record id="view_pos_order_tree_inherited_tree_view" model="ir.ui.view">
+        <field name="name">pos.order.inherited.tree.view</field>
+        <field name="model">pos.order</field>
+        <field name="inherit_id" ref="point_of_sale.view_pos_order_tree"/>
+        <field name="arch" type="xml">
+            <field name="user_id" position="before">
+                <field name="init_user_id"/>
+            </field>
+        </field>
+    </record>
+
+    
+
 </odoo>
