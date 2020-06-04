@@ -7,13 +7,13 @@ from pprint import pprint
 class AccountBankStatine(models.Model):
     _inherit = 'account.bank.statement.line'
 
-    pos_vendeur_id = fields.Many2one("res.users", string='Vendeur', related='pos_statement_id.user_id', store=True) 
+    pos_vendeur_id = fields.Many2one("res.users", string='Vendeur', related='pos_statement_id.init_user_id', store=True) 
 
 class PosOrderLine(models.Model):
     _inherit = 'pos.order.line'
 
     config_id = fields.Many2one("pos.config", string="Pos config", related='order_id.config_id', store=True)
-    pos_vendeur_id = fields.Many2one("res.users", string='Vendeur', related='order_id.user_id', store=True) 
+    pos_vendeur_id = fields.Many2one("res.users", string='Vendeur', related='order_id.init_user_id', store=True) 
     product_categ_id = fields.Many2one("product.category", string="Categ article", related='product_id.categ_id', store=True)
     pos_categ_id = fields.Many2one("pos.category", string="Pos categorie", related='product_id.pos_categ_id', store=True)
 
