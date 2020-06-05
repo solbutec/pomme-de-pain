@@ -74,7 +74,7 @@ class PosConfigWizard(models.TransientModel):
                     lines_report.append({
                         'type': 'normal',
                         'name': pos_order.sudo().name,
-                        'cashier': pos_order.sudo().user_id.name,
+                        'cashier': pos_order.sudo().init_user_id.name,
                         'total': sum([l.sudo().amount for l in lines]),
                         'detail': "<br/>".join([("&#160;&#160;&#160;&#160;*" if l.sudo().is_splmnt else " ")+str(l.sudo().qty)+" "+str(l.sudo().product_id.name) for l in pos_order.lines]),
                         })
