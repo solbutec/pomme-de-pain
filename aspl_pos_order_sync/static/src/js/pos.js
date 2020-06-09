@@ -481,11 +481,13 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
             }
         },
         set_delivery_infos: function(options){
+            var self = this;
 	    	self.customer_name = options.customer_name  || false;
             self.customer_phone = options.customer_phone  || false;
             self.customer_addr = options.customer_addr  || false;
 	    	},
 	    get_delivery_infos: function(){
+            var self = this;
 	        return {
                 customer_name : self.customer_name || false,
                 customer_phone : self.customer_phone || false,
@@ -828,9 +830,9 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
 
 	var DeliveryInfosPopupWidget = PopupWidget.extend({
 	    template: 'DeliveryInfosPopupWidget',
-        events: {
+        events: _.extend({}, PopupWidget.prototype.events, {
             'focus .input-delivery': 'connect_keyborad',
-        },
+        }),
 	    show: function(options){
 	    	var self = this;
 	    	options = options || {};
@@ -845,15 +847,18 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
 	        self.renderElement();
 	    },
         connect_keyborad: function(event){
+            var self = this;
             if (self.pos.config.iface_vkeyboard && self.chrome.widget.keyboard) {
                 self.chrome.widget.keyboard.connect($(event.currentTarget));
             }
         },
 	    click_confirm: function(){
 	    	var self = this;
+            console.log("----- BUTTON CONFIRM");
 	    	var customer_name_v = ($("#cust_name_delv").val() || '').trim(),
 	    	    customer_phone_v = ($("#cust_phone_delv").val() || '').trim(),
 	    	    customer_addr_v = ($("#cust_addr_delv").val() || '').trim();
+            console.log("---- DELIVERY",{customer_name_v:customer_name_v,customer_phone_v:customer_phone_v,customer_addr_v:customer_addr_v});
 	    	self.order_select.set_delivery_infos({
 	    	    customer_name : customer_name_v,
                 customer_phone : customer_phone_v,
