@@ -450,8 +450,8 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
             $.extend(orders, new_val);
             $.extend(orders, this.get_delivery_infos());
             orders = Object.assign(orders, new_val);
-            console.log("-GET", this.get_init_user_id(),this.init_user_id);
-            console.log("Export as json Order:", this.init_user_id,"::",orders);
+            //console.log("-GET", this.get_init_user_id(),this.init_user_id);
+            //console.log("Export as json Order:", this.init_user_id,"::",orders);
             return orders;
         },
         export_for_printing: function(){
@@ -1001,6 +1001,17 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
     });
 
 	screens.OrderWidget.include({
+        recompute_unit_price: function(order_line){
+            if(order_line.combo_prod_info && order_line.combo_prod_info.length > 0){
+                var supp_price = order_line.product.list_price;
+                for(var i=0; i< order_line.combo_prod_info.length; i++){
+                    supp_price += order_line.combo_prod_info[i].product_detail.price_supplement;
+                }
+                 order_line.set_unit_price(supp_price);
+                 order_line.price = supp_price;
+            }
+            
+        },
 		set_value: function(val) {
 		    var self = this;
 	    	var order = this.pos.get_order();
@@ -1010,6 +1021,8 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
 		            var cashier = this.pos.get_cashier() || false;
 		            if( mode === 'quantity'){
 		                order.get_selected_orderline().set_quantity(val);
+                        this.recompute_unit_price(order.get_selected_orderline());
+
 		            }else if( mode === 'discount'){
 		            	if(cashier && cashier.can_give_discount){
 		            		if(val <= cashier.discount_limit || cashier.discount_limit < 1){

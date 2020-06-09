@@ -15,7 +15,7 @@ odoo.define('pos_tracking_actions.models', function(require) {
         initialize: function() {
                 // Add field to model
                 _super_posorder.initialize.apply(this,arguments);
-                console.log("ARGS:",this.init_user_id,"::::",arguments);
+                //console.log("ARGS:",this.init_user_id,"::::",arguments);
                 this.pos_history_operations = "";
                 if(this.init_user_id == undefined)
                     this.init_user_id = this.pos.get_cashier().id || false;
@@ -52,8 +52,6 @@ odoo.define('pos_tracking_actions.models', function(require) {
             var user_name = user.name;
             var order_line_name = self.get_product().display_name;
             var current_qty = self.get_quantity();
-            console.log(self, self.get_product());
-            console.log("==== QUANTITY:",quantity);
             if (quantity == 'remove') {
                order.add_actions_history(user_name+" /}{/ suppression /}{/ ligne de commande '"+order_line_name+"' \n");
             }else{
@@ -68,9 +66,25 @@ odoo.define('pos_tracking_actions.models', function(require) {
                     order.add_actions_history(user_name+" /}{/ modification nulle /}{/ ligne de commande '"+order_line_name+"', qty: '"+(current_qty || '0')+"' => '"+(quant || '0')+"' \n");
                 }
             }
-            console.log("--- DESC:", order.pos_history_operations);
+            //order.get_selected_orderline().set_combo_prod_info(order.get_selected_orderline().combo_prod_info);
+            this.recompute_unit_price();
             return _super_orderlinemodel.set_quantity.call(this, quantity);//(this, quantity);
             //return res;
+        },
+        recompute_unit_price: function(){
+            //console.log("----------- COMPUTE PRICE ------");
+            if(this.combo_prod_info && this.combo_prod_info.length > 0){
+                var supp_price = this.product.list_price;
+                //console.log("--- init:",supp_price,this)
+                for(var i=0; i< this.combo_prod_info.length; i++){
+                    supp_price += this.combo_prod_info[i].product_detail.price_supplement;
+                }
+                 this.set_unit_price(supp_price);
+                 this.price = supp_price;
+                 //console.log("--- tot:",supp_price,this);
+            }
+            //console.log("--------------------------------");
+            
         },
     });
 

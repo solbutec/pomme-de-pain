@@ -128,7 +128,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             this.is_splmnt = (options.is_splmnt)?options.is_splmnt:false;
             this.real_supplement_price = (options.real_supplement_price)?options.real_supplement_price:false;
             _super_orderline.initialize.apply(this, arguments);
-            console.log("Order line initialize: pos combo aspl module");
+           // console.log("Order line initialize: pos combo aspl module");
         },
         set_combo_prod_info: function(combo_prod_info){
         	this.combo_prod_info = combo_prod_info;
@@ -136,13 +136,9 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         	for(var i=0; i< this.combo_prod_info.length; i++){
         	    supp_price += this.combo_prod_info[i].product_detail.price_supplement;
         	}
-            console.log("TOT:", supp_price);
         	this.set_unit_price(supp_price);
         },
         get_combo_prod_info: function(){
-//        console.log("++++ GET +++");
-//        console.log(this.combo_prod_info);
-//        console.log("++++ END GET +++");
         	return this.combo_prod_info;
         },
         export_as_JSON: function(){
