@@ -14,5 +14,13 @@
                       <br/>
                     </t>
 		</xpath>
+    <xpath expr="//div[@class='page']" position="inside">
+       <br/>
+       <div class="row">
+         <div class="col-4">Responsable stock: <br/>Cachet et signature</div>
+         <div class="col-4">&#160;</div>
+         <div class="col-4" style="padding-left:50px;">Responsable Point de vente: <br/>Cachet et signature</div>
+       </div>
+    </xpath>
 	</template>
 </odoo>
