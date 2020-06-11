@@ -3,6 +3,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
+
 class PosOrder(models.Model):
     _inherit = 'pos.order'
 
@@ -16,7 +17,7 @@ class PosOrder(models.Model):
         for r in self:
             print('yesssss')
             r.kzm_pos_client_id = r.partner_id.parent_id or r.partner_id
-            r.is_pos_client_order = r.kzm_pos_client_id
+            r.is_pos_client_order = r.kzm_pos_client_id and r.kzm_pos_client_id.company_type == 'company'
 
     @api.multi
     def action_create_invoices(self):
@@ -24,7 +25,8 @@ class PosOrder(models.Model):
         print(orders)
 
         Invoice = self.env['account.invoice']
-        local_context = dict(self.env.context, force_company=orders[0].company_id.id, company_id=orders[0].company_id.id)
+        local_context = dict(self.env.context, force_company=orders[0].company_id.id,
+                             company_id=orders[0].company_id.id)
 
         for order in orders:
             # Force company for all SUPERUSER_ID action
@@ -41,7 +43,6 @@ class PosOrder(models.Model):
 
         if len(partners) > 1:
             raise UserError(_('The customer partner must be unique.'))
-
 
         prepare_invoice = orders[0]._prepare_invoice()
         invoice_type = 'out_invoice' if sum([order.amount_total for order in orders]) >= 0 else 'out_refund'
@@ -83,10 +84,5 @@ class PosOrder(models.Model):
         action = self.env.ref('account.action_invoice_tree1').read()[0]
         action['views'] = [(self.env.ref('account.invoice_form').id, 'form')]
         action['res_id'] = Invoice and Invoice.ids[0] or False
-        action['context'] = {'type':'out_invoice'}
+        action['context'] = {'type': 'out_invoice'}
         return action
-
-
-
-
-
