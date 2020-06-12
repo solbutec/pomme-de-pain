@@ -17,6 +17,7 @@
     'data': [
         'views/pos_customer_display.xml',
         'views/customer_display_view.xml',
+        
         ],
     'qweb': ['static/src/xml/pos.xml'],
     'demo': [
