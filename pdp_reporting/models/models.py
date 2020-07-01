@@ -8,6 +8,7 @@ class AccountBankStatine(models.Model):
     _inherit = 'account.bank.statement.line'
 
     pos_vendeur_id = fields.Many2one("res.users", string='Vendeur', related='pos_statement_id.init_user_id', store=True) 
+    table_id = fields.Many2one("restaurant.table", related="pos_statement_id.table_id", string="Table", store="True")
 
 class PosOrderLine(models.Model):
     _inherit = 'pos.order.line'
@@ -16,7 +17,7 @@ class PosOrderLine(models.Model):
     pos_vendeur_id = fields.Many2one("res.users", string='Vendeur', related='order_id.init_user_id', store=True) 
     product_categ_id = fields.Many2one("product.category", string="Categ article", related='product_id.categ_id', store=True)
     pos_categ_id = fields.Many2one("pos.category", string="Pos categorie", related='product_id.pos_categ_id', store=True)
-
+    table_id = fields.Many2one("restaurant.table", related="order_id.table_id", string="Table", store="True")
 
 
 class PosConfig(models.Model):
@@ -30,7 +31,6 @@ class PosConfig(models.Model):
     @api.model
     def main_courant_rapport(self):
         context = self._context or {}
-        print("context", context)
         pos_company_id = context.get('pos_company_id', False)
         pos_config_id = context.get('pos_config_id', False)
         date_start_report = context.get('date_start_report', False)
@@ -40,7 +40,14 @@ class PosConfig(models.Model):
         pricelist_id = context.get('pricelist_id', False)
         pricelist_id = pricelist_id if (pricelist_id and (pricelist_id!= -1)) else False
         pricelist_id = pricelist_id and self.sudo().env['product.pricelist'].browse(pricelist_id) or False
+        tables = context.get('tables', False)
+        table_ids = context.get('table_ids', False)
+        table_id_pos = context.get('table_reporting', False)
+        if table_id_pos:
+            table_ids = [int(table_id_pos),] 
         lines = []
+
+        print("==================",context.get('table_reporting', False),table_ids)
 
         #--- add metho
         def grp_order_line_compos_byproduct(my_order_lines):
@@ -62,13 +69,17 @@ class PosConfig(models.Model):
         if pos_company_id and pos_config_id and date_start_report and date_end_report:
             
             if type_reporting == 'main_ouvre_cais' and user_reporting:
-                py_lines = self.sudo().env['account.bank.statement.line'].read_group(domain=[
+                cr_domain = [
                     ('company_id', '=', pos_company_id),
                     ('config_id', '=', pos_config_id),
                     ('create_date', '>=', date_start_report),
                     ('create_date', '<=', date_end_report),
                     ('pos_vendeur_id', '=', int(user_reporting or 0)),
-                    ],fields=['amount_currency', 'amount'], groupby=['journal_id'])
+                    ]
+                if table_ids:
+                    cr_domain.append(('table_id', 'in', table_ids))
+
+                py_lines = self.sudo().env['account.bank.statement.line'].read_group(domain=cr_domain,fields=['amount_currency', 'amount'], groupby=['journal_id'])
                 tot = 0
                 for line in py_lines:
                     lines.append({
@@ -84,12 +95,16 @@ class PosConfig(models.Model):
                         })
 
             elif type_reporting == 'main_ouvre_glob':
-                py_lines = self.sudo().env['account.bank.statement.line'].read_group(domain=[
+                cr_domain = [
                     ('company_id', '=', pos_company_id),
                     ('config_id', '=', pos_config_id),
                     ('create_date', '>=', date_start_report),
                     ('create_date', '<=', date_end_report),
-                    ],fields=['amount_currency','amount'], groupby=['journal_id'])
+                    ]
+                if table_ids:
+                    cr_domain.append(('table_id', 'in', table_ids))
+
+                py_lines = self.sudo().env['account.bank.statement.line'].read_group(domain=cr_domain,fields=['amount_currency','amount'], groupby=['journal_id'])
                 tot = 0
                 for line in py_lines:
                     lines.append({
@@ -112,6 +127,9 @@ class PosConfig(models.Model):
                     ('create_date', '<=', date_end_report),
                     ('is_combo', '=', False),
                     ]
+                if table_ids:
+                    my_demain.append(('table_id', 'in', table_ids))
+
                 if type_reporting == 'vente_non_eclat':
                     my_demain = my_demain[:-1]
                     my_demain += [('is_splmnt', '=', False)]
@@ -194,3 +212,8 @@ class StockPickingRest(models.Model):
             if o.location_dest_id:
                 o.warehouse_to_id = self.env['stock.warehouse'].sudo().search([('lot_stock_id','=',o.location_dest_id.id)], limit=1)
     warehouse_to_id = fields.Many2one('stock.warehouse', string="Warehouse TO", compute=get_warehouse_to)
+
+class RestaurantTable(models.Model):
+    _inherit = 'restaurant.table'
+    
+    pos_config_id = fields.Many2one("pos.config", "Config", related="floor_id.pos_config_id", store=True)

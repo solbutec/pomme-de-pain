@@ -34,6 +34,9 @@
                         <p>
                             Date d'édition: <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y/%m/%d %H:%M')"/> 
                         </p>
+                        <p t-if="doc.table_ids">
+                            Tables: <span t-esc="', '.join([t.name for t in doc.table_ids])"/> 
+                        </p>
                     </div>                
                     <table t-if="doc.type in ['main_ouvre_cais', 'main_ouvre_glob']" class="table table-bordered">
                         <tr>

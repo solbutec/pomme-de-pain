@@ -46,6 +46,7 @@ class PosConfigWizard(models.TransientModel):
         ('rapport_des_traces', "Rapport des traces")],
                             default='main_ouvre_glob')
     cashier_id = fields.Many2one('res.users', string="Cashier")
+    table_ids = fields.Many2many("restaurant.table", string="Tables")
     pos_config_id = fields.Many2one("pos.config", string="Pos config", default= get_pos_config)
 
     @api.multi
@@ -62,8 +63,12 @@ class PosConfigWizard(models.TransientModel):
                     ('create_date', '>=', self.debut_date),
                     ('create_date', '<=', self.end_date),
                     ]
+            if self.table_ids:
+                my_domaine.append(('table_id', 'in', self.table_ids.ids))
+
             if self.type == 'main_ouvre_cais':
                 my_domaine.append(('pos_vendeur_id', '=', self.sudo().cashier_id.id))
+
             py_lines = self.sudo().env['account.bank.statement.line'].search(my_domaine)
             tot = 0
             for journal_id, lines_jrn in groupby(py_lines, lambda l: l.sudo().journal_id):
@@ -100,6 +105,8 @@ class PosConfigWizard(models.TransientModel):
              'type_reporting': self.type,
              'user_reporting': self.sudo().cashier_id and self.sudo().cashier_id.id or False,
              'pricelist_id': self.sudo().pos_config_id.pricelist_id.id,
+             'table_ids': self.table_ids.ids,
+             'tables': (", ".join([t.name for t in self.table_ids])) or False,
             }
             result = self.pos_config_id.with_context(**new_context).main_courant_rapport()
             if len(result):
@@ -115,6 +122,9 @@ class PosConfigWizard(models.TransientModel):
                 ('create_date', '>=', self.debut_date),
                 ('create_date', '<=', self.end_date),
             ]
+            if self.table_ids:
+                my_domaine.append(('table_id', 'in', self.table_ids.ids))
+
             py_lines = self.sudo().env['pos.order'].search(my_domaine)
             filtred_lines = py_lines and py_lines.filtered(lambda r: r.pos_history_operations and ('modification nulle' in r.pos_history_operations or
                                                        'modification négative' in r.pos_history_operations or
