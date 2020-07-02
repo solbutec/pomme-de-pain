@@ -816,14 +816,18 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
                         return
                     }
 //console.log("+++++++++++++++++++++++++++++++++ SHOW POPUP +++++++++");
-                    self.gui.show_popup('confirm',{
-                        'title': _t('Draft 	Order'),
-                        'body': _t('Do you want to create Draft Order?'),
-                        confirm: function(){
-                            self.pos.push_order(order);
-                            self.gui.show_screen('receipt');
-                        },
-                    });
+                    // self.gui.show_popup('confirm',{
+                    //     'title': _t('Draft 	Order'),
+                    //     'body': _t('Do you want to create Draft Order?'),
+                    //     confirm: function(){
+                    //         self.pos.push_order(order);
+                    //         self.gui.show_screen('receipt');
+                    //     },
+                    // });
+                    self.gui.show_screen('payment');
+                // SHOW payment screen au place de draft
+                //
+//console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
             }
         },
 	});
@@ -854,11 +858,9 @@ odoo.define('aspl_pos_order_sync.pos', function (require) {
         },
 	    click_confirm: function(){
 	    	var self = this;
-            console.log("----- BUTTON CONFIRM");
 	    	var customer_name_v = ($("#cust_name_delv").val() || '').trim(),
 	    	    customer_phone_v = ($("#cust_phone_delv").val() || '').trim(),
 	    	    customer_addr_v = ($("#cust_addr_delv").val() || '').trim();
-            console.log("---- DELIVERY",{customer_name_v:customer_name_v,customer_phone_v:customer_phone_v,customer_addr_v:customer_addr_v});
 	    	self.order_select.set_delivery_infos({
 	    	    customer_name : customer_name_v,
                 customer_phone : customer_phone_v,
