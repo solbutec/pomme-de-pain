@@ -12,6 +12,7 @@
                         <field name="cashier_id"
                                attrs="{'invisible': [('type', '!=', 'main_ouvre_cais')], 'required': [('type', '=', 'main_ouvre_cais')]}" domain="[('pos_config_ids','in',[pos_config_id])]"
                                options="{'no_open': True, 'no_create': True}"/>
+                        <field name="table_ids" widget="many2many_tags" domain="[('pos_config_id','=',pos_config_id)]" options="{'no_open': True, 'no_create': True}"/>
                     </group>
                     <group>
                         <field name="debut_date" required="1"/>

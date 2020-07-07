@@ -49,6 +49,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             'focus .amh-use-keyboard': 'connect_keyborad',
             'blur .amh-use-keyboard': 'disconnect_keyborad',
             'change #type-reporting': 'change_type_report',
+            'change #table-reporting-value': 'change_type_report_table',
             //'click #edit_order': 'click_edit_order',
             //'click .searchbox .search-clear': 'clear_search',
             //'click #re_order_duplicate': 'click_duplicate_order',
@@ -111,10 +112,18 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             this._super();
         },
         print_report: function(event){
+            console.log("----- POS", this.pos);
             var date_start_report = ($("#date_start_report").val() || '').trim();
             var date_end_report = ($("#date_end_report").val() || '').trim();
             var type_reporting = ($("#type-reporting").val() || '').trim();
             var user_reporting = ($("#user-reporting").val() || '').trim();
+
+            var table_value_reporting = $("#table-reporting-value").prop('checked');
+            var table_reporting = false;
+            if(table_value_reporting == true){
+                table_reporting = ($("#table-reporting").val() || '').trim();
+            }
+             
             //console.log("Report:",date_start_report,"->", date_end_report, ":: ", type_reporting, "::", user_reporting);
 
             //get-from-backend
@@ -123,18 +132,28 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             this.pos.user_reporting = user_reporting;
             this.pos.date_start_report = date_start_report;
             this.pos.date_end_report = date_end_report;
+            this.pos.table_reporting = table_reporting;
             this.gui.show_screen('receipt_reporting');
 
         },
         change_type_report: function(event){
             var type_reporting = ($("#type-reporting").val() || '').trim();
-            console.log("--- type_reporting:::", type_reporting);
+            //console.log("--- type_reporting:::", type_reporting);
             if(type_reporting == 'main_ouvre_cais'){
                 $('#user-reporting-cont').show();
             }else{
                 $('#user-reporting-cont').hide();
             }
         },
+        change_type_report_table: function(event){
+            var table_value_reporting = $("#table-reporting-value").prop('checked');
+            if(table_value_reporting == true){
+                $('#user-tables-cont').show();
+            }else{
+                $('#user-tables-cont').hide();
+            }
+        },
+        
     });
     gui.define_screen({name:'pos_reporting_ui', widget: ShowPosReportingUiWidget});
 
@@ -179,7 +198,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         },
         get_receipt_render_env: function() {
             var self = this;
-
+            console.log("Tables;",self.pos);
             var name= "", report_caissier = false, user_report=false;
             var today = new Date();
             var date = today.getFullYear()+'-'+(today.getMonth()+1).toString().padStart(2, '0')+'-'+today.getDate().toString().padStart(2, '0');
@@ -187,6 +206,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
             today = date+' '+time;
             var type_reporting = this.pos.type_reporting;
             var user_reporting = this.pos.user_reporting;
+            var table_reporting = this.pos.table_reporting;
             var date_start_report = this.pos.date_start_report;
             var date_end_report = this.pos.date_end_report;
             if(type_reporting == 'main_ouvre_glob'){
@@ -212,6 +232,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                         'pos_config_id': self.pos.config.id,
                         'type_reporting': type_reporting,
                         'user_reporting': user_reporting,
+                        'table_reporting': table_reporting,
                         'date_start_report': date_start_report,
                         'date_end_report': date_end_report,
                         'pricelist_id': self.pos.config.pricelist_id && self.pos.config.pricelist_id[0] || -1, 
@@ -221,7 +242,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
                 }).then(function(lines){
                      lines_to_print =  lines;
                 }, function(type,err){ 
-                    console.log("-- type:", type, "\n err:", err);
+                    //console.log("-- type:", type, "\n err:", err);
                     connected = false;
                     err_message = type.message;
                  });

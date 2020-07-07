@@ -29,6 +29,12 @@ class PosConfigWizard(models.TransientModel):
     def get_report_title(self):
         return REPORT_TITLES[self.type] if self.type else '-'
 
+    def _get_report_base_filename(self):
+        name = self.get_report_title()
+        if self.type == 'main_ouvre_cais':
+            name += '_'+str(self.cashier_id.name)
+        return name
+
 
     debut_date = fields.Datetime("Du", default=get_start_date)
     end_date = fields.Datetime("Au", default=fields.Datetime.now)
@@ -40,24 +46,29 @@ class PosConfigWizard(models.TransientModel):
         ('rapport_des_traces', "Rapport des traces")],
                             default='main_ouvre_glob')
     cashier_id = fields.Many2one('res.users', string="Cashier")
+    table_ids = fields.Many2many("restaurant.table", string="Tables")
     pos_config_id = fields.Many2one("pos.config", string="Pos config", default= get_pos_config)
 
     @api.multi
     def action_print(self):
         rapport = self.sudo().env.ref('pdp_reporting.report_main_courante')
-        return rapport.report_action(self)
+        report_action = rapport.report_action(self)
+        return report_action
 
     def get_data_reporting(self):
         lines_report = []
-        print("----- SELF::", self.type)
         if self.type in ['main_ouvre_glob', 'main_ouvre_cais']:
             my_domaine = [
                     ('config_id', '=', self.sudo().pos_config_id.id),
                     ('create_date', '>=', self.debut_date),
                     ('create_date', '<=', self.end_date),
                     ]
+            if self.table_ids:
+                my_domaine.append(('table_id', 'in', self.table_ids.ids))
+
             if self.type == 'main_ouvre_cais':
                 my_domaine.append(('pos_vendeur_id', '=', self.sudo().cashier_id.id))
+
             py_lines = self.sudo().env['account.bank.statement.line'].search(my_domaine)
             tot = 0
             for journal_id, lines_jrn in groupby(py_lines, lambda l: l.sudo().journal_id):
@@ -68,7 +79,7 @@ class PosConfigWizard(models.TransientModel):
                     lines_report.append({
                         'type': 'normal',
                         'name': pos_order.sudo().name,
-                        'cashier': pos_order.sudo().user_id.name,
+                        'cashier': pos_order.sudo().init_user_id.name,
                         'total': sum([l.sudo().amount for l in lines]),
                         'detail': "<br/>".join([("&#160;&#160;&#160;&#160;*" if l.sudo().is_splmnt else " ")+str(l.sudo().qty)+" "+str(l.sudo().product_id.name) for l in pos_order.lines]),
                         })
@@ -94,6 +105,8 @@ class PosConfigWizard(models.TransientModel):
              'type_reporting': self.type,
              'user_reporting': self.sudo().cashier_id and self.sudo().cashier_id.id or False,
              'pricelist_id': self.sudo().pos_config_id.pricelist_id.id,
+             'table_ids': self.table_ids.ids,
+             'tables': (", ".join([t.name for t in self.table_ids])) or False,
             }
             result = self.pos_config_id.with_context(**new_context).main_courant_rapport()
             if len(result):
@@ -101,6 +114,7 @@ class PosConfigWizard(models.TransientModel):
                 result.append({
                     'type': 'total',
                     'total_qty': sum([l['qty'] for l in result if l['type']=='categ_footer']),
+                    'total_ca': sum([l['total'] for l in result if l['type']=='categ_footer']),
                 })
         if self.type == 'rapport_des_traces':
             my_domaine = [
@@ -108,13 +122,16 @@ class PosConfigWizard(models.TransientModel):
                 ('create_date', '>=', self.debut_date),
                 ('create_date', '<=', self.end_date),
             ]
+            if self.table_ids:
+                my_domaine.append(('table_id', 'in', self.table_ids.ids))
+
             py_lines = self.sudo().env['pos.order'].search(my_domaine)
-            filtred_lines = py_lines.filtered(lambda r: 'modification nulle' in r.pos_history_operations or
+            filtred_lines = py_lines and py_lines.filtered(lambda r: r.pos_history_operations and ('modification nulle' in r.pos_history_operations or
                                                        'modification négative' in r.pos_history_operations or
-                                                       'suppression' in r.pos_history_operations)
+                                                       'suppression' in r.pos_history_operations)) or []
             for pos_order in filtred_lines:
                 show_lines = []
-                text_lines = pos_order.sudo().pos_history_operations.split('\n')
+                text_lines = pos_order.sudo().pos_history_operations and pos_order.sudo().pos_history_operations.split('\n') or []
                 for line in text_lines:
                     if 'modification nulle' in line or 'modification négative' in line or 'suppression' in line:
                         show_lines.append((", ".join(line.strip().split(' /}{/ '))).strip())
@@ -122,7 +139,7 @@ class PosConfigWizard(models.TransientModel):
                     'type': 'rapport_des_traces',
                     'date_order': pos_order.sudo().date_order,
                     'name': pos_order.sudo().name,
-                    'pos_history_operations': "<br/>".join(show_lines),
+                    'pos_history_operations': "- <br/>".join(show_lines),
                 })
         return lines_report
 

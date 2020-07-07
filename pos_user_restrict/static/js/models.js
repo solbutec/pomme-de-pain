@@ -26,7 +26,7 @@ odoo.define('aspl_pos_combo.pos', function (require) {
         initialize: function (session, attributes) {
           var self = this;
           _super_posmodel.initialize.apply(this, arguments);
-          console.log(self);
+          //console.log(self);
           //update users : ['pos_config_ids','in', [current.config.id]]
           
       },

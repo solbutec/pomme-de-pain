@@ -26,6 +26,7 @@
         'views/assets.xml',
         'wizards/reporting_wizard.xml',
         'reports/main_courante.xml',
+        'reports/report_delivery_document.xml',
         'views/pos_config_views.xml',
 
     ],

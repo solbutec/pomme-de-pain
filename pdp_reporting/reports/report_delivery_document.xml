@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_delivery_document_inherited" inherit_id="stock.report_delivery_document">
+        <xpath expr="//h2[1]" position="after">
+        	<t t-if="o.picking_type_id and o.picking_type_id.code == 'internal'">
+                      <div class="row">
+                          <div class="col-6">
+                            <center><strong>Source: </strong><span t-field="o.picking_type_id.warehouse_id"/></center>
+                          </div>
+                          <div class="col-6">
+                            <center><strong>Destination: </strong><span t-field="o.warehouse_to_id"/> </center>
+                          </div>
+                      </div>
+                      <br/>
+                    </t>
+		</xpath>
+
+    <xpath expr="//div[@class='page']" position="inside">
+       <br/>
+       <div class="row">
+         <div class="col-4">Responsable stock: <br/>Cachet et signature</div>
+         <div class="col-4">&#160;</div>
+         <div class="col-4" style="padding-left:30px;">Responsable Point de vente: <br/>Cachet et signature</div>
+       </div>
+    </xpath>
+	</template>
+</odoo>

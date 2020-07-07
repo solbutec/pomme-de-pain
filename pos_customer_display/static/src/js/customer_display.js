@@ -215,7 +215,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
             //$.post(this.pos.config.server_devices+"/com/opencashdrawer", {});
         }
         catch (e) {
-           console.log("Erreur: can't open the cash drawer from printer, "+e);
+           //console.log("Erreur: can't open the cash drawer from printer, "+e);
         }
         return ProxyDeviceSuper.prototype.open_cashbox.call(this);
     },
@@ -229,7 +229,6 @@ odoo.define('pos_customer_display.customer_display', function(require) {
         So, when you add a product, we call prepare_text_customer_display() twice...
         but I haven't found any good solution to avoid this -- Alexis */
         set_quantity: function(quantity){
-            console.log("Display customer: --- set quantity", quantity);
             //var res = 
             OrderlineSuper.prototype.set_quantity.apply(this,arguments);
             if (quantity != 'remove') {
@@ -311,7 +310,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
                         $.post(this.pos.config.server_devices+"/com/opencashdrawer", {});
                     }
                 catch (e) {
-                    console.log("Erreur: can't open the cash drawer from printer, "+e);
+                    //console.log("Erreur: can't open the cash drawer from printer, "+e);
                 }
         },
         renderElement: function() {
@@ -352,7 +351,7 @@ odoo.define('pos_customer_display.customer_display', function(require) {
                         //$.post(this.pos.config.server_devices+"/com/opencashdrawer", {});
                     }
                     catch (e) {
-                       console.log("Erreur: can't open the cash drawer from printer, "+e);
+                       //console.log("Erreur: can't open the cash drawer from printer, "+e);
                     }
             }
             return res;

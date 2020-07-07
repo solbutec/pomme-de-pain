@@ -49,6 +49,16 @@
                             </select>
                         </td>
                     </tr>
+                    <tr id="reporting-table-type" t-if="widget.pos.table">
+                        <td><span class='label' style="font-weight:bold;">Table courante</span></td>
+                        <td>
+                             <input type="checkbox" name="table-reporting-value" id="table-reporting-value" />
+                        </td>
+                    </tr>
+                    <tr id="user-tables-cont" t-if="widget.pos.table"  style="display:none;">
+                        <td><span class='label' style="font-weight:bold;">Table</span></td>
+                        <td><input type="hidden" name="table-reporting" t-att-value="widget.pos.table.id" id="table-reporting" /> <t t-esc="widget.pos.table.name"/></td>
+                    </tr>
                     <tr>
                         <td><span class='label' style="font-weight:bold;">Date debut</span></td>
                         <td><input type="text" name="date_start_report" t-att-value="widget.default_date_start" id="date_start_report" class="amh-use-keyboard amh-input"/> </td>
@@ -201,6 +211,13 @@
                                 <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.price_unit"/></td>
                                 <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.total"/></td>
                             </t>
+                            <t t-if="line.type == 'compos_line'">
+                                <td style="text-align:left;border: 1px solid black;padding:4px;"><t t-esc="line.code"/></td>
+                                <td style="text-align:left;border: 1px solid black;padding:4px;">&#160;&#160;<span style="color:navy;font-weight:bold;">-&gt; </span><t t-esc="line.name"/></td>
+                                <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.qty"/></td>
+                                <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.price_unit"/></td>
+                                <td style="text-align:right;border: 1px solid black;padding:4px;"><t t-esc="line.total"/></td>
+                            </t>
                             <t t-if="line.type == 'categ_footer'">
                                 <td colspan="2" style="text-align: left;border: O;padding:7px;padding-left:10px;">
                                     <t t-esc="line.name"/>
@@ -213,6 +230,20 @@
                                 </td>
                                 <td style="text-align: right;border: 0;padding:7px;">
                                     <t t-esc="line.total"/>
+                                </td>
+                            </t>
+                            <t t-if="line.type == 'total_pos'">
+                                <td colspan="2" style="text-align: left;border: 2px solid blue;padding:7px;padding-left:10px;">
+                                    Qté tot.
+                                </td>
+                                <td style="text-align: center;border: 2px solid blue;padding:7px;">
+                                    <t t-esc="line.total_qty"/>
+                                </td>
+                                <td style="text-align: right;border: 2px solid blue;padding:7px;">
+                                    CA
+                                </td>
+                                <td style="text-align: center;border: 2px solid blue;padding:7px;">
+                                    <t t-esc="line.total_ca"/>
                                 </td>
                             </t>
                         </tr>
