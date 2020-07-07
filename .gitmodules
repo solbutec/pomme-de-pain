@@ -2,3 +2,8 @@
 	path = karizmaconseil/kzm_accounting
 	url = git@github.com:karizmaconseil/kzm_accounting.git
 	branch = 12.0
+
+[submodule "karizmaconseil/kzm_hr"]
+	path = karizmaconseil/kzm_hr
+	url = git@github.com:karizmaconseil/kzm_hr.git
+	branch = 12.0
