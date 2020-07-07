@@ -1,0 +1,4 @@
+[submodule "karizmaconseil/kzm_accounting"]
+	path = karizmaconseil/kzm_accounting
+	url = git@github.com:karizmaconseil/kzm_accounting.git
+	branch = 12.0
