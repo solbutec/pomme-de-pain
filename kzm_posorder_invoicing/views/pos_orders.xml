@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+<!--    <function name="get_client" model="pos.order" />-->
     <data>
         <record id="view_pos_form_orders" model="ir.ui.view">
             <field name="name">pos.order.form</field>
@@ -52,7 +53,19 @@
             </field>
         </record>
 
-        
+        <record id="view_pos_form_orders" model="ir.ui.view">
+            <field name="name">pos.order.form</field>
+            <field name="model">pos.order</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="kzm_pos_client_id"/>
+                    <field name="is_pos_client_order" invisible="1"/>
+
+                </xpath>
+            </field>
+        </record>
+
 
 
         <menuitem id="menu_point_ofsale2"
