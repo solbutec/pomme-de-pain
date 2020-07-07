@@ -12,3 +12,8 @@
 	path = karizmaconseil/kzm_account_reporting
 	url = git@github.com:karizmaconseil/kzm_account_reporting.git
 	branch = 12.0
+
+[submodule "karizmaconseil/karizma_tools"]
+	path = karizmaconseil/karizma_tools
+	url = git@github.com:karizmaconseil/karizma_tools.git
+	branch = 12.0
