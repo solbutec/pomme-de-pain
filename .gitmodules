@@ -17,3 +17,8 @@
 	path = karizmaconseil/karizma_tools
 	url = git@github.com:karizmaconseil/karizma_tools.git
 	branch = 12.0
+
+[submodule "OCA/web"]
+	path = OCA/web
+	url = git@github.com:OCA/web.git
+	branch = 12.0
