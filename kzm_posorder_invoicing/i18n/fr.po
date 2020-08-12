@@ -73,7 +73,7 @@ msgstr "Commandes du point de vente"
 #. module: kzm_posorder_invoicing
 #: model:ir.model.fields,field_description:kzm_posorder_invoicing.field_account_invoice__orders
 msgid "Pos Orders"
-msgstr "Commandes PDV"
+msgstr "PDV Commandes"
 
 #. module: kzm_posorder_invoicing
 #: model:ir.model.fields,field_description:kzm_posorder_invoicing.field_pos_order__is_pos_client_order

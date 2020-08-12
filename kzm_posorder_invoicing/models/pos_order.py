@@ -3,7 +3,6 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
-
 class PosOrder(models.Model):
     _inherit = 'pos.order'
 
@@ -15,9 +14,9 @@ class PosOrder(models.Model):
     @api.depends('partner_id')
     def get_client(self):
         for r in self:
-            print('yesssss')
+            print('yesss123ss')
             r.kzm_pos_client_id = r.partner_id.parent_id or r.partner_id
-            r.is_pos_client_order = r.kzm_pos_client_id and r.kzm_pos_client_id.company_type == 'company'
+            r.is_pos_client_order = r.kzm_pos_client_id
 
     @api.multi
     def action_create_invoices(self):
@@ -25,8 +24,7 @@ class PosOrder(models.Model):
         print(orders)
 
         Invoice = self.env['account.invoice']
-        local_context = dict(self.env.context, force_company=orders[0].company_id.id,
-                             company_id=orders[0].company_id.id)
+        local_context = dict(self.env.context, force_company=orders[0].company_id.id, company_id=orders[0].company_id.id)
 
         for order in orders:
             # Force company for all SUPERUSER_ID action
@@ -43,6 +41,7 @@ class PosOrder(models.Model):
 
         if len(partners) > 1:
             raise UserError(_('The customer partner must be unique.'))
+
 
         prepare_invoice = orders[0]._prepare_invoice()
         invoice_type = 'out_invoice' if sum([order.amount_total for order in orders]) >= 0 else 'out_refund'
@@ -84,5 +83,53 @@ class PosOrder(models.Model):
         action = self.env.ref('account.action_invoice_tree1').read()[0]
         action['views'] = [(self.env.ref('account.invoice_form').id, 'form')]
         action['res_id'] = Invoice and Invoice.ids[0] or False
-        action['context'] = {'type': 'out_invoice'}
+        action['context'] = {'type':'out_invoice'}
         return action
+
+
+
+
+class PosSession(models.Model):
+    _inherit = 'pos.session'
+
+    def _confirm_orders(self):
+         # The government does not want PS orders that have not been
+        # finalized into an NS before we close a session
+
+
+        for session in self:
+            company_id = session.config_id.journal_id.company_id.id
+            orders = session.order_ids.filtered(lambda order: order.state == 'paid')
+            journal_id = self.env['ir.config_parameter'].sudo().get_param(
+                'pos.closing.journal_id_%s' % company_id, default=session.config_id.journal_id.id)
+            if not journal_id:
+                raise UserError(_("You have to set a Sale Journal for the POS:%s") % (session.config_id.name,))
+            if len(self.order_ids.filtered(lambda l: l.is_pos_client_order)) == len(self.order_ids):
+                print(len(self.order_ids.filtered(lambda l: l.is_pos_client_order)))
+                print(len(self.order_ids))
+                return
+            move = self.env['pos.order'].with_context(force_company=company_id)._create_account_move(session.start_at, session.name, int(journal_id), company_id)
+            orders.with_context(force_company=company_id)._create_account_move_line(session, move)
+            for order in session.order_ids.filtered(lambda o: o.state not in ['done', 'invoiced'] ):
+                if order.state not in ('paid'):
+                    raise UserError(
+                        _("You cannot confirm all orders of this session, because they have not the 'paid' status.\n"
+                          "{reference} is in state {state}, total amount: {total}, paid: {paid}").format(
+                            reference=order.pos_reference or order.name,
+                            state=order.state,
+                            total=order.amount_total,
+                            paid=order.amount_paid,
+                        ))
+                print(order.is_pos_client_order)
+                if not order.is_pos_client_order:
+                    print(order.is_pos_client_order)
+                    order.action_pos_order_done()
+            orders_to_reconcile = session.order_ids._filtered_for_reconciliation()
+            orders_to_reconcile.sudo()._reconcile_payments()
+
+
+
+
+
+
+

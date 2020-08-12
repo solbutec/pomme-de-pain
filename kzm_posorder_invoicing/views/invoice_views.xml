@@ -1,21 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-<!--        <function name="count_orders" model="account.invoice" />-->
-        <record id="view_invoice_form_orders" model="ir.ui.view">
-            <field name="name">account.invoice.form</field>
-            <field name="model">account.invoice</field>
-            <field name="inherit_id" ref="account.invoice_form"/>
-            <field name="arch" type="xml">
-                <xpath expr="//div[@name='button_box']" position="inside">
-                    <button class="oe_stat_button" icon="fa-shopping-cart"
-                            name="see_orders"
-                            type="object"
-                            attrs = "{'invisible': [('orders', '=', 0)]}"
-                    >
-                        <field name="orders" widget="statinfo" string="POS Orders"/>
-                    </button>
-                </xpath>
+        <!--        <function name="count_orders" model="account.invoice" />-->
+
+        <record id="view_pos_order_tree" model="ir.ui.view">
+        <field name="name">pos.order.tree</field>
+        <field name="model">pos.order</field>
+        <field name="arch" type="xml">
+            <tree string="POS Orders" decoration-info="state == 'draft'" decoration-muted="state in ('done','cancel')" create="0">
+<!--                <field name="currency_id" invisible="1"/>-->
+                <field name="state" invisible="1"/>
+<!--                <field name="matricule" />-->
+<!--                <field name="name"/>-->
+<!--                <field name="session_id" />-->
+<!--                <field name="date_order"/>-->
+<!--                <field name="pos_reference"/>-->
+                <field name="partner_id"/>
+<!--                <field string="Cashier" name="user_id"/>-->
+                <field name="amount_total" sum="Amount total" widget="monetary"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_invoice_form_orders" model="ir.ui.view">
+        <field name="name">account.invoice.form</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="account.invoice_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" icon="fa-shopping-cart"
+                name="see_orders"
+                type="object"
+                attrs = "{'invisible': [('orders', '=', 0)]}"
+                >
+                <field name="orders" widget="statinfo" string="POS Orders"/>
+            </button>
+            </xpath>
+        </field>
+    </record>
+
+        <record id="custom_action_pos_pos_form" model="ir.actions.act_window">
+            <field name="name">Orders</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">pos.order</field>
+            <field name="view_mode">tree,form</field>
+<!--            <field name="view_id" eval="kzm_posorder_invoicing.view_pos_order_tree"/>-->
+<!--            <field-->
+<!--            name="view_ids"-->
+<!--            eval="[(5, 0, 0),-->
+<!--                          (0, 0, {'view_mode': 'tree', 'view_id': ref('product_assortment_view_tree')}),-->
+<!--                          (0, 0, {'view_mode': 'form', 'view_id': ref('product_assortment_view_form')})]"-->
+<!--        />-->
+            <field name="domain">[]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_empty_folder">
+                    No orders found
+                </p>
+                <p>
+                    To record new orders, start a new session.
+                </p>
             </field>
         </record>
     </data>
