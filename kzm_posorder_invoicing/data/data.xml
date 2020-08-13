@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data noupdate="1">
+        <record id="custom_payment" model="account.journal">
+            <field name="name">Client Ticket</field>
+            <field name="type">bank</field>
+            <field name="code">CT</field>
+            <field name="journal_user">True</field>
+<!--            <field name="default_debit_account_id"></field>-->
+<!--            <field name="receivable_account_id" ref="l10n_generic_coa.1_pos_receivable" />-->
+        </record>
+    </data>
+</odoo>

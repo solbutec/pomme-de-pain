@@ -22,6 +22,7 @@
     'data': [
         # 'security/ir.model.access.csv',
         # 'views/sale_views.xml',
+        'data/data.xml',
         'views/invoice_views.xml',
         'views/pos_orders.xml',
     ],

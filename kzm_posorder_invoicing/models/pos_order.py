@@ -34,7 +34,9 @@ class PosOrder(models.Model):
 
             if not order.partner_id:
                 raise UserError(_('Please provide a partner for the sale.'))
-
+            if not order.invoice_group:
+                raise UserError(_(
+                    "The shop of %s has not the invoice feature activate. Please contact the administrator for further explanations" % order.name))
         partners = list(set([l.kzm_pos_client_id.id for l in orders]))
 
         print(partners)
@@ -86,46 +88,45 @@ class PosOrder(models.Model):
         action['context'] = {'type':'out_invoice'}
         return action
 
+    def _create_account_move(self, dt, ref, journal_id, company_id):
+        date_tz_user = fields.Datetime.context_timestamp(self, fields.Datetime.from_string(dt))
+        date_tz_user = fields.Date.to_string(date_tz_user)
+
+        return self.env['account.move'].sudo().create({'ref': ref, 'journal_id': journal_id, 'date': date_tz_user})
+
 
 
 
 class PosSession(models.Model):
     _inherit = 'pos.session'
 
-    def _confirm_orders(self):
-         # The government does not want PS orders that have not been
-        # finalized into an NS before we close a session
-
-
+    @api.multi
+    def action_pos_session_close(self):
+        # Close CashBox
         for session in self:
-            company_id = session.config_id.journal_id.company_id.id
-            orders = session.order_ids.filtered(lambda order: order.state == 'paid')
-            journal_id = self.env['ir.config_parameter'].sudo().get_param(
-                'pos.closing.journal_id_%s' % company_id, default=session.config_id.journal_id.id)
-            if not journal_id:
-                raise UserError(_("You have to set a Sale Journal for the POS:%s") % (session.config_id.name,))
-            if len(self.order_ids.filtered(lambda l: l.is_pos_client_order)) == len(self.order_ids):
-                print(len(self.order_ids.filtered(lambda l: l.is_pos_client_order)))
-                print(len(self.order_ids))
-                return
-            move = self.env['pos.order'].with_context(force_company=company_id)._create_account_move(session.start_at, session.name, int(journal_id), company_id)
-            orders.with_context(force_company=company_id)._create_account_move_line(session, move)
-            for order in session.order_ids.filtered(lambda o: o.state not in ['done', 'invoiced'] ):
-                if order.state not in ('paid'):
-                    raise UserError(
-                        _("You cannot confirm all orders of this session, because they have not the 'paid' status.\n"
-                          "{reference} is in state {state}, total amount: {total}, paid: {paid}").format(
-                            reference=order.pos_reference or order.name,
-                            state=order.state,
-                            total=order.amount_total,
-                            paid=order.amount_paid,
-                        ))
-                print(order.is_pos_client_order)
-                if not order.is_pos_client_order:
-                    print(order.is_pos_client_order)
-                    order.action_pos_order_done()
-            orders_to_reconcile = session.order_ids._filtered_for_reconciliation()
-            orders_to_reconcile.sudo()._reconcile_payments()
+            company_id = session.config_id.company_id.id
+            ctx = dict(self.env.context, force_company=company_id, company_id=company_id)
+            ctx_notrack = dict(ctx, mail_notrack=True)
+            for st in session.statement_ids:
+                if abs(st.difference) > st.journal_id.amount_authorized_diff:
+                    # The pos manager can close statements with maximums.
+                    if not self.user_has_groups("point_of_sale.group_pos_manager"):
+                        raise UserError(_("Your ending balance is too different from the theoretical cash closing (%.2f), the maximum allowed is: %.2f. You can contact your manager to force it.") % (st.difference, st.journal_id.amount_authorized_diff))
+                if (st.journal_id.type not in ['bank', 'cash']):
+                    raise UserError(_("The journal type for your payment method should be bank or cash."))
+                if not st.journal_id.id == self.env.ref('kzm_posorder_invoicing.custom_payment').id:
+                    print(st.journal_id.id)
+                    print(self.env.ref('kzm_posorder_invoicing.custom_payment').id)
+                    print("jjjjjjjjjjjj")
+                    st.with_context(ctx_notrack).sudo().button_confirm_bank()
+        self.with_context(ctx)._confirm_orders()
+        self.write({'state': 'closed'})
+        return {
+            'type': 'ir.actions.client',
+            'name': 'Point of Sale Menu',
+            'tag': 'reload',
+            'params': {'menu_id': self.env.ref('point_of_sale.menu_point_root').id},
+        }
 
 
 

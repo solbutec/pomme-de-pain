@@ -1,21 +1,24 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* kzm_posorder_invoicing
+#	* kzm_posorder_invoicing
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-01 08:23+0000\n"
-"PO-Revision-Date: 2020-06-01 09:26+0100\n"
+"POT-Creation-Date: 2020-08-13 16:44+0000\n"
+"PO-Revision-Date: 2020-08-13 16:44+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-"Language: fr\n"
-"X-Generator: Poedit 2.3.1\n"
+
+#. module: kzm_posorder_invoicing
+#: model_terms:ir.ui.view,arch_db:kzm_posorder_invoicing.view_pos_order_tree
+msgid "Amount total"
+msgstr "Montant total"
 
 #. module: kzm_posorder_invoicing
 #: model:ir.actions.act_window,name:kzm_posorder_invoicing.action_pos_pos_to_invoice_form
@@ -45,10 +48,12 @@ msgstr "Client KZM"
 
 #. module: kzm_posorder_invoicing
 #: model_terms:ir.actions.act_window,help:kzm_posorder_invoicing.action_pos_pos_to_invoice_form
+#: model_terms:ir.actions.act_window,help:kzm_posorder_invoicing.custom_action_pos_pos_form
 msgid "No orders found"
 msgstr "Pas de commandes trouvées"
 
 #. module: kzm_posorder_invoicing
+#: model:ir.actions.act_window,name:kzm_posorder_invoicing.custom_action_pos_pos_form
 #: model:ir.model.fields,field_description:kzm_posorder_invoicing.field_account_invoice__kzm_order_ids
 #: model:ir.ui.menu,name:kzm_posorder_invoicing.menu_point_ofsale2
 msgid "Orders"
@@ -56,6 +61,7 @@ msgstr "Commandes"
 
 #. module: kzm_posorder_invoicing
 #: model_terms:ir.ui.view,arch_db:kzm_posorder_invoicing.view_invoice_form_orders
+#: model_terms:ir.ui.view,arch_db:kzm_posorder_invoicing.view_pos_order_tree
 msgid "POS Orders"
 msgstr "Commandes en PdV"
 
@@ -63,12 +69,17 @@ msgstr "Commandes en PdV"
 #: code:addons/kzm_posorder_invoicing/models/pos_order.py:36
 #, python-format
 msgid "Please provide a partner for the sale."
-msgstr "Veuillez fournir un client pour la vente."
+msgstr ""
 
 #. module: kzm_posorder_invoicing
 #: model:ir.model,name:kzm_posorder_invoicing.model_pos_order
 msgid "Point of Sale Orders"
 msgstr "Commandes du point de vente"
+
+#. module: kzm_posorder_invoicing
+#: model:ir.model,name:kzm_posorder_invoicing.model_pos_session
+msgid "Point of Sale Session"
+msgstr "Session du point de vente"
 
 #. module: kzm_posorder_invoicing
 #: model:ir.model.fields,field_description:kzm_posorder_invoicing.field_account_invoice__orders
@@ -81,12 +92,31 @@ msgid "Pos client order"
 msgstr "Commandes client PDV"
 
 #. module: kzm_posorder_invoicing
-#: code:addons/kzm_posorder_invoicing/models/pos_order.py:43
+#: code:addons/kzm_posorder_invoicing/models/pos_order.py:45
 #, python-format
 msgid "The customer partner must be unique."
 msgstr "Le client doit être unique."
 
 #. module: kzm_posorder_invoicing
+#: code:addons/kzm_posorder_invoicing/models/pos_order.py:116
+#, python-format
+msgid "The journal type for your payment method should be bank or cash."
+msgstr "Le type de journal de votre mode de paiement doit être bancaire ou en espèces."
+
+#. module: kzm_posorder_invoicing
+#: code:addons/kzm_posorder_invoicing/models/pos_order.py:38
+#, python-format
+msgid "The shop of %s has not the invoice feature activate. Please contact the administrator for further explanations"
+msgstr "La boutique de% s n'a pas activé la fonction de facturation. Veuillez contacter l'administrateur pour plus d'explications"
+
+#. module: kzm_posorder_invoicing
 #: model_terms:ir.actions.act_window,help:kzm_posorder_invoicing.action_pos_pos_to_invoice_form
+#: model_terms:ir.actions.act_window,help:kzm_posorder_invoicing.custom_action_pos_pos_form
 msgid "To record new orders, start a new session."
 msgstr "Pour enregistrer de nouvelles commandes, commencez une nouvelle session."
+
+#. module: kzm_posorder_invoicing
+#: code:addons/kzm_posorder_invoicing/models/pos_order.py:114
+#, python-format
+msgid "Your ending balance is too different from the theoretical cash closing (%.2f), the maximum allowed is: %.2f. You can contact your manager to force it."
+msgstr "Votre solde de clôture est trop différent de la clôture de caisse théorique (% .2f), le maximum autorisé est:% .2f. Vous pouvez contacter votre responsable pour le forcer."
